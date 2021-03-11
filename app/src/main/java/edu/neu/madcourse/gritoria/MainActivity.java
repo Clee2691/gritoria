@@ -52,7 +52,15 @@ public class MainActivity extends AppCompatActivity {
                 openMap();
             }
         });
-        
+
+        Button runButton = findViewById(R.id.RunButton);
+        runButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRun();
+            }
+        });
+
     }
 
     // Open new activities on button press
@@ -61,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Team.class);
         startActivity(intent);
     }
-
 
     public void openPlanner(){
         Intent intent = new Intent(this, Planner.class);
@@ -75,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void openMap(){
         Intent intent = new Intent(this, Map.class);
+        startActivity(intent);
+    }
+
+    public void openRun() {
+        Intent intent = new Intent(this, RunningActivity.class);
         startActivity(intent);
     }
 }
