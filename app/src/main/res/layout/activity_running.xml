@@ -6,4 +6,81 @@
     android:layout_height="match_parent"
     tools:context=".RunningActivity">
 
+    <Button
+        android:id="@+id/StartRunButton"
+        android:layout_width="262dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="4dp"
+        android:text="Begin Adventure"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RunningMapView"
+        app:layout_constraintVertical_bias="0.834" />
+
+    <Button
+        android:id="@+id/RunningLogButton"
+        android:layout_width="150dp"
+        android:layout_height="52dp"
+        android:text="Log"
+        app:layout_constraintBottom_toTopOf="@+id/RunningMapView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.448" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/RunningMapView"
+        android:layout_width="352dp"
+        android:layout_height="595dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.377" />
+
+    <TextView
+        android:id="@+id/DistanceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distance:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RunningMapView"
+        app:layout_constraintVertical_bias="0.101" />
+
+    <TextView
+        android:id="@+id/PaceValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="112dp"
+        android:text="N/A"
+        app:layout_constraintBottom_toBottomOf="@+id/StartRunButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/DistanceLabel" />
+
+    <TextView
+        android:id="@+id/DistanceValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="N/A"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/PaceValue"
+        app:layout_constraintTop_toBottomOf="@+id/PaceValue" />
+
+    <TextView
+        android:id="@+id/PaceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pace:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/DistanceLabel"
+        app:layout_constraintTop_toBottomOf="@+id/DistanceLabel"
+        app:layout_constraintVertical_bias="0.111" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

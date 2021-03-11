@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gritoria">
-        <activity android:name=".RunningActivity"></activity>
+        <activity android:name=".RunningLogActivity"></activity>
+        <activity android:name=".RunningActivity" />
         <activity android:name=".Inventory" />
         <activity android:name=".Map" />
         <activity android:name=".Profile" />
