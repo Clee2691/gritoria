@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fantasy_background_1920x1080"
+    android:backgroundTintMode="add">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <Button
+            android:id="@+id/TeamButton"
+            android:textSize="32sp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#9eacc9"
+            android:fontFamily="@font/arizonia_regular"
+            android:textAllCaps="false"
+            android:text="Team" />
+
+        <Button
+            android:id="@+id/PlannerButton"
+            android:textSize="32sp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="#9eacc9"
+            android:fontFamily="@font/arizonia_regular"
+            android:textAllCaps="false"
+            android:text="Planner" />
+
+        <Button
+            android:id="@+id/ProfileButton"
+            android:textSize="32sp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="#9eacc9"
+            android:fontFamily="@font/arizonia_regular"
+            android:textAllCaps="false"
+            android:text="Profile" />
+
+        <Button
+            android:id="@+id/MapButton"
+            android:textSize="32sp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="#9eacc9"
+            android:fontFamily="@font/arizonia_regular"
+            android:textAllCaps="false"
+            android:text="World Map" />
+
+        <Button
+            android:id="@+id/RunButton"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="#9eacc9"
+            android:fontFamily="@font/arizonia_regular"
+            android:text="Run"
+            android:textAllCaps="false"
+            android:textSize="32sp" />
+
+    </LinearLayout>
+</RelativeLayout>
