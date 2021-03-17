@@ -20,13 +20,23 @@ public class LiftingActivity extends AppCompatActivity {
                 openProgress();
             }
         });
+        Button log = findViewById(R.id.liftBtn);
+        log.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLift();
+            }
+        });
     }
 
     public void openProgress(){
         Intent intent = new Intent(this, Progress.class);
         startActivity(intent);
     }
-
+    public void openLift(){
+        Intent intent = new Intent(this, LiftLog.class);
+        startActivity(intent);
+    }
 
 
 

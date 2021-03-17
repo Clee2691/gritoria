@@ -13,6 +13,8 @@
         <activity android:name=".RunningActivity" />
         <activity android:name=".LiftingActivity" />
         <activity android:name=".Progress" />
+        <activity android:name=".LiftLog" />
+
 
 
         <activity android:name=".Inventory" />
