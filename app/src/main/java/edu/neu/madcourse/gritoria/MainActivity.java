@@ -61,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button liftingButton = findViewById(R.id.liftButton);
+        liftingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLift();
+            }
+        });
+
     }
 
     // Open new activities on button press
@@ -87,6 +95,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void openRun() {
         Intent intent = new Intent(this, RunningActivity.class);
+        startActivity(intent);
+    }
+    public void openLift() {
+        Intent intent = new Intent(this, LiftingActivity.class);
         startActivity(intent);
     }
 }
