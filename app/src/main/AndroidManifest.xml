@@ -12,6 +12,9 @@
         <activity android:name=".RunningLogActivity"></activity>
         <activity android:name=".RunningActivity" />
         <activity android:name=".LiftingActivity" />
+        <activity android:name=".LiftingInfo" />
+
+
         <activity android:name=".Progress" />
         <activity android:name=".LiftLog" />
 

@@ -84,12 +84,13 @@ public class LiftLog extends AppCompatActivity {
                                         }
                                     })
                                     .show();
-
                     }
                 });
                 url_builder.show();
             }
         });
+        Button info = findViewById(R.id.liftInfo);
+
         Button back_button = findViewById(R.id.go_back_third_to_first);
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
