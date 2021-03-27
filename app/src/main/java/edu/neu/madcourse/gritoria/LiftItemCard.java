@@ -1,14 +1,41 @@
 package edu.neu.madcourse.gritoria;
 
-import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class LiftItemCard extends AppCompatActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.lift_log_card);
+import androidx.appcompat.app.AppCompatDialogFragment;
+
+import edu.neu.madcourse.gritoria.LiftItemCardListener;
+
+public class LiftItemCard extends AppCompatDialogFragment implements LiftItemCardListener {
+
+    private final int imageSource;
+    private final String itemName;
+    private final String my_url;
+
+
+    //Constructor
+    public ItemCard(int imageSource, String itemName, String my_url) {
+        this.imageSource = imageSource;
+        this.itemName = itemName;
+        this.my_url = my_url;
 
     }
+
+    public int getImageSource() {
+        return imageSource;
+    }
+
+    public String getItemName(){ return itemName;}
+    public String getMy_url(){return my_url;}
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+
 }
