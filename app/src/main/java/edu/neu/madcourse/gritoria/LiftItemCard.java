@@ -18,7 +18,7 @@ public class LiftItemCard extends AppCompatDialogFragment implements LiftItemCar
 
 
     //Constructor
-    public ItemCard(int imageSource, String itemName, String my_url) {
+    public LiftItemCard(int imageSource, String itemName, String my_url) {
         this.imageSource = imageSource;
         this.itemName = itemName;
         this.my_url = my_url;
