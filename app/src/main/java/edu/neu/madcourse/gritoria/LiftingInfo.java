@@ -11,4 +11,6 @@ public class LiftingInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lifting_info);
     }
+
+
 }

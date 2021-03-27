@@ -91,6 +91,14 @@ public class LiftLog extends AppCompatActivity {
         });
         Button info = findViewById(R.id.liftInfo);
 
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(LiftLog.this, LiftingInfo.class);
+                LiftLog.this.startActivity(myIntent);
+            }
+        });
+
         Button back_button = findViewById(R.id.go_back_third_to_first);
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
