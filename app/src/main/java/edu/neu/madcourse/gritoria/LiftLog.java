@@ -72,25 +72,19 @@ public class LiftLog extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         url_text = my_url.getText().toString();
-                        if (!url_validate(url_text) ) {
-                            Toast.makeText(LiftLog.this, "Invalid. Format starts with https://", Toast.LENGTH_LONG).show();
-                        }
-                        //making my own regex
-                        if(url_validate(url_text)){
-                            if(!url_text.contains("https://") && (!url_text.contains("http://"))){ url_text = "http://" + url_text;}
 
                             LiftItemCard itemCard = new LiftItemCard(1, url_text,url_text);
                             itemList.add(itemCard);
                             adapter.notifyDataSetChanged();
                             //change to snack bar
-                            Snackbar.make(constraintLayout,"New Link Created", Snackbar.LENGTH_LONG)
+                            Snackbar.make(constraintLayout,"Added a lift", Snackbar.LENGTH_LONG)
                                     .setAction(";)", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                         }
                                     })
                                     .show();
-                        }
+
                     }
                 });
                 url_builder.show();
@@ -107,13 +101,6 @@ public class LiftLog extends AppCompatActivity {
 
     }
 
-    private boolean url_validate(String url) {
-        Pattern pattern = Patterns.WEB_URL;
-        Matcher match = pattern.matcher(url.toLowerCase());
-        return match.matches();
-
-
-    }
 
 
 }
