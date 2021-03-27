@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/squatSetText"
+        android:layout_width="58dp"
+        android:layout_height="0dp"
+        android:text="Sets"
+        app:layout_constraintBottom_toBottomOf="@+id/squatPlus4"
+        app:layout_constraintEnd_toStartOf="@+id/squatPlus4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/squatPlus4" />
+
+    <Button
+        android:id="@+id/squatPlus6"
+        android:layout_width="63dp"
+        android:layout_height="50dp"
+        android:text="+"
+        app:layout_constraintBaseline_toBaselineOf="@+id/squatPlus5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/squatPlus5" />
+
+    <Button
+        android:id="@+id/squatPlus5"
+        android:layout_width="63dp"
+        android:layout_height="0dp"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="@+id/squatPlus2"
+        app:layout_constraintEnd_toStartOf="@+id/squatPlus6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/squatRepText"
+        app:layout_constraintTop_toTopOf="@+id/squatRepText" />
+
+    <TextView
+        android:id="@+id/squatRepText"
+        android:layout_width="64dp"
+        android:layout_height="0dp"
+        android:text="Reps"
+        app:layout_constraintBottom_toBottomOf="@+id/squatPlus2"
+        app:layout_constraintEnd_toStartOf="@+id/squatPlus5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/squatPlus2"
+        app:layout_constraintTop_toTopOf="@+id/squatPlus2" />
+
+    <Button
+        android:id="@+id/squatPlus4"
+        android:layout_width="63dp"
+        android:layout_height="50dp"
+        android:text="-"
+        app:layout_constraintBaseline_toBaselineOf="@+id/squatPlus2"
+        app:layout_constraintEnd_toStartOf="@+id/squatPlus2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/squatSetText" />
+
+    <Button
+        android:id="@+id/squatPlus2"
+        android:layout_width="63dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="164dp"
+        android:text="+"
+        app:layout_constraintEnd_toStartOf="@+id/squatRepText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/squatPlus4"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
