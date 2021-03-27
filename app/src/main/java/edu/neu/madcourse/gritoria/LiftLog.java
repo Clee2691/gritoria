@@ -63,7 +63,7 @@ public class LiftLog extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder url_builder = new AlertDialog.Builder(LinkCollector_2.this);
+                AlertDialog.Builder url_builder = new AlertDialog.Builder(LiftLog.this);
                 url_builder.setTitle("Input url");
                 final EditText my_url = new EditText(LiftLog.this);
                 url_builder.setView(my_url);

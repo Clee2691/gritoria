@@ -12,12 +12,12 @@ import java.util.ArrayList;
 public class Adapter extends RecyclerView.Adapter<Holder>{
 
     private final ArrayList<LiftItemCard> itemList;
-    private LiftItemCardListener listener;
+    private LiftItemCard listener;
 
     public Adapter(ArrayList<LiftItemCard> itemList) {
         this.itemList = itemList;
     }
-    public void setOnItemClickListener(LiftItemCardListener listener) {
+    public void setOnItemClickListener(LiftItemCard listener) {
         this.listener = listener;
     }
 
