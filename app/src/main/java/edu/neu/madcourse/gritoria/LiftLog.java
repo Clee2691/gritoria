@@ -58,6 +58,8 @@ public class LiftLog extends AppCompatActivity {
 
         FloatingActionButton addButton = findViewById(R.id.floatingActionButton);
         constraintLayout = findViewById(R.id.frameLayout);
+        Button info = findViewById(R.id.liftInfo);
+
 
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -73,31 +75,36 @@ public class LiftLog extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         url_text = my_url.getText().toString();
 
-                            LiftItemCard itemCard = new LiftItemCard(1, url_text,url_text);
-                            itemList.add(itemCard);
-                            adapter.notifyDataSetChanged();
-                            //change to snack bar
-                            Snackbar.make(constraintLayout,"Added a lift", Snackbar.LENGTH_LONG)
-                                    .setAction(";)", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                        }
-                                    })
-                                    .show();
+                        LiftItemCard itemCard = new LiftItemCard(1, url_text,url_text);
+                        itemList.add(itemCard);
+                        adapter.notifyDataSetChanged();
+                        //change to snack bar
+                        Snackbar.make(constraintLayout,"Added a lift", Snackbar.LENGTH_LONG)
+                                .setAction(";)", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                    }
+                                })
+                                .show();
                     }
                 });
                 url_builder.show();
             }
-        });
-        Button info = findViewById(R.id.liftInfo);
 
-        info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(LiftLog.this, LiftingInfo.class);
-                LiftLog.this.startActivity(myIntent);
-            }
         });
+
+
+
+//        probably need to change this to an onNoteListener()
+//        info.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent myIntent = new Intent(LiftLog.this, LiftingInfo.class);
+//                LiftLog.this.startActivity(myIntent);
+//            }
+//        });
+
+
 
         Button back_button = findViewById(R.id.go_back_third_to_first);
         back_button.setOnClickListener(new View.OnClickListener() {
