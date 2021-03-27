@@ -14,21 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 public class Holder extends RecyclerView.ViewHolder{
 
 
-    public ImageView itemIcon;
-    public TextView itemName;
+    public TextView liftDate;
+    public TextView liftItem;
+
 
     public Holder(View itemView, final LiftItemCard listener) {
         super(itemView);
-        itemIcon = itemView.findViewById(R.id.item_icon);
-        itemName = itemView.findViewById(R.id.item_name);
+        liftDate = itemView.findViewById(R.id.liftDate);
+        liftItem = itemView.findViewById(R.id.liftItem);
 
         itemView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
 
-                String url =  itemName.getText().toString();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                view.getContext().startActivity(intent);
+//                String url =  itemName.getText().toString();
+//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                view.getContext().startActivity(intent);
 
             }
 

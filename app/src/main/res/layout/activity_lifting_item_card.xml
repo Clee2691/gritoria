@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
-    app:cardCornerRadius="5dp">
+    android:layout_marginBottom="4dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/item_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:adjustViewBounds="false"
-            android:contentDescription="icon"
-            android:padding="3dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:layout_width="407dp"
+        android:layout_height="62dp"
+        android:layout_margin="4dp">
 
         <TextView
-            android:id="@+id/item_name"
-            android:layout_width="315dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="7dp"
-            android:text="item"
+            android:id="@+id/liftDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@id/Button_Info"
+            android:text="Example Date"
             android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/item_icon"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="19sp"
+            android:textStyle="bold" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/liftItem"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/liftDate"
+            android:layout_marginEnd="106dp"
+            android:layout_toStartOf="@id/Button_Info"
+            android:text="Lift"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+        <Button
+            android:id="@+id/Button_Info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="info" />
+
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

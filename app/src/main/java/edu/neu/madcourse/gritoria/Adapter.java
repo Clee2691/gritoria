@@ -32,7 +32,7 @@ public class Adapter extends RecyclerView.Adapter<Holder>{
         LiftItemCard currentItem = itemList.get(position);
 
 
-        holder.itemName.setText(currentItem.getItemName());
+        holder.liftItem.setText(currentItem.getItemName());
 
     }
 
