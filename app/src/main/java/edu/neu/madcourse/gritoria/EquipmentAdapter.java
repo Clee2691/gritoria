@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.FirebaseApp;
+
 import java.util.ArrayList;
 
 public class EquipmentAdapter extends RecyclerView.Adapter<EquipmentHolder> {
