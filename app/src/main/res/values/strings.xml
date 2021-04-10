@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Gritoria</string>
+    <string name="gritoria_string">Gritoria</string>
+    <string name="back_string">Back</string>
+    <string name="team_rankings_string">Team Rankings</string>
+    <string name="gritoria_map_string">gritoria_map</string>
 </resources>
