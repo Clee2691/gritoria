@@ -1,19 +1,33 @@
 package edu.neu.madcourse.gritoria;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.neu.madcourse.gritoria.bosses.worldFights;
+import edu.neu.madcourse.gritoria.rcView.RCAdapter;
+import edu.neu.madcourse.gritoria.rcView.RViewTeamRank;
 
 public class Map extends AppCompatActivity {
+
+    private List<RViewTeamRank> teamList;
+    RecyclerView rcTeamRank;
+    RCAdapter rcAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        teamList = new ArrayList<>();
+        createRCView();
+        dummyTeamData();
     }
 
     public void enterWorld(View v) {
@@ -30,5 +44,22 @@ public class Map extends AppCompatActivity {
 
         startActivity(worldFight);
 
+    }
+
+    private void createRCView() {
+        rcTeamRank = findViewById(R.id.recyclerViewTeamRanks);
+        rcTeamRank.setHasFixedSize(true);
+        rcAdapter = new RCAdapter(teamList);
+        rcTeamRank.setAdapter(rcAdapter);
+        rcTeamRank.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public void dummyTeamData() {
+        teamList.add(new RViewTeamRank("Test Team 1", 4));
+        teamList.add(new RViewTeamRank("Test Team 2", 3));
+        teamList.add(new RViewTeamRank("Test Team 3", 6));
+        teamList.add(new RViewTeamRank("Test Team 4", 1));
+        teamList.add(new RViewTeamRank("Test Team 5", 20));
+        rcAdapter.notifyDataSetChanged();
     }
 }
