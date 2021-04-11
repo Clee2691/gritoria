@@ -66,11 +66,11 @@ public class LiftLog extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder url_builder = new AlertDialog.Builder(LiftLog.this);
-                url_builder.setTitle("Input url");
+                url_builder.setTitle("input item");
                 final EditText my_url = new EditText(LiftLog.this);
                 url_builder.setView(my_url);
                 my_url.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
-                url_builder.setPositiveButton("Add Link", new DialogInterface.OnClickListener() {
+                url_builder.setPositiveButton("Add item", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         url_text = my_url.getText().toString();
@@ -94,15 +94,6 @@ public class LiftLog extends AppCompatActivity {
         });
 
 
-
-//        probably need to change this to an onNoteListener()
-//        info.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent myIntent = new Intent(LiftLog.this, LiftingInfo.class);
-//                LiftLog.this.startActivity(myIntent);
-//            }
-//        });
 
 
 
