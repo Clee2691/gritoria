@@ -25,12 +25,13 @@
         />
 
     <Button
-        android:layout_width = "wrap_content"
-        android:layout_height = "40dp"
-        android:textSize = "13sp"
-        android:text = "@string/enter_lift"
-        android:layout_margin= "15dp"
-    />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/round"
+        android:drawableRight="@drawable/ic_baseline_add_box_24"
+        android:text="add"
+        android:textSize="13sp" />
 
 
 </LinearLayout>
