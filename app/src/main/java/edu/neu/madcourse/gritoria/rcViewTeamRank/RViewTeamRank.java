@@ -1,4 +1,4 @@
-package edu.neu.madcourse.gritoria.rcView;
+package edu.neu.madcourse.gritoria.rcViewTeamRank;
 
 
 public class RViewTeamRank {

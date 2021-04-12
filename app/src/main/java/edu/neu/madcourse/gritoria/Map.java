@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.neu.madcourse.gritoria.bosses.worldFights;
-import edu.neu.madcourse.gritoria.rcView.RCAdapter;
-import edu.neu.madcourse.gritoria.rcView.RViewTeamRank;
+import edu.neu.madcourse.gritoria.rcViewTeamRank.RCAdapter;
+import edu.neu.madcourse.gritoria.rcViewTeamRank.RViewTeamRank;
 
 public class Map extends AppCompatActivity {
 
@@ -27,6 +27,7 @@ public class Map extends AppCompatActivity {
         setContentView(R.layout.activity_map);
         teamList = new ArrayList<>();
         createRCView();
+        //TODO: CONNECT TO DB AND DISPLAY TEAMS
         dummyTeamData();
     }
 

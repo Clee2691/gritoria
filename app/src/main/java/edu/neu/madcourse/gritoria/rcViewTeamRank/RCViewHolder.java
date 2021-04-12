@@ -1,4 +1,4 @@
-package edu.neu.madcourse.gritoria.rcView;
+package edu.neu.madcourse.gritoria.rcViewTeamRank;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -20,7 +20,9 @@ public class RCViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setViewData(RViewTeamRank team) {
+        // TODO: Placeholder image! NEED TO REPLACE WITH ACTUAL TEAM AVATAR
         teamIcon.setImageResource(R.drawable.adventurer);
+
         teamName.setText(team.getTeamName());
         numPlayersInTeam.setText(String.format("%d",team.getNumPlayersInTeam()));
     }

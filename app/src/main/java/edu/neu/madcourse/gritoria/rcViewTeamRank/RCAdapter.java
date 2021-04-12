@@ -1,4 +1,4 @@
-package edu.neu.madcourse.gritoria.rcView;
+package edu.neu.madcourse.gritoria.rcViewTeamRank;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,7 @@ public class RCAdapter extends RecyclerView.Adapter<RCViewHolder> {
     private List<RViewTeamRank> teamList;
 
     public RCAdapter(List<RViewTeamRank> team) {
+
         this.teamList = team;
     }
 
