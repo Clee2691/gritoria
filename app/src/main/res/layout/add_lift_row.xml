@@ -3,26 +3,54 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding = "10dp">
+    android:padding = "10dp"
+    android:id="@+id/add_lift_row"
+ >
+
     <EditText
-        android:id= "@+id/rowEditText"
-        android:layout_width="0dp"
+        android:id="@+id/rowEditText"
+        android:layout_width="10dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/radius_grey"
+
+        android:hint=" Lift" />
+    <EditText
+        android:id= "@+id/weightEdit"
+        android:layout_width="20dp"
         android:layout_height="40dp"
         android:layout_weight="1"
         android:background = "@drawable/radius_grey"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-    />
+        android:hint = " Weight"
+        />
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/radius_grey">
+        android:background="@drawable/radius_grey"
+        >
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner"
-            android:layout_width="150dp"
-            android:layout_height="40dp" />
+            android:layout_width="84dp"
+            android:layout_height="40dp"
+            android:hint="@string/sets" />
+
     </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/radius_grey"
+        >
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/secondSpinner"
+            android:layout_width="84dp"
+            android:layout_height="40dp"
+            android:hint="@string/sets" />
+
+    </FrameLayout>
+
+
 
     <ImageView
         android:layout_width="25dp"
