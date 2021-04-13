@@ -42,9 +42,7 @@ public class Map extends AppCompatActivity {
         } else {
             worldFight.putExtra("level", "DEFAULT WORLD");
         }
-
         startActivity(worldFight);
-
     }
 
     private void createRCView() {
@@ -62,5 +60,9 @@ public class Map extends AppCompatActivity {
         teamList.add(new RViewTeamRank("Test Team 4", 1));
         teamList.add(new RViewTeamRank("Test Team 5", 20));
         rcAdapter.notifyDataSetChanged();
+    }
+
+    public void backButtonPress(View v) {
+        super.onBackPressed();
     }
 }

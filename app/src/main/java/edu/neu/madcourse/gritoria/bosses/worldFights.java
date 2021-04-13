@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ public class worldFights extends AppCompatActivity {
     private List<RCViewPlayer> playerList;
     private RecyclerView rcPlayers;
     private RCAdapter rcPlayerAdapter;
+    // TODO: Get team curr player is in and get team members
+    // See if they are ready for this fight
+    // Set curr player to the world if they are ready
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class worldFights extends AppCompatActivity {
         TextView worldLogo = findViewById(R.id.textViewWorld);
         String currWorld = currIntent.getStringExtra("level");
         worldLogo.setText(String.format("World %s", currWorld));
+
     }
 
     private void setupRecyclerView() {
@@ -47,10 +52,26 @@ public class worldFights extends AppCompatActivity {
     }
 
     public void dummyPlayerData() {
-        playerList.add(new RCViewPlayer("Test 1", 100));
-        playerList.add(new RCViewPlayer("Test 2", 3));
-        playerList.add(new RCViewPlayer("Test 3", 42));
-        playerList.add(new RCViewPlayer("Test 4", 5));
-        playerList.add(new RCViewPlayer("Test 5", 6));
+        playerList.add(new RCViewPlayer("Test 1", 100, false));
+        playerList.add(new RCViewPlayer("Test 2", 3, true));
+        playerList.add(new RCViewPlayer("Test 3", 7, true));
+        playerList.add(new RCViewPlayer("Test 4", 5, false));
+        playerList.add(new RCViewPlayer("Test 5", 6, true));
     }
+
+    public void backButtonPress(View v) {
+        super.onBackPressed();
+    }
+
+    public void setPlayerReady(View v) {
+
+    }
+
+    /**TODO: Fight mechanic:
+     * Boss HP + Defense
+     * Attack will be time dependent based on team total power
+     * Need some kind of server sided timer
+     * Progress can be seen by progress bar based on timer
+     *
+     * **/
 }

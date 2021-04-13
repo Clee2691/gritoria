@@ -5,10 +5,10 @@ public class RCViewPlayer {
     private int attackPower;
     private boolean isReady;
 
-    public RCViewPlayer(String playerName, int attackPower) {
+    public RCViewPlayer(String playerName, int attackPower, boolean ready) {
         this.playerName = playerName;
         this.attackPower = attackPower;
-        this.isReady = false;
+        this.isReady = ready;
     }
 
     public String getPlayerName() {

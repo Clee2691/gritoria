@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:onClick="backButtonPress"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="@+id/textViewWorld"
         app:layout_constraintEnd_toStartOf="@+id/textViewWorld"
@@ -65,10 +66,10 @@
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnReadyUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Attack"
+        android:text="Ready Up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -79,7 +80,7 @@
         android:id="@+id/recyclerViewTeamReady"
         android:layout_width="370dp"
         android:layout_height="168dp"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/btnReadyUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
