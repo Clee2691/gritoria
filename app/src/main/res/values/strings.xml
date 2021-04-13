@@ -1,7 +1,25 @@
 <resources>
     <string name="app_name">Gritoria</string>
+<<<<<<< HEAD
     <string name="gritoria_string">Gritoria</string>
     <string name="back_string">Back</string>
     <string name="team_rankings_string">Team Rankings</string>
     <string name="gritoria_map_string">gritoria_map</string>
+=======
+    <string name="title_activity_login">LoginActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_email_auth">EmailAuth</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+>>>>>>> 46ce4334a412c8602061a58559defe7cbb3ef0dc
 </resources>
