@@ -13,9 +13,11 @@ public class Adapter extends RecyclerView.Adapter<Holder>{
 
     private final ArrayList<LiftItemCard> itemList;
     private LiftItemCard listener;
+    private recycleOnClick recycleListener;
 
-    public Adapter(ArrayList<LiftItemCard> itemList) {
+    public Adapter(ArrayList<LiftItemCard> itemList, recycleOnClick recycleListener) {
         this.itemList = itemList;
+        this.recycleListener = recycleListener;
     }
     public void setOnItemClickListener(LiftItemCard listener) {
         this.listener = listener;
@@ -39,6 +41,10 @@ public class Adapter extends RecyclerView.Adapter<Holder>{
     @Override
     public int getItemCount() {
         return itemList.size();
+    }
+
+    public interface recycleOnClick{
+        void onClick(View v, int position);
     }
 
 

@@ -35,6 +35,7 @@ public class LiftLog extends AppCompatActivity {
     private RecyclerView.LayoutManager rLayoutManger;
     private FloatingActionButton addButton;
     private ArrayList<LiftItemCard> itemList = new ArrayList<>();
+    private Adapter.recycleOnClick recycleListener;
 
 
     private String url_text;
@@ -49,7 +50,8 @@ public class LiftLog extends AppCompatActivity {
         RecyclerView recycle_view = findViewById(R.id.recycle_widget);
         //recycle_view.setHasFixedSize(true);
 
-        Adapter adapter = new Adapter(itemList);
+        Adapter adapter = new Adapter(itemList,recycleListener);
+        setOnClickListener();
         recycle_view.setAdapter(adapter);
 
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this);
@@ -69,7 +71,6 @@ public class LiftLog extends AppCompatActivity {
                 url_builder.setTitle("input item");
                 final EditText my_url = new EditText(LiftLog.this);
                 url_builder.setView(my_url);
-                my_url.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
                 url_builder.setPositiveButton("Add item", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -93,10 +94,6 @@ public class LiftLog extends AppCompatActivity {
 
         });
 
-
-
-
-
         Button back_button = findViewById(R.id.go_back_third_to_first);
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +105,14 @@ public class LiftLog extends AppCompatActivity {
 
     }
 
-
+    private void setOnClickListener(){
+        recycleListener = new Adapter.recycleOnClick() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(), LiftingInfo.class);
+                startActivity(intent);
+            }
+        };
+    }
 
 }
