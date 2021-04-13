@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
+<<<<<<< HEAD
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +20,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+=======
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.File;
+
+public class MainActivity extends AppCompatActivity {
+    FirebaseAuth mAuth;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+>>>>>>> origin/firebase_and_equipment
         setContentView(R.layout.activity_main);
         // Initialize the buttons
         Button team = findViewById(R.id.TeamButton);
@@ -61,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+<<<<<<< HEAD
         Button liftingButton = findViewById(R.id.liftButton);
         liftingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +83,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+=======
+        Button logoutButton = findViewById(R.id.Logout);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
+            }
+        });
+>>>>>>> origin/firebase_and_equipment
     }
 
     // Open new activities on button press
@@ -97,8 +122,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RunningActivity.class);
         startActivity(intent);
     }
+<<<<<<< HEAD
     public void openLift() {
         Intent intent = new Intent(this, LiftingActivity.class);
         startActivity(intent);
     }
+=======
+>>>>>>> origin/firebase_and_equipment
 }
