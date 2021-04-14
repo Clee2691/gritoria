@@ -89,7 +89,7 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         });
 
         liftList.addView(liftView);
-        Log.e("final number is: ", sets.toString());
+        Log.e("final sets is: ", sets.toString());
         Log.e("final reps is:", reps.toString());
 
     }
@@ -110,16 +110,11 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
             if(parent.getId() == R.id.spinner){
                 sets.add(number);
             }
-            reps.add(number);
+            else if(parent.getId() == R.id.secondSpinner){
+                reps.add(number);
+            }
         }
 
-//
-//
-//        if(position!=0){
-//            Log.e("number  is", sets.toString());
-//            sets.add(number);
-//
-//        }
 
     }
 
