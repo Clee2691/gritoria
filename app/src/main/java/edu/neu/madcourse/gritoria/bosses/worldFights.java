@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +37,9 @@ public class worldFights extends AppCompatActivity {
     private String currWorld;
     private int playerPower;
     private boolean currPlayerReadyStatus;
+    private List<String> teammateUIDList;
+    private String playerUID;
     FirebaseUser currPlayer;
-    DatabaseReference gritDB;
     FirebaseDatabase gritFB;
 
 
@@ -52,12 +55,12 @@ public class worldFights extends AppCompatActivity {
         setupWorld(currIntent);
         playerList = new ArrayList<>();
         currPlayer = FirebaseAuth.getInstance().getCurrentUser();
-
+        playerUID = currPlayer.getUid();
         //Firebase Realtime DB
         gritFB = FirebaseDatabase.getInstance();
-
         setupRecyclerView();
-        dummyPlayerData();
+
+        setupUI();
     }
 
     private void setupWorld(Intent currIntent) {
@@ -75,32 +78,73 @@ public class worldFights extends AppCompatActivity {
         rcPlayers.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void dummyPlayerData() {
-        String playerUID = currPlayer.getUid();
-        // Check player's ready status for the world.
-        gritDB = gritFB.getReference("users/" + playerUID);
+    private void setupUI() {
+        Button readyButton = findViewById(R.id.btnReadyUp);
+        DatabaseReference userRef = gritFB.getReference("users/" + playerUID);
 
-        gritDB.addValueEventListener(new ValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String playerWorld = snapshot.child("currWorld").getValue(String.class);
-                Log.e("World", playerWorld);
-                playerPower = snapshot.child("power").getValue(Integer.class);
-                Log.e("Playerworld", currWorld);
-                Log.e("playerPower", String.format("%d",playerPower));
-                // TODO: FIX this! problems with adding the same person twice
-                if (currWorld.equals(playerWorld) && playerList.contains()) {
-                    currPlayerReadyStatus = snapshot.child("isReady").getValue(Boolean.class);
-                    playerList.add(new RCViewPlayer(playerUID, playerPower, currPlayerReadyStatus));
-                    rcPlayerAdapter.notifyItemInserted(playerList.size() - 1);
+                currPlayerReadyStatus = snapshot.child("isReady").getValue(boolean.class);
+                Log.e("Player ready", String.valueOf(currPlayerReadyStatus));
+
+                if(currPlayerReadyStatus) {
+                    readyButton.setText("Cancel");
+                    readyButton.setBackgroundColor(Color.RED);
+                } else {
+                    readyButton.setText("Ready Up");
+                    readyButton.setBackgroundColor(Color.rgb(97,248, 15));
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(worldFights.this, "Error: " + error.getMessage(),
+                        Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void refreshTeam(View v) {
+        DatabaseReference gritdbRef = gritFB.getReference();
+
+        gritdbRef.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                playerList.clear();
+                rcPlayerAdapter.notifyDataSetChanged();
+                populateUserTeamRecyclerView(snapshot);
+
+                for(DataSnapshot aUser : snapshot.child("users/").getChildren()) {
+                    if (teammateUIDList.contains(aUser.getKey())) {
+                        if (aUser.child("currWorld").getValue(String.class).equals(currWorld)) {
+                            playerList.add(new RCViewPlayer(
+                                    aUser.child("name").getValue(String.class),
+                                    aUser.child("power").getValue(Integer.class),
+                                    aUser.child("isReady").getValue(boolean.class)));
+                            rcPlayerAdapter.notifyItemInserted(playerList.size() - 1);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(worldFights.this, "Error: " + error.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void populateUserTeamRecyclerView(DataSnapshot dSS) {
+        teammateUIDList = new ArrayList<>();
+        String playerTeam = dSS.child("users").child(playerUID).child("team")
+                .getValue(String.class);
+
+        for (DataSnapshot teamMembers : dSS.child("teams").child(playerTeam)
+                .child("members").getChildren()) {
+            teammateUIDList.add(teamMembers.getKey());
+        }
     }
 
     public void backButtonPress(View v) {
@@ -108,7 +152,8 @@ public class worldFights extends AppCompatActivity {
     }
 
     public void setPlayerReady(View v) {
-        Toast.makeText(this, String.format("%s",currPlayer.getEmail()), Toast.LENGTH_SHORT).show();
+        DatabaseReference userRef = gritFB.getReference("users/" + playerUID);
+        userRef.child("isReady").setValue(!currPlayerReadyStatus);
     }
 
     /**TODO: Fight mechanic:

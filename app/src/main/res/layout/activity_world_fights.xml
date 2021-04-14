@@ -69,10 +69,11 @@
         android:id="@+id/btnReadyUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#61F80F"
         android:onClick="setPlayerReady"
         android:text="Ready Up"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonRefreshTeam"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewTeamReady" />
@@ -86,5 +87,19 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/buttonRefreshTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#368BF4"
+        android:onClick="refreshTeam"
+        android:text="Refresh Team List"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnReadyUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnReadyUp"
+        app:layout_constraintTop_toTopOf="@+id/btnReadyUp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
