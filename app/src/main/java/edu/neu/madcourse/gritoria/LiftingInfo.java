@@ -109,8 +109,8 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 
     private void removeCurrentView(View view){
         liftList.removeView(view);
-        sets.remove( sets.size() - 1 );
-        reps.remove(reps.size()-1);
+//        sets.remove( sets.size() - 1 );
+//        reps.remove(reps.size()-1);
 
     }
 
