@@ -6,13 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".Inventory">
 
-<<<<<<< HEAD
-=======
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/equipmentList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
->>>>>>> origin/firebase_and_equipment
 </androidx.constraintlayout.widget.ConstraintLayout>

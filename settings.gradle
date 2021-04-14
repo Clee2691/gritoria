@@ -1,6 +1,3 @@
 include ':app'
-<<<<<<< HEAD
 rootProject.name = "grit"
-=======
 rootProject.name = "gritoria"
->>>>>>> origin/firebase_and_equipment

@@ -2,14 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.neu.madcourse.gritoria">
 
-<<<<<<< HEAD
-=======
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-feature android:name="android.hardware.type.watch" />
+<!--    <uses-feature android:name="android.hardware.type.watch" />-->
 
->>>>>>> origin/firebase_and_equipment
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,19 +14,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gritoria">
-<<<<<<< HEAD
-        <activity android:name=".RunningLogActivity"></activity>
-        <activity android:name=".RunningActivity" />
-        <activity android:name=".LiftingActivity" />
-        <activity android:name=".LiftingInfo" />
-
-
-        <activity android:name=".Progress" />
-        <activity android:name=".LiftLog" />
-
-
-
-=======
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity">
             <intent-filter>
@@ -40,22 +24,18 @@
         </activity>
         <activity android:name=".RunningLogActivity" />
         <activity android:name=".RunningActivity" />
->>>>>>> origin/firebase_and_equipment
         <activity android:name=".Inventory" />
         <activity android:name=".Map" />
         <activity android:name=".Profile" />
         <activity android:name=".Planner" />
         <activity android:name=".Team" />
-<<<<<<< HEAD
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-=======
         <activity android:name=".MainActivity"/>
+        <activity android:name=".LiftingActivity" />
+        <activity android:name=".LiftingInfo" />
+
+
+        <activity android:name=".Progress" />
+        <activity android:name=".LiftLog" />
 
 
         <service android:name=".MessagingService">
@@ -83,7 +63,6 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="Gritoria" />
->>>>>>> origin/firebase_and_equipment
     </application>
 
 </manifest>

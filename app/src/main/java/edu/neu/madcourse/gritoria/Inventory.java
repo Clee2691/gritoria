@@ -1,12 +1,5 @@
 package edu.neu.madcourse.gritoria;
 
-<<<<<<< HEAD
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
-public class Inventory extends AppCompatActivity {
-=======
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -24,14 +17,11 @@ public class Inventory extends AppCompatActivity {
     protected EquipmentAdapter rviewAdapter;
     protected RecyclerView recyclerView;
     protected RecyclerView.LayoutManager rLayoutManger;
->>>>>>> origin/firebase_and_equipment
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
-<<<<<<< HEAD
-=======
         //invList = createInventory();
         //createRecyclerView();
     }
@@ -53,6 +43,5 @@ public class Inventory extends AppCompatActivity {
             count ++;
         }
         return inventoryList;
->>>>>>> origin/firebase_and_equipment
     }
 }

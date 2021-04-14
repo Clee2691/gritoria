@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< HEAD
-=======
     xmlns:app="http://schemas.android.com/apk/res-auto"
->>>>>>> origin/firebase_and_equipment
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fantasy_background_1920x1080"
@@ -70,7 +67,6 @@
             android:text="Run"
             android:textAllCaps="false"
             android:textSize="32sp" />
-<<<<<<< HEAD
         <Button
             android:id="@+id/liftButton"
             android:layout_width="match_parent"
@@ -81,7 +77,6 @@
             android:text="Lift"
             android:textAllCaps="false"
             android:textSize="32sp" />
-=======
 
         <Button
             android:id="@+id/Logout"
@@ -89,7 +84,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Log out" />
->>>>>>> origin/firebase_and_equipment
 
     </LinearLayout>
 </RelativeLayout>
