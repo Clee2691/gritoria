@@ -30,7 +30,9 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     private DatabaseReference rootRef;
     FirebaseStorage userStore;
     StorageReference userStoreRef;
-    ArrayList<Integer> numbers = new ArrayList<Integer>();
+    ArrayList<Integer> sets = new ArrayList<Integer>();
+    ArrayList<Integer> reps = new ArrayList<Integer>();
+
 
 
     @Override
@@ -74,6 +76,7 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         spinner.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(this);
+        secondSpinner.setOnItemSelectedListener(this);
 
 
         secondSpinner.setAdapter(secondAdapter);
@@ -86,13 +89,13 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         });
 
         liftList.addView(liftView);
-        Log.e("final number is: ", numbers.toString());
+        Log.e("final number is: ", sets.toString());
 
     }
 
     private void removeCurrentView(View view){
         liftList.removeView(view);
-        numbers.remove( numbers.size() - 1 );
+        sets.remove( sets.size() - 1 );
 
     }
 
@@ -100,9 +103,15 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
         int number = Integer.parseInt(text);
+
+        if(parent.getId() == R.id.spinner){
+
+        }
+
+
         if(position!=0){
-            Log.e("number  is", numbers.toString());
-            numbers.add(number);
+            Log.e("number  is", sets.toString());
+            sets.add(number);
 
         }
 
@@ -112,4 +121,5 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
 }
