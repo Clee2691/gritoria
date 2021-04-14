@@ -54,10 +54,19 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         for(int i=1; i<13; i++){
             numberList.add(i);
         }
-    }
-    Button submit = findViewById(R.id.submitLift);
-    //if you press submit you would have to
+        Button submit = findViewById(R.id.submitLift);
+        //if you press submit you would have to
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double setsSum = sets.stream()
+                        .mapToInt(a -> a)
+                        .sum();
+                Log.e("sets sum is:", String.valueOf(setsSum));
+            }
+        });
 
+    }
 
 
     @Override
