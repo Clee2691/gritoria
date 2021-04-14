@@ -1,6 +1,7 @@
 package edu.neu.madcourse.gritoria;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -68,9 +70,12 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.e("new sets sum is:",String.valueOf(getSum(sets)));
-                                Log.e("new reps sum is:",String.valueOf(getSum(reps)));
+                                Log.e("new sets sum is:",String.valueOf(setsSum));
+                                Log.e("new reps sum is:",String.valueOf(repsSum));
+                                Toast.makeText(getApplicationContext(),
+                                        "progress saved!", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
+                                exit();
                             }
                         });
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "no",
@@ -159,7 +164,10 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         return(someSum);
     }
 
-
+    public void exit(){
+        Intent intent = new Intent(this, LiftingActivity.class);
+        startActivity(intent);
+    }
 
 
 }
