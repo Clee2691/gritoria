@@ -22,6 +22,14 @@
         android:text="Show Your Grit"
         android:id="@+id/addLiftButton"
         android:textSize="13sp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/round"
+        android:text="Save progress"
+        android:id="@+id/submitLift"
+        android:textSize="13sp" />
 
 
 

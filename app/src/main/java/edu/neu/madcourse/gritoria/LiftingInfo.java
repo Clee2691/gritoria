@@ -2,24 +2,36 @@ package edu.neu.madcourse.gritoria;
 
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-public class LiftingInfo extends AppCompatActivity implements View.OnClickListener {
+public class LiftingInfo extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     LinearLayout liftList;
     Button addButton;
     List<Integer> numberList = new ArrayList<>();
+    private DatabaseReference rootRef;
+    FirebaseStorage userStore;
+    StorageReference userStoreRef;
+    ArrayList<Integer> numbers = new ArrayList<Integer>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +41,12 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         addButton = findViewById(R.id.addLiftButton);
         addButton.setOnClickListener(this);
 
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        userStore = FirebaseStorage.getInstance();
+        userStoreRef = userStore.getReference();
 
-        for(int i=0; i<13; i++){
+        numberList.add(0,0);
+        for(int i=1; i<13; i++){
             numberList.add(i);
         }
 
@@ -56,6 +72,10 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         ArrayAdapter secondAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, numberList);
 
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(this);
+
+
         secondSpinner.setAdapter(secondAdapter);
 
         close.setOnClickListener(new View.OnClickListener() {
@@ -66,11 +86,30 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         });
 
         liftList.addView(liftView);
+        Log.e("final number is: ", numbers.toString());
 
     }
 
     private void removeCurrentView(View view){
         liftList.removeView(view);
+        numbers.remove( numbers.size() - 1 );
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String text = parent.getItemAtPosition(position).toString();
+        int number = Integer.parseInt(text);
+        if(position!=0){
+            Log.e("number  is", numbers.toString());
+            numbers.add(number);
+
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }
