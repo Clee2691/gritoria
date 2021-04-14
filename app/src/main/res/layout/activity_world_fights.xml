@@ -10,60 +10,64 @@
         android:id="@+id/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="backButtonPress"
         android:text="Back"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewWorld"
-        app:layout_constraintEnd_toStartOf="@+id/textViewWorld"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewWorld"
-        app:layout_constraintVertical_bias="0.615" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewWorld"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="World"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonBack"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="194dp"
-        android:layout_height="266.67dp"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        android:layout_width="170dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.074"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewWorld"
         app:srcCompat="@drawable/boss1" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBarBossHealth"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="186dp"
         android:layout_height="14dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="100"
         android:progressTint="#FF0000"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTimeLeftLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBossHealth" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewBossHealth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="100/100"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewTeamReady"
+        android:layout_marginTop="16dp"
+        android:text="Health: 100/100"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarBossHealth"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWorld" />
 
     <Button
         android:id="@+id/btnReadyUp"
@@ -72,30 +76,71 @@
         android:backgroundTint="#61F80F"
         android:onClick="setPlayerReady"
         android:text="Ready Up"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonRefreshTeam"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAttack"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewTeamReady" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTeamReady"
-        android:layout_width="370dp"
-        android:layout_height="168dp"
+        android:layout_width="match_parent"
+        android:layout_height="237dp"
         app:layout_constraintBottom_toTopOf="@+id/btnReadyUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonRefreshTeam" />
 
     <Button
         android:id="@+id/buttonRefreshTeam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#368BF4"
+        android:backgroundTint="#FDE821"
         android:onClick="refreshTeam"
         android:text="Refresh Team List"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewTeamReady"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:strokeColor="#000000" />
+
+    <TextView
+        android:id="@+id/textViewTimeLeftLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time Left:"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTimeLeftVal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/progressBarBossHealth" />
+
+    <TextView
+        android:id="@+id/textViewTimeLeftVal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1:20"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="@+id/textViewTimeLeftLabel"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/textViewTimeLeftLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTimeLeftLabel" />
+
+    <Button
+        android:id="@+id/buttonAttack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#4C6FEA"
+        android:onClick="startAttack"
+        android:text="ATTACK!"
         android:textSize="18sp"
+        app:iconTint="#233CBD"
         app:layout_constraintBottom_toBottomOf="@+id/btnReadyUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

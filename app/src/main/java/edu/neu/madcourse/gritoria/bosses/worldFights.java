@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,10 +25,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.Instant;
 
 import edu.neu.madcourse.gritoria.R;
 import edu.neu.madcourse.gritoria.rcViewPlayer.RCViewPlayer;
 import edu.neu.madcourse.gritoria.rcViewPlayer.RCAdapter;
+
+import static java.lang.Thread.sleep;
 
 public class worldFights extends AppCompatActivity {
     private Intent currIntent;
@@ -35,17 +39,17 @@ public class worldFights extends AppCompatActivity {
     private RecyclerView rcPlayers;
     private RCAdapter rcPlayerAdapter;
     private String currWorld;
-    private int playerPower;
     private boolean currPlayerReadyStatus;
     private List<String> teammateUIDList;
     private String playerUID;
+    private long currTimeInEpoch;
+    private boolean playerIsFighting;
+    private String playerWorld;
+    private String playerTeam;
+    Handler uiHandler;
+    Boss currBoss;
     FirebaseUser currPlayer;
     FirebaseDatabase gritFB;
-
-
-    // TODO: Get team curr player is in and get team members
-    // See if they are ready for this fight
-    // Set curr player to the world if they are ready
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +62,16 @@ public class worldFights extends AppCompatActivity {
         playerUID = currPlayer.getUid();
         //Firebase Realtime DB
         gritFB = FirebaseDatabase.getInstance();
+        uiHandler = new Handler();
         setupRecyclerView();
-
+        Button btnRefresh = findViewById(R.id.buttonRefreshTeam);
+        refreshTeam(btnRefresh);
+        // Get the time in seconds
+        determineTime();
+        // Sets up "ready" button based on if the logged in player is ready or not
         setupUI();
+        currBoss = new Boss();
+        getBossInfo();
     }
 
     private void setupWorld(Intent currIntent) {
@@ -80,20 +91,40 @@ public class worldFights extends AppCompatActivity {
 
     private void setupUI() {
         Button readyButton = findViewById(R.id.btnReadyUp);
+        Button attackBut = findViewById(R.id.buttonAttack);
         DatabaseReference userRef = gritFB.getReference("users/" + playerUID);
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 currPlayerReadyStatus = snapshot.child("isReady").getValue(boolean.class);
-                Log.e("Player ready", String.valueOf(currPlayerReadyStatus));
+                playerWorld = snapshot.child("currWorld").getValue(String.class);
+                playerIsFighting = snapshot.child("isFighting").getValue(boolean.class);
 
-                if(currPlayerReadyStatus) {
-                    readyButton.setText("Cancel");
-                    readyButton.setBackgroundColor(Color.RED);
+                // Sets the ready button for player depending on world/ready status
+                if (playerWorld.equals(currWorld) && playerIsFighting == false) {
+                    if(currPlayerReadyStatus) {
+                        readyButton.setText("Cancel");
+                        readyButton.setBackgroundColor(Color.RED);
+                    } else {
+                        readyButton.setText("Ready Up");
+                        readyButton.setBackgroundColor(Color.rgb(97,248, 15));
+                    }
+                } else if (!playerWorld.equals(currWorld) && playerIsFighting == true) {
+                    readyButton.setEnabled(false);
+                } else if (!playerWorld.equals(currWorld)) {
+                    readyButton.setText("Fight Here");
+                } else if (playerWorld.equals(currWorld)  && playerIsFighting== true) {
+                    readyButton.setEnabled(false);
+                }
+
+                // Sets the button up if you're leader to allow attacking of boss
+                if (snapshot.child("isLeader").getValue(boolean.class)) {
+                    attackBut.setVisibility(View.VISIBLE);
+                    attackBut.setEnabled(true);
                 } else {
-                    readyButton.setText("Ready Up");
-                    readyButton.setBackgroundColor(Color.rgb(97,248, 15));
+                    attackBut.setEnabled(false);
+                    attackBut.setVisibility(View.GONE);
                 }
             }
 
@@ -103,6 +134,117 @@ public class worldFights extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+        determineBossHealth();
+    }
+    class Boss {
+        String name;
+        int health;
+        boolean isKilled;
+        long startTime;
+
+        public Boss() {
+            this.name = "";
+            this.health = 0;
+            this.isKilled = false;
+            this.startTime = Instant.now().getEpochSecond();
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setHealth(int health) {
+            this.health = health;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean isKilled() {
+            return isKilled;
+        }
+
+        public long getStartTime() {
+            return startTime;
+        }
+
+        public int getHealth() {
+            return this.health;
+        }
+    }
+
+    private void getBossInfo() {
+
+        if (playerIsFighting && playerWorld.equals(currWorld)){
+            DatabaseReference currFightRef = gritFB.getReference("teams/" + playerTeam + "/currFight/");
+            currFightRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String worldName = snapshot.child("world").getValue(String.class);
+                    int bossHealth = snapshot.child("bossHealth").getValue(Integer.class);
+                    currBoss.setName(worldName);
+                    currBoss.setHealth(bossHealth);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        } else {
+            DatabaseReference bossInfo = gritFB.getReference("");
+        }
+
+    }
+
+    private void determineTime() {
+        timeThread getTime = new timeThread();
+        new Thread(getTime).start();
+    }
+
+    class timeThread implements Runnable {
+        @Override
+        public void run() {
+            while(true) {
+                try {
+                    currTimeInEpoch = Instant.now().getEpochSecond();
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void determineBossHealth() {
+        ProgressBar bossHealth = findViewById(R.id.progressBarBossHealth);
+        TextView bossHealthNum = findViewById(R.id.textViewBossHealth);
+        int healthLeft = 54;
+        bossHealth.setProgress(healthLeft);
+        bossHealthNum.setText(String.format("Health: %d/100", healthLeft));
+    }
+
+    public void startAttack(View v) {
+        boolean canAttack = determineIfReady();
+        int bossHealth = 100;
+
+        // TODO: Probably need to thread this
+        if (canAttack) {
+
+        }
+    }
+
+    private boolean determineIfReady() {
+        for (RCViewPlayer player : playerList) {
+            if (!player.isReady()) {
+                Toast.makeText(this, "All players must be ready before attacking",
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
     }
 
     public void refreshTeam(View v) {
@@ -138,7 +280,7 @@ public class worldFights extends AppCompatActivity {
 
     public void populateUserTeamRecyclerView(DataSnapshot dSS) {
         teammateUIDList = new ArrayList<>();
-        String playerTeam = dSS.child("users").child(playerUID).child("team")
+        playerTeam = dSS.child("users").child(playerUID).child("team")
                 .getValue(String.class);
 
         for (DataSnapshot teamMembers : dSS.child("teams").child(playerTeam)
@@ -153,7 +295,15 @@ public class worldFights extends AppCompatActivity {
 
     public void setPlayerReady(View v) {
         DatabaseReference userRef = gritFB.getReference("users/" + playerUID);
-        userRef.child("isReady").setValue(!currPlayerReadyStatus);
+        Button readyButton = findViewById(v.getId());
+        if (readyButton.getText().equals("Fight Here")) {
+            userRef.child("isReady").setValue(true);
+            userRef.child("currWorld").setValue(currWorld);
+        } else if (readyButton.getText().equals("Ready Up")) {
+            userRef.child("isReady").setValue(true);
+        } else if (readyButton.getText().equals("Cancel")) {
+            userRef.child("isReady").setValue(false);
+        }
     }
 
     /**TODO: Fight mechanic:
