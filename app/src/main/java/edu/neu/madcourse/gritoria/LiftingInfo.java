@@ -59,10 +59,11 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double setsSum = sets.stream()
-                        .mapToInt(a -> a)
-                        .sum();
-                Log.e("sets sum is:", String.valueOf(setsSum));
+                int setsSum = getSum(sets);
+                int repsSum = getSum(reps);
+                Log.e("sets sum is:",String.valueOf(getSum(sets)));
+                Log.e("reps sum is:",String.valueOf(getSum(reps)));
+
             }
         });
 
@@ -102,15 +103,15 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         });
 
         liftList.addView(liftView);
-        Log.e("final sets is: ", sets.toString());
-        Log.e("final reps is:", reps.toString());
+//        Log.e("final sets is: ", sets.toString());
+//        Log.e("final reps is:", reps.toString());
 
     }
 
     private void removeCurrentView(View view){
         liftList.removeView(view);
-//        sets.remove( sets.size() - 1 );
-//        reps.remove(reps.size()-1);
+        sets.remove( sets.size() - 1 );
+        reps.remove(reps.size()-1);
 
     }
 
@@ -135,5 +136,13 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+    public int getSum(ArrayList<Integer> array){
+        Integer someSum = array.stream()
+                .mapToInt(a -> a)
+                .sum();
+        return(someSum);
+    }
+
 
 }
