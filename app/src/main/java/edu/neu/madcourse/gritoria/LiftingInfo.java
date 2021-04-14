@@ -90,12 +90,14 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 
         liftList.addView(liftView);
         Log.e("final number is: ", sets.toString());
+        Log.e("final reps is:", reps.toString());
 
     }
 
     private void removeCurrentView(View view){
         liftList.removeView(view);
         sets.remove( sets.size() - 1 );
+        reps.remove(reps.size()-1);
 
     }
 
@@ -104,16 +106,20 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         String text = parent.getItemAtPosition(position).toString();
         int number = Integer.parseInt(text);
 
-        if(parent.getId() == R.id.spinner){
-
-        }
-
-
         if(position!=0){
-            Log.e("number  is", sets.toString());
-            sets.add(number);
-
+            if(parent.getId() == R.id.spinner){
+                sets.add(number);
+            }
+            reps.add(number);
         }
+
+//
+//
+//        if(position!=0){
+//            Log.e("number  is", sets.toString());
+//            sets.add(number);
+//
+//        }
 
     }
 
