@@ -64,8 +64,8 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
                 int setsSum = getSum(sets);
                 int repsSum = getSum(reps);
                 AlertDialog alertDialog = new AlertDialog.Builder(LiftingInfo.this).create();
-                alertDialog.setMessage("Are you sure you want to save your progress");
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "ofc",
+                alertDialog.setMessage("Would you like to save your current progress and exit?");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.e("new sets sum is:",String.valueOf(getSum(sets)));
@@ -73,7 +73,7 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
                                 dialog.dismiss();
                             }
                         });
-                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NOPE",
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "no",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
