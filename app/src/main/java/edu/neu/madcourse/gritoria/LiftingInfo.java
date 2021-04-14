@@ -1,5 +1,6 @@
 package edu.neu.madcourse.gritoria;
 
+import android.content.DialogInterface;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 import java.util.ArrayList;
@@ -61,8 +63,23 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
             public void onClick(View v) {
                 int setsSum = getSum(sets);
                 int repsSum = getSum(reps);
-                Log.e("sets sum is:",String.valueOf(getSum(sets)));
-                Log.e("reps sum is:",String.valueOf(getSum(reps)));
+                AlertDialog alertDialog = new AlertDialog.Builder(LiftingInfo.this).create();
+                alertDialog.setMessage("Are you sure you want to save your progress");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "ofc",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.e("new sets sum is:",String.valueOf(getSum(sets)));
+                                Log.e("new reps sum is:",String.valueOf(getSum(reps)));
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NOPE",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
 
             }
         });
@@ -103,8 +120,6 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         });
 
         liftList.addView(liftView);
-//        Log.e("final sets is: ", sets.toString());
-//        Log.e("final reps is:", reps.toString());
 
     }
 
@@ -143,6 +158,8 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
                 .sum();
         return(someSum);
     }
+
+
 
 
 }
