@@ -32,7 +32,10 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     StorageReference userStoreRef;
     ArrayList<Integer> sets = new ArrayList<Integer>();
     ArrayList<Integer> reps = new ArrayList<Integer>();
-
+    Integer totalVolume;
+//    Map<String, Object> updates = new HashMap<String,Object>();
+//    updates.put("userid", newID);
+//    ref.updateChildren(updates);
 
 
     @Override
@@ -51,9 +54,10 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         for(int i=1; i<13; i++){
             numberList.add(i);
         }
-
-
     }
+    Button submit = findViewById(R.id.submitLift);
+    //if you press submit you would have to
+
 
 
     @Override
