@@ -202,48 +202,77 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         JSONObject eachKey = new JSONObject();
 
 
-        ArrayList<String> repsArray = new ArrayList<>();
-
-        repsArray.add("1");
-        repsArray.add("2");
-        repsArray.add("3");
-
-
-        ArrayList<String> setsArray = new ArrayList<>();
-        setsArray.add("4");
-        setsArray.add("5");
-        setsArray.add("6");
-
-        ArrayList<String> weightArray = new ArrayList<>();
-        weightArray.add("7");
-        weightArray.add("8");
-        weightArray.add("9");
+        List<String> setsList = new ArrayList<>();
+        setsList.add("1");
+        setsList.add("2");
+        setsList.add("3");
 
 
-        ArrayList dynamArray = new ArrayList<String>();
+        List<String> repsList = new ArrayList<>();
+        repsList.add("4");
+        repsList.add("5");
+        repsList.add("6");
+
+        List<String> weightList = new ArrayList<>();
+        weightList.add("7");
+        weightList.add("8");
+        weightList.add("9");
+
+        List<String>[] arrayOfList = new List[3];
+        arrayOfList[0] = setsList;
+        arrayOfList[1] = repsList;
+        arrayOfList[2] = weightList;
+        Log.e("thor arrow", "thro erro");
+
+        for (int i = 0; i < arrayOfList.length; i++) {
+                List<String> l = arrayOfList[i];
+                Log.e("l is", l.toString());
+                Log.e("get", l.get(1));
+
+            }
 
 
 
 
-        dynamArray.add(repsArray);
+//
+//        ArrayList<String> repsArray = new ArrayList<>();
+//
+//        repsArray.add("1");
+//        repsArray.add("2");
+//        repsArray.add("3");
+//
+//
+//        ArrayList<String> setsArray = new ArrayList<>();
+//        setsArray.add("4");
+//        setsArray.add("5");
+//        setsArray.add("6");
+//
+//        ArrayList<String> weightArray = new ArrayList<>();
+//        weightArray.add("7");
+//        weightArray.add("8");
+//        weightArray.add("9");
+//
+//
+//        ArrayList dynamArray = new ArrayList<String>();
+//
+//
+//
+//
+//        dynamArray.add(repsArray);
+//
+//        dynamArray.add(setsArray);
+//        dynamArray.add(weightArray);
+//
+//        Log.e("dynamic array", dynamArray.toString());
+//
+//
+//        dynamArray.forEach(item ->{
+//            Log.e("item", item.toString());
+//
+//        });
 
-        dynamArray.add(setsArray);
-        dynamArray.add(weightArray);
-
-        Log.e("dynamic array", dynamArray.toString());
 
 
-        dynamArray.forEach(item ->{
-            Log.e("item", item.toString());
-
-        });
-
-        List sList = dynamArray.subList(0, 1);
-        Log.e("sublist", String.valueOf(sList));
-
-
-        List sub = dynamArray.subList(1, 2);
-        Log.e("subagain", String.valueOf(sList));
 
 
 
