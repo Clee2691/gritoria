@@ -77,8 +77,8 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.e("new sets sum is:",String.valueOf(setsSum));
-                                Log.e("new reps sum is:",String.valueOf(repsSum));
+//                                Log.e("new sets sum is:",String.valueOf(setsSum));
+//                                Log.e("new reps sum is:",String.valueOf(repsSum));
                                 Toast.makeText(getApplicationContext(),
                                         "progress saved!", Toast.LENGTH_SHORT).show();
                                 try {
@@ -203,77 +203,34 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 
 
         List<String> setsList = new ArrayList<>();
-        setsList.add("1");
-        setsList.add("2");
         setsList.add("3");
+        setsList.add("4");
+        setsList.add("5");
 
 
         List<String> repsList = new ArrayList<>();
-        repsList.add("4");
+        repsList.add("8");
+        repsList.add("12");
         repsList.add("5");
-        repsList.add("6");
 
         List<String> weightList = new ArrayList<>();
-        weightList.add("7");
-        weightList.add("8");
-        weightList.add("9");
+        weightList.add("95");
+        weightList.add("145");
+        weightList.add("225");
 
         List<String>[] arrayOfList = new List[3];
         arrayOfList[0] = setsList;
         arrayOfList[1] = repsList;
         arrayOfList[2] = weightList;
-        Log.e("thor arrow", "thro erro");
 
         for (int i = 0; i < arrayOfList.length; i++) {
                 List<String> l = arrayOfList[i];
                 Log.e("l is", l.toString());
-                Log.e("get", l.get(1));
+                Log.e("zero", l.get(0));
+                Log.e("one", l.get(1));
+                Log.e("two", l.get(2));
 
-            }
-
-
-
-
-//
-//        ArrayList<String> repsArray = new ArrayList<>();
-//
-//        repsArray.add("1");
-//        repsArray.add("2");
-//        repsArray.add("3");
-//
-//
-//        ArrayList<String> setsArray = new ArrayList<>();
-//        setsArray.add("4");
-//        setsArray.add("5");
-//        setsArray.add("6");
-//
-//        ArrayList<String> weightArray = new ArrayList<>();
-//        weightArray.add("7");
-//        weightArray.add("8");
-//        weightArray.add("9");
-//
-//
-//        ArrayList dynamArray = new ArrayList<String>();
-//
-//
-//
-//
-//        dynamArray.add(repsArray);
-//
-//        dynamArray.add(setsArray);
-//        dynamArray.add(weightArray);
-//
-//        Log.e("dynamic array", dynamArray.toString());
-//
-//
-//        dynamArray.forEach(item ->{
-//            Log.e("item", item.toString());
-//
-//        });
-
-
-
-
+        }
 
 
 //        subKeys.put("reps", "value");
