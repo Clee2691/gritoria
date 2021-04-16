@@ -26,6 +26,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LiftingInfo extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     LinearLayout liftList;
@@ -33,9 +37,11 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     List<Integer> numberList = new ArrayList<>();
     private DatabaseReference rootRef;
     FirebaseStorage userStore;
-    StorageReference userStoreRef;
+    DatabaseReference userStoreRef;
     ArrayList<Integer> sets = new ArrayList<Integer>();
     ArrayList<Integer> reps = new ArrayList<Integer>();
+    ArrayList<String> liftName;
+    ArrayList<String> liftWeight;
     Integer totalVolume;
 //    Map<String, Object> updates = new HashMap<String,Object>();
 //    updates.put("userid", newID);
@@ -50,9 +56,10 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         addButton = findViewById(R.id.addLiftButton);
         addButton.setOnClickListener(this);
 
+        //root level , root document this is gritoria
         rootRef = FirebaseDatabase.getInstance().getReference();
-        userStore = FirebaseStorage.getInstance();
-        userStoreRef = userStore.getReference();
+//        userStore = FirebaseStorage.getInstance();
+        userStoreRef = rootRef.child("users");
 
         numberList.add(0,0);
         for(int i=1; i<13; i++){
@@ -74,6 +81,15 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
                                 Log.e("new reps sum is:",String.valueOf(repsSum));
                                 Toast.makeText(getApplicationContext(),
                                         "progress saved!", Toast.LENGTH_SHORT).show();
+                                try {
+                                    Log.e("jsonify", jsonify().toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+
+//                                rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").child("reps").setValue(0);
+
                                 dialog.dismiss();
                                 exit();
                             }
@@ -100,7 +116,10 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     private void addNewView(){
         View liftView = getLayoutInflater().inflate(R.layout.add_lift_row, null, false);
         EditText text = (EditText)liftView.findViewById(R.id.rowEditText);
+        String tempText = text.getText().toString();
         EditText weight = (EditText)liftView.findViewById(R.id.weightEdit);
+        String weightText = weight.getText().toString();
+
 
         AppCompatSpinner  spinner = (AppCompatSpinner)liftView.findViewById(R.id.spinner);
         AppCompatSpinner  secondSpinner = (AppCompatSpinner)liftView.findViewById(R.id.secondSpinner);
@@ -124,7 +143,11 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
             }
         });
 
+
+
         liftList.addView(liftView);
+
+
 
     }
 
@@ -168,6 +191,21 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         Intent intent = new Intent(this, LiftingActivity.class);
         startActivity(intent);
     }
+
+    public JSONObject jsonify() throws JSONException {
+        JSONObject subKeys = new JSONObject();
+        subKeys.put("reps", "value");
+        subKeys.put("sets", "value" );
+        subKeys.put("weight", "value" );
+        JSONArray array = new JSONArray();
+        array.put(subKeys);
+        JSONObject json = new JSONObject();
+
+
+        json.put("liftName", array.toString());
+        return json;
+    }
+
 
 
 }
