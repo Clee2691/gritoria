@@ -43,9 +43,7 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     ArrayList<String> liftName;
     ArrayList<String> liftWeight;
     Integer totalVolume;
-//    Map<String, Object> updates = new HashMap<String,Object>();
-//    updates.put("userid", newID);
-//    ref.updateChildren(updates);
+    List<HashMap> mapOfMaps = new ArrayList();
 
 
 
@@ -70,6 +68,34 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         names.add("Android");
 
 
+        HashMap<String, Integer> myMap = new HashMap<>();
+
+        myMap.put("reps", 5);
+        myMap.put("sets",5);
+        myMap.put("weight",155);
+
+
+        HashMap<String, Integer> secondMap = new HashMap<>();
+
+        secondMap.put("reps", 3);
+        secondMap.put("sets",8);
+        secondMap.put("weight",115);
+
+
+        HashMap<String, Integer> thirdMap = new HashMap<>();
+
+        thirdMap.put("reps", 4);
+        thirdMap.put("sets",12);
+        thirdMap.put("weight",302);
+
+        mapOfMaps.add(myMap);
+        mapOfMaps.add(secondMap);
+        mapOfMaps.add(thirdMap);
+
+
+
+
+
 
         numberList.add(0,0);
         for(int i=1; i<13; i++){
@@ -91,34 +117,15 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 //                                Log.e("new reps sum is:",String.valueOf(repsSum));
                                 Toast.makeText(getApplicationContext(),
                                         "progress saved!", Toast.LENGTH_SHORT).show();
-//                                try {
-//                                    Log.e("jsonify", jsonify().toString());
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-                                HashMap<String, Integer> myMap = new HashMap<>();
+//
 
-                                myMap.put("reps", 5);
-                                myMap.put("sets",5);
-                                myMap.put("weight",155);
-
-
-                                HashMap<String, Integer> secondMap = new HashMap<>();
-
-                                myMap.put("reps", 3);
-                                myMap.put("sets",8);
-                                myMap.put("weight",115);
-
-
-                                HashMap<String, Integer> thirdMap = new HashMap<>();
-
-                                myMap.put("reps", 4);
-                                myMap.put("sets",12);
-                                myMap.put("weight",302);
-
-//                                rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").child("first").setValue(myMap);
                                 names.forEach(name ->{
-                                    rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").child(name).setValue(myMap);
+                                    mapOfMaps.forEach(mapItem -> {
+                                        Log.e("STILL LOG", mapItem.toString());
+                                        rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").
+                                                child(name).setValue(mapItem);
+
+                                    });
 
 
                                 });
