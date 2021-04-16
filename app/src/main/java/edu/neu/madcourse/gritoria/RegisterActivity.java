@@ -17,8 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     ProgressBar progressBar;
     DatabaseReference mDatabase;
+    boolean isTaken = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,21 +74,38 @@ public class RegisterActivity extends AppCompatActivity {
                     mPassword.setError("Password must be at least 6 characters long");
                 } else if (!password.equals(verifyPassword)){
                     mVerifyPassword.setError("Passwords do not match");
+                } else if(username.isEmpty() || username.length() < 4) {
+                    mUser.setError("Username must be at least 4 characters long");
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
-                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    final boolean[] isTaken = {false};
+                    mDatabase.child("taken names").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                progressBar.setVisibility(View.INVISIBLE);
-                                mAuth.signInWithEmailAndPassword(email, password);
-                                RegisterActivity.this.generateUser(mDatabase, username);
-                                Toast.makeText(RegisterActivity.this, "User created", Toast.LENGTH_SHORT);
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()){
+                                mUser.setError("Username already taken");
+                            } else {
+                                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            mAuth.signInWithEmailAndPassword(email, password);
+                                            RegisterActivity.this.generateUser(mDatabase, username);
+                                            Toast.makeText(RegisterActivity.this, "User created", Toast.LENGTH_SHORT);
+                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                        }
+                                        else {
+                                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT);
+                                        }
+                                    }
+                                });
                             }
-                            else {
-                                Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT);
-                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
                         }
                     });
                 }
@@ -92,6 +113,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    private void setIsTaken(){
+        isTaken = true;
+    }
 
     private void generateUser(DatabaseReference postRef, String username){
         // Initalize user with their stats
@@ -104,5 +128,6 @@ public class RegisterActivity extends AppCompatActivity {
         userUpdates.put("dex", 1);
         userUpdates.put("exp", 1);
         postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("stats").setValue(userUpdates);
+        postRef.child("taken names").child(username).setValue("true");
     }
 }
