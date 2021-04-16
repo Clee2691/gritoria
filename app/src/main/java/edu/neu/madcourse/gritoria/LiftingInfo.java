@@ -88,6 +88,9 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
                                 }
 
 
+
+
+
 //                                rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").child("reps").setValue(0);
 
                                 dialog.dismiss();
@@ -193,18 +196,86 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     }
 
     public JSONObject jsonify() throws JSONException {
+
         JSONObject subKeys = new JSONObject();
-        subKeys.put("reps", "value");
-        subKeys.put("sets", "value" );
-        subKeys.put("weight", "value" );
+
+        JSONObject eachKey = new JSONObject();
+
+
+        ArrayList<String> repsArray = new ArrayList<>();
+
+        repsArray.add("1");
+        repsArray.add("2");
+        repsArray.add("3");
+
+
+        ArrayList<String> setsArray = new ArrayList<>();
+        setsArray.add("4");
+        setsArray.add("5");
+        setsArray.add("6");
+
+        ArrayList<String> weightArray = new ArrayList<>();
+        weightArray.add("7");
+        weightArray.add("8");
+        weightArray.add("9");
+
+
+        ArrayList dynamArray = new ArrayList<String>();
+
+
+
+
+        dynamArray.add(repsArray);
+
+        dynamArray.add(setsArray);
+        dynamArray.add(weightArray);
+
+        Log.e("dynamic array", dynamArray.toString());
+
+
+        dynamArray.forEach(item ->{
+            Log.e("item", item.toString());
+
+        });
+
+        List sList = dynamArray.subList(0, 1);
+        Log.e("sublist", String.valueOf(sList));
+
+
+        List sub = dynamArray.subList(1, 2);
+        Log.e("subagain", String.valueOf(sList));
+
+
+
+//        subKeys.put("reps", "value");
+
+        subKeys.put("sets", "1" );
+        subKeys.put("reps", "1" );
+        subKeys.put("weight", "1" );
         JSONArray array = new JSONArray();
         array.put(subKeys);
-        JSONObject json = new JSONObject();
+        JSONObject mainObject = new JSONObject();
+        //adds outterkey
 
 
-        json.put("liftName", array.toString());
-        return json;
+        ArrayList<String> names = new ArrayList<String>();
+
+        names.add("Java");
+        names.add("Kotlin");
+        names.add("Android");
+
+        names.forEach(name ->{
+            try {
+                mainObject.put(String.valueOf(name), array.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        });
+
+
+        return mainObject;
     }
+
 
 
 
