@@ -48,6 +48,7 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 //    ref.updateChildren(updates);
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +61,15 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         rootRef = FirebaseDatabase.getInstance().getReference();
 //        userStore = FirebaseStorage.getInstance();
         userStoreRef = rootRef.child("users");
+
+
+        ArrayList<String> names = new ArrayList<String>();
+//
+        names.add("Java");
+        names.add("Kotlin");
+        names.add("Android");
+
+
 
         numberList.add(0,0);
         for(int i=1; i<13; i++){
@@ -81,18 +91,40 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 //                                Log.e("new reps sum is:",String.valueOf(repsSum));
                                 Toast.makeText(getApplicationContext(),
                                         "progress saved!", Toast.LENGTH_SHORT).show();
-                                try {
-                                    Log.e("jsonify", jsonify().toString());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+//                                try {
+//                                    Log.e("jsonify", jsonify().toString());
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
                                 HashMap<String, Integer> myMap = new HashMap<>();
 
                                 myMap.put("reps", 5);
                                 myMap.put("sets",5);
-                                myMap.put("weight",225);
+                                myMap.put("weight",155);
 
-                                rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").child("LiftExample").setValue(myMap);
+
+                                HashMap<String, Integer> secondMap = new HashMap<>();
+
+                                myMap.put("reps", 3);
+                                myMap.put("sets",8);
+                                myMap.put("weight",115);
+
+
+                                HashMap<String, Integer> thirdMap = new HashMap<>();
+
+                                myMap.put("reps", 4);
+                                myMap.put("sets",12);
+                                myMap.put("weight",302);
+
+//                                rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").child("first").setValue(myMap);
+                                names.forEach(name ->{
+                                    rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").child(name).setValue(myMap);
+
+
+                                });
+
+
+
 
                                 dialog.dismiss();
                                 exit();
