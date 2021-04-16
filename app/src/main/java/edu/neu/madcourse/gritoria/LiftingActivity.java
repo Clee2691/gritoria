@@ -34,7 +34,7 @@ public class LiftingActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void openLift(){
-        Intent intent = new Intent(this, LiftingInfo.class);
+        Intent intent = new Intent(this, LiftLog.class);
         startActivity(intent);
     }
 

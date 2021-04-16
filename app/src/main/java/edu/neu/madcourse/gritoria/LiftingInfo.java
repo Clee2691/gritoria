@@ -50,6 +50,7 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lifting_info);
+        String myDate= getIntent().getStringExtra("date");
         liftList = findViewById(R.id.liftList);
         addButton = findViewById(R.id.addLiftButton);
         addButton.setOnClickListener(this);
@@ -120,38 +121,18 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
                                  Log.e("map before", mapOfMaps.toString());
                                   names.forEach(name -> {
                                       Log.e("name that's going in first", name);
+//                                      rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").
+//                                                child(name).setValue(mapOfMaps.get(counter.get()));
+
                                       rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").
-                                                child(name).setValue(mapOfMaps.get(counter.get()));
+                                                child("workouts").child(myDate).child(name).setValue(mapOfMaps.get(counter.get()));
 
 //                                      Log.e("mget", name +  mapOfMaps.get(counter.get()).toString());
                                       counter.addAndGet(1);
 
 
-//                                      Log.e("name and counter", name +  counter.toString());
-
-
-
                                   });
 
-
-
-
-
-//                                        rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").
-//                                                child(name);
-
-//                                    //
-//                                        rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").
-//                                                child(name).setValue(jsonArrayOutput);
-
-
-
-//
-//                                try {
-//                                    jsonify();
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
 
                                 dialog.dismiss();
                                 exit();
