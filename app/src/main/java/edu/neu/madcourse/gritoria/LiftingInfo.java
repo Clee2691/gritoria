@@ -86,12 +86,13 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+                                HashMap<String, Integer> myMap = new HashMap<>();
 
+                                myMap.put("reps", 5);
+                                myMap.put("sets",5);
+                                myMap.put("weight",225);
 
-
-
-
-//                                rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").child("reps").setValue(0);
+                                rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").child("LiftExample").setValue(myMap);
 
                                 dialog.dismiss();
                                 exit();
@@ -195,79 +196,76 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         startActivity(intent);
     }
 
-    public JSONObject jsonify() throws JSONException {
 
-        JSONObject mainObject = new JSONObject();
-        JSONObject subKeys = new JSONObject();
-
-        JSONArray array = new JSONArray();
-
-        List<String> setsList = new ArrayList<>();
-        setsList.add("3");
-        setsList.add("8");
-        setsList.add("85");
-
-
-        List<String> repsList = new ArrayList<>();
-        repsList.add("4");
-        repsList.add("12");
-        repsList.add("135");
-
-        List<String> weightList = new ArrayList<>();
-        weightList.add("5");
-        weightList.add("5");
-        weightList.add("225");
-
-        List<String>[] arrayOfList = new List[3];
-        arrayOfList[0] = setsList;
-        arrayOfList[1] = repsList;
-        arrayOfList[2] = weightList;
-
-        JSONArray output = new JSONArray();
-
-
-        for (int i = 0; i < arrayOfList.length; i++) {
-                List<String> l = arrayOfList[i];
-                Log.e("l is", l.toString());
-                Log.e("zero", l.get(0));
-                Log.e("one", l.get(1));
-                Log.e("two", l.get(2));
-                JSONObject temp = new JSONObject();
-                temp.put("sets", l.get(0));
-                temp.put("reps", l.get(1));
-                temp.put("weight", l.get(2));
-
-                output.put(temp);
-
-        }
-
-        Log.e("array is... ", output.get(0).toString());
-
-        for(int i = 0; i < output.length(); i++) {
-            Log.e("output i value is", output.get(i).toString());
-        }
-
-
-
-
-            //adds outterkey
-        ArrayList<String> names = new ArrayList<String>();
-
-        names.add("Java");
-        names.add("Kotlin");
-        names.add("Android");
-
-        names.forEach(name ->{
-            try {
-                mainObject.put(name,output.toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        });
-
-
-        return mainObject;
-    }
+//    potentially useless code
+//    public JSONObject jsonify() throws JSONException {
+//
+//        JSONObject mainObject = new JSONObject();
+//
+//        List<String> setsList = new ArrayList<>();
+//        setsList.add("3");
+//        setsList.add("8");
+//        setsList.add("85");
+//
+//
+//        List<String> repsList = new ArrayList<>();
+//        repsList.add("4");
+//        repsList.add("12");
+//        repsList.add("135");
+//
+//        List<String> weightList = new ArrayList<>();
+//        weightList.add("5");
+//        weightList.add("5");
+//        weightList.add("225");
+//
+//        List<String>[] arrayOfList = new List[3];
+//        arrayOfList[0] = setsList;
+//        arrayOfList[1] = repsList;
+//        arrayOfList[2] = weightList;
+//
+//        JSONArray output = new JSONArray();
+//
+//
+//        for (int i = 0; i < arrayOfList.length; i++) {
+//                List<String> l = arrayOfList[i];
+//
+//                JSONObject temp = new JSONObject();
+//                temp.put("sets",l.get(0));
+//                temp.put("reps",l.get(1));
+//                temp.put("weight",l.get(2));
+//
+//                output.put(temp);
+//
+//        }
+//
+//        Log.e("array is... ", output.get(0).toString());
+//
+//        for(int i = 0; i < output.length(); i++) {
+//            Log.e("output i value is", output.get(i).toString());
+//        }
+//
+//
+//
+//
+//            //adds outterkey
+//        ArrayList<String> names = new ArrayList<String>();
+//
+//        names.add("Java");
+//        names.add("Kotlin");
+//        names.add("Android");
+//
+//        names.forEach(name ->{
+//            try {
+//
+//                mainObject.put(name,output.toString());
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//
+//
+//        return mainObject;
+//    }
 
 
 
