@@ -104,6 +104,5 @@ public class RegisterActivity extends AppCompatActivity {
         userUpdates.put("dex", 1);
         userUpdates.put("exp", 1);
         postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("stats").setValue(userUpdates);
-
     }
 }
