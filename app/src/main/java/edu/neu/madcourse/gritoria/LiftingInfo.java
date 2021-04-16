@@ -197,25 +197,25 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 
     public JSONObject jsonify() throws JSONException {
 
+        JSONObject mainObject = new JSONObject();
         JSONObject subKeys = new JSONObject();
 
-        JSONObject eachKey = new JSONObject();
-
+        JSONArray array = new JSONArray();
 
         List<String> setsList = new ArrayList<>();
         setsList.add("3");
-        setsList.add("4");
-        setsList.add("5");
+        setsList.add("8");
+        setsList.add("85");
 
 
         List<String> repsList = new ArrayList<>();
-        repsList.add("8");
+        repsList.add("4");
         repsList.add("12");
-        repsList.add("5");
+        repsList.add("135");
 
         List<String> weightList = new ArrayList<>();
-        weightList.add("95");
-        weightList.add("145");
+        weightList.add("5");
+        weightList.add("5");
         weightList.add("225");
 
         List<String>[] arrayOfList = new List[3];
@@ -223,27 +223,33 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         arrayOfList[1] = repsList;
         arrayOfList[2] = weightList;
 
+        JSONArray output = new JSONArray();
+
+
         for (int i = 0; i < arrayOfList.length; i++) {
                 List<String> l = arrayOfList[i];
                 Log.e("l is", l.toString());
                 Log.e("zero", l.get(0));
                 Log.e("one", l.get(1));
                 Log.e("two", l.get(2));
+                JSONObject temp = new JSONObject();
+                temp.put("sets", l.get(0));
+                temp.put("reps", l.get(1));
+                temp.put("weight", l.get(2));
+
+            output.put(temp);
 
         }
 
 
-//        subKeys.put("reps", "value");
 
-        subKeys.put("sets", "1" );
-        subKeys.put("reps", "1" );
-        subKeys.put("weight", "1" );
-        JSONArray array = new JSONArray();
-        array.put(subKeys);
-        JSONObject mainObject = new JSONObject();
+
+
+        Log.e("array is... ", output.toString());
+
+
+
         //adds outterkey
-
-
         ArrayList<String> names = new ArrayList<String>();
 
         names.add("Java");
@@ -252,7 +258,7 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 
         names.forEach(name ->{
             try {
-                mainObject.put(String.valueOf(name), array.toString());
+                mainObject.put(name,output.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
