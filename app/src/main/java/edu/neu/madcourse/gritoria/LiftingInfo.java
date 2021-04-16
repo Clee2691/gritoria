@@ -237,19 +237,20 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
                 temp.put("reps", l.get(1));
                 temp.put("weight", l.get(2));
 
-            output.put(temp);
+                output.put(temp);
 
+        }
+
+        Log.e("array is... ", output.get(0).toString());
+
+        for(int i = 0; i < output.length(); i++) {
+            Log.e("output i value is", output.get(i).toString());
         }
 
 
 
 
-
-        Log.e("array is... ", output.toString());
-
-
-
-        //adds outterkey
+            //adds outterkey
         ArrayList<String> names = new ArrayList<String>();
 
         names.add("Java");
