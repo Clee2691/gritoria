@@ -117,16 +117,20 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 //                                Log.e("new reps sum is:",String.valueOf(repsSum));
                                 Toast.makeText(getApplicationContext(),
                                         "progress saved!", Toast.LENGTH_SHORT).show();
+
+
+                                mapOfMaps.forEach(map -> {
+                                    Log.e("looking at each map individually...", map.toString());
+                                });
 //
 
                                 names.forEach(name ->{
-                                    mapOfMaps.forEach(mapItem -> {
-                                        Log.e("STILL LOG", mapItem.toString());
+                                    mapOfMaps.forEach(item -> {
                                         rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").
-                                                child(name).setValue(mapItem);
+
+                                                child(name).setValue(item);
 
                                     });
-
 
                                 });
 
