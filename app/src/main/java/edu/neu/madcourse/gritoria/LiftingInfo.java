@@ -35,14 +35,12 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     Button addButton;
     List<Integer> numberList = new ArrayList<>();
     private DatabaseReference rootRef;
-    FirebaseStorage userStore;
     DatabaseReference userStoreRef;
     ArrayList<Integer> sets = new ArrayList<Integer>();
     ArrayList<Integer> reps = new ArrayList<Integer>();
-    ArrayList<String> liftName;
-    ArrayList<String> liftWeight;
-    Integer totalVolume;
     List<HashMap> mapOfMaps = new ArrayList();
+    ArrayList<String> liftName = new ArrayList<String>();
+
 
 
 
@@ -110,28 +108,27 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-//                                Log.e("new sets sum is:",String.valueOf(setsSum));
-//                                Log.e("new reps sum is:",String.valueOf(repsSum));
+
                                 Toast.makeText(getApplicationContext(),
                                         "progress saved!", Toast.LENGTH_SHORT).show();
 
 
-                                 AtomicInteger counter = new AtomicInteger(0);
-                                 Log.e("names before", names.toString());
-                                 Log.e("map before", mapOfMaps.toString());
-                                  names.forEach(name -> {
-                                      Log.e("name that's going in first", name);
+//                                 AtomicInteger counter = new AtomicInteger(0);
+//                                 Log.e("names before", names.toString());
+//                                 Log.e("map before", mapOfMaps.toString());
+//                                  names.forEach(name -> {
+//                                      Log.e("name that's going in first", name);
+////                                      rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").
+////                                                child(name).setValue(mapOfMaps.get(counter.get()));
+//
 //                                      rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").
-//                                                child(name).setValue(mapOfMaps.get(counter.get()));
-
-                                      rootRef.child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").
-                                                child("workouts").child(myDate).child(name).setValue(mapOfMaps.get(counter.get()));
-
-//                                      Log.e("mget", name +  mapOfMaps.get(counter.get()).toString());
-                                      counter.addAndGet(1);
-
-
-                                  });
+//                                                child("workouts").child(myDate).child(name).setValue(mapOfMaps.get(counter.get()));
+//
+////                                      Log.e("mget", name +  mapOfMaps.get(counter.get()).toString());
+//                                      counter.addAndGet(1);
+//
+//
+//                                  });
 
 
                                 dialog.dismiss();
@@ -237,76 +234,6 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     }
 
 
-//    potentially useless code
-    public JSONObject jsonify() throws JSONException {
-
-        JSONObject mainObject = new JSONObject();
-
-        List<String> setsList = new ArrayList<>();
-        setsList.add("3");
-        setsList.add("8");
-        setsList.add("85");
-
-
-        List<String> repsList = new ArrayList<>();
-        repsList.add("4");
-        repsList.add("12");
-        repsList.add("135");
-
-        List<String> weightList = new ArrayList<>();
-        weightList.add("5");
-        weightList.add("5");
-        weightList.add("225");
-
-        List<String>[] arrayOfList = new List[3];
-        arrayOfList[0] = setsList;
-        arrayOfList[1] = repsList;
-        arrayOfList[2] = weightList;
-
-        JSONArray output = new JSONArray();
-
-
-        for (int i = 0; i < arrayOfList.length; i++) {
-                List<String> l = arrayOfList[i];
-
-                JSONObject temp = new JSONObject();
-                temp.put("sets",l.get(0));
-                temp.put("reps",l.get(1));
-                temp.put("weight",l.get(2));
-
-                output.put(temp);
-
-        }
-
-//        Log.e("array is... ", output.get(0).toString());
-//
-//        for(int i = 0; i < output.length(); i++) {
-//            Log.e("output i value is", output.get(i).toString());
-//        }
-
-
-
-
-            //adds outterkey
-        ArrayList<String> names = new ArrayList<String>();
-
-        names.add("Java");
-        names.add("Kotlin");
-        names.add("Android");
-
-        names.forEach(name ->{
-            try {
-
-                mainObject.put(name,output.toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        });
-
-        Log.e("main object", mainObject.toString());
-
-        return mainObject;
-    }
 
 
 

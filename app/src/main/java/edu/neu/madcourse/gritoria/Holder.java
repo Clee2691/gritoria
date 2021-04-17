@@ -44,19 +44,6 @@ public class Holder extends RecyclerView.ViewHolder implements View.OnClickListe
         });
 
 
-//        itemView.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view){
-//
-////                String url =  itemName.getText().toString();
-////                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-////                view.getContext().startActivity(intent);
-//
-//            }
-//
-//        });
-
-
 
     }
 
