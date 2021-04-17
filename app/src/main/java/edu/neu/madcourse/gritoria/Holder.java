@@ -37,7 +37,7 @@ public class Holder extends RecyclerView.ViewHolder implements View.OnClickListe
         liftInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), LiftingInfo.class);
+                Intent intent = new Intent(v.getContext(), LiftingStaticView.class);
                 intent.putExtra("date", liftDate.getText().toString());
                 v.getContext().startActivity(intent);
             }
