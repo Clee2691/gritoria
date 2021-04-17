@@ -250,10 +250,9 @@ public class LiftingStaticView extends AppCompatActivity {
                         AlertDialog alertDialog = new AlertDialog.Builder(LiftingStaticView.
                                 this).create();
                         alertDialog.setMessage("Would you like to save your current progress and " +
-                                "exit? You'll" +
+                                "exit? You'll" + " " +
                                 "go back to the lifting page to log more when you're ready but can't " +
-                                "return to today's" +
-                                "workout.");
+                                " " + "return to today's workout");
                         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "yes",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -271,25 +270,21 @@ public class LiftingStaticView extends AppCompatActivity {
 
                                         setFinalMap(squatMap, deadMap, benchMap,overHeadPressMap);
 
+                                         AtomicInteger counter = new AtomicInteger(0);
+                                         Log.e(tag, liftNames.toString());
+                                         Log.e(tag, mapOfWorkoutActivity.toString());
+                                          liftNames.forEach(name -> {
+                                              rootRef.child("users").
+                                                      child("4RX89PfEBUVDkH6FSHogqRse5Q72").
+                                                        child("workouts").child(myDate).child(name).
+                                                      setValue(mapOfWorkoutActivity.get(counter.get()));
 
-                                 AtomicInteger counter = new AtomicInteger(0);
-                                 Log.e("names before", liftNames.toString());
-                                 Log.e("map before", mapOfWorkoutActivity.toString());
-                                  liftNames.forEach(name -> {
-                                      rootRef.child("users").
-                                              child("4RX89PfEBUVDkH6FSHogqRse5Q72").
-                                                child("workouts").child(myDate).child(name).
-                                              setValue(mapOfWorkoutActivity.get(counter.get()));
+                                              counter.addAndGet(1);
 
-                                      counter.addAndGet(1);
-
-
-                                  });
-
+                                          });
 
                                         dialog.dismiss();
-                                        Toast.makeText(getApplicationContext(),
-                                                "progress saved!", Toast.LENGTH_SHORT).show();
+
 
                                         exit();
 
