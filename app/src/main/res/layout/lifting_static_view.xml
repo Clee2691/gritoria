@@ -40,25 +40,24 @@
                 android:background="@drawable/radius_grey"/>
 
             <EditText
-                android:text="Weight"
                 android:id="@+id/squatWeight"
-
+                android:hint="Weight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@drawable/radius_grey"/>
             <EditText
-                android:text="Sets"
                 android:id="@+id/squatSets"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:hint="Sets"
                 android:gravity="center"
                 android:background="@drawable/radius_grey"/>
 
             <EditText
-                android:text="Reps"
+                android:hint="Reps"
                 android:id="@+id/squatReps"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -84,7 +83,7 @@
                 android:background="@drawable/radius_grey"/>
 
             <EditText
-                android:text="Weight"
+                android:hint="Weight"
                 android:id="@+id/benchWeight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -92,7 +91,7 @@
                 android:gravity="center"
                 android:background="@drawable/radius_grey"/>
             <EditText
-                android:text="Sets"
+                android:hint="Sets"
                 android:id="@+id/benchSets"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -101,7 +100,7 @@
                 android:background="@drawable/radius_grey"/>
 
             <EditText
-                android:text="Reps"
+                android:hint="Reps"
                 android:id="@+id/benchReps"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -128,7 +127,7 @@
                 />
 
             <EditText
-                android:text="Weight"
+                android:hint="Weight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -137,7 +136,7 @@
                 android:id="@+id/deadWeight"
                 />
             <EditText
-                android:text="Sets"
+                android:hint="Sets"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -146,7 +145,7 @@
                 android:id="@+id/deadSets" />
 
             <EditText
-                android:text="Reps"
+                android:hint="Sets"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -174,7 +173,7 @@
                 android:background="@drawable/radius_grey"/>
 
             <EditText
-                android:text="Weight"
+                android:hint="Weight"
                 android:id="@+id/pressWeight"
 
                 android:layout_width="0dp"
@@ -183,7 +182,7 @@
                 android:gravity="center"
                 android:background="@drawable/radius_grey"/>
             <EditText
-                android:text="Sets"
+                android:hint="Sets"
                 android:id="@+id/pressSets"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -193,7 +192,7 @@
                 />
 
             <EditText
-                android:text="Reps"
+                android:hint="Reps"
                 android:id="@+id/pressReps"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -218,7 +217,7 @@
                 android:gravity="center"
                 android:background="@drawable/radius_grey"/>
             <Button
-                android:text="Return "
+                android:text="Return"
                 android:id="@+id/liftBackButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
