@@ -11,8 +11,8 @@
         android:layout_width="262dp"
         android:layout_height="60dp"
         android:layout_marginBottom="44dp"
-        android:text="Begin Quest"
         android:backgroundTint="@android:color/holo_green_light"
+        android:text="Begin Crawl"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -25,7 +25,6 @@
         android:layout_marginTop="44dp"
         android:text="Log"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

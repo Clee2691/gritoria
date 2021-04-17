@@ -63,7 +63,7 @@ public class RunningActivity extends AppCompatActivity implements SensorEventLis
             public void onClick(View v) {
                 if (active) {
                     active = false;
-                    questButton.setText("Begin Quest");
+                    questButton.setText("Begin Crawl");
                     questButton.setBackgroundColor(Color.GREEN);
                 }
                 else {
@@ -74,7 +74,7 @@ public class RunningActivity extends AppCompatActivity implements SensorEventLis
                     String distanceTraveled = "Distance: " + String.valueOf(distance) + " miles";
                     stepCounterValue.setText(totalSteps);
                     distanceValue.setText(distanceTraveled);
-                    questButton.setText("Finish Quest");
+                    questButton.setText("Finish Crawl");
                     questButton.setBackgroundColor(Color.RED);
                 }
             }
