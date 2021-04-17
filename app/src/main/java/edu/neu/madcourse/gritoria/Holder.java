@@ -6,6 +6,7 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,8 +18,8 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
 
-    public TextView liftDate;
-    public TextView liftItem;
+    public EditText liftDate;
+    public EditText liftItem;
     public Button liftInfo;
     private Adapter.recycleOnClick recycleListener;
 

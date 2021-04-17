@@ -12,7 +12,7 @@
         android:layout_height="62dp"
         android:layout_margin="4dp">
 
-        <TextView
+        <EditText
             android:id="@+id/liftDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:textStyle="bold" />
 
 
-        <TextView
+        <EditText
             android:id="@+id/liftItem"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
