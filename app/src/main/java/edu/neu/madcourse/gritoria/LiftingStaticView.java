@@ -319,10 +319,17 @@ public class LiftingStaticView extends AppCompatActivity {
             return 0;
         }
         String text = edit.getText().toString();
-        int returnValue=Integer.parseInt(text);
-        return returnValue;
-    }
 
+        if(isNumeric(text)){
+            int returnValue=Integer.parseInt(text);
+            return returnValue;
+        }
+        return 0;
+
+    }
+    public static boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");
+    }
 
     public void setMap(HashMap<String, Integer> selectedMap, int weight, int sets, int reps) {
         selectedMap.put("weight", weight);
@@ -343,7 +350,7 @@ public class LiftingStaticView extends AppCompatActivity {
 
 
     public void exit(){
-        Intent intent = new Intent(this, LiftingActivity.class);
+        Intent intent = new Intent(this, LiftLog.class);
         startActivity(intent);
     }
 
