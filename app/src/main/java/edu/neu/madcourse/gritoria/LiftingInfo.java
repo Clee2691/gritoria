@@ -38,6 +38,8 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
     DatabaseReference userStoreRef;
     ArrayList<Integer> sets = new ArrayList<Integer>();
     ArrayList<Integer> reps = new ArrayList<Integer>();
+
+
     List<HashMap> mapOfMaps = new ArrayList();
     ArrayList<String> liftName = new ArrayList<String>();
 
@@ -101,10 +103,9 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int setsSum = getSum(sets);
-                int repsSum = getSum(reps);
                 AlertDialog alertDialog = new AlertDialog.Builder(LiftingInfo.this).create();
-                alertDialog.setMessage("Would you like to save your current progress and exit?");
+                alertDialog.setMessage("Would you like to save your current progress and exit? You'll" +
+                        "go back to the lifting page to log more when you're ready");
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -151,16 +152,30 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+
         addNewView();
 
     }
     private void addNewView(){
+        HashMap<String, Integer> localizedMap = new HashMap<>();
+
+
+//        add in all the components that are necessary for the view:
+//        lift's name, weight, how many reps, and how many sets
+
         View liftView = getLayoutInflater().inflate(R.layout.add_lift_row, null, false);
-        EditText text = (EditText)liftView.findViewById(R.id.rowEditText);
-        String tempText = text.getText().toString();
+//        EditText text = (EditText)liftView.findViewById(R.id.rowEditText);
+//        String liftingNameText = text.getText().toString();
+
+        EditText liftText = (EditText)liftView.findViewById(R.id.rowEditText);
+        Log.e("liftText", liftText.getText().toString());
+
+
+        //add the lift's name to the corresponding array
+        Log.e("liftName is:", liftName.toString());
+
         EditText weight = (EditText)liftView.findViewById(R.id.weightEdit);
         String weightText = weight.getText().toString();
-
 
         AppCompatSpinner  spinner = (AppCompatSpinner)liftView.findViewById(R.id.spinner);
         AppCompatSpinner  secondSpinner = (AppCompatSpinner)liftView.findViewById(R.id.secondSpinner);
@@ -168,6 +183,8 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 
         ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, numberList);
         ArrayAdapter secondAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, numberList);
+
+
 
         spinner.setAdapter(adapter);
 
@@ -185,10 +202,7 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
         });
 
 
-
         liftList.addView(liftView);
-
-
 
     }
 
@@ -216,22 +230,28 @@ public class LiftingInfo extends AppCompatActivity implements View.OnClickListen
 
     }
 
+
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
-    public int getSum(ArrayList<Integer> array){
-        Integer someSum = array.stream()
-                .mapToInt(a -> a)
-                .sum();
-        return(someSum);
-    }
 
     public void exit(){
         Intent intent = new Intent(this, LiftingActivity.class);
         startActivity(intent);
     }
+
+//    public HashMap<String, Integer> createMap(Integer sets, Integer reps, Integer weight){
+//        HashMap<String,Integer> newMap = new HashMap<>();
+//
+//        newMap.put("weight", weight);
+//        newMap.put("sets", sets);
+//        newMap.put("reps", reps);
+//
+//        return newMap;
+//    };
+
 
 
 

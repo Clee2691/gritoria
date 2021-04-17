@@ -27,4 +27,6 @@ public class Progress extends AppCompatActivity {
     graph.addSeries(series);
 
     }
+
+    
 }
