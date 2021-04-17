@@ -33,6 +33,10 @@
         <activity android:name=".LiftingActivity" />
         <activity android:name=".LiftingInfo" />
         <activity android:name=".LiftingStaticView"/>
+        <activity android:name=".LiftingGlobal"/>
+
+
+
 
 
         <activity android:name=".Progress" />

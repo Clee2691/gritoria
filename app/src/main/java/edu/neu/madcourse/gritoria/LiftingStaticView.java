@@ -32,7 +32,11 @@ public class LiftingStaticView extends AppCompatActivity {
     HashMap<String, Integer> deadMap = new HashMap<>();
     HashMap<String, Integer> benchMap = new HashMap<>();
     HashMap<String, Integer> overHeadPressMap = new HashMap<>();
+
     List<HashMap> mapOfWorkoutActivity = new ArrayList();
+
+
+
     private DatabaseReference rootRef;
     DatabaseReference userStoreRef;
     private String tag = "debugging...";
@@ -48,9 +52,6 @@ public class LiftingStaticView extends AppCompatActivity {
         rootRef = FirebaseDatabase.getInstance().getReference();
 //        userStore = FirebaseStorage.getInstance();
         userStoreRef = rootRef.child("users");
-
-
-
 
 
         //adding all the lift names to map to db
@@ -256,6 +257,7 @@ public class LiftingStaticView extends AppCompatActivity {
                         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "yes",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
+                                        LiftingGlobal.globalSets.add(integerify(squatSets));
 
 
                                         setMap(squatMap, integerify(squatWeight),

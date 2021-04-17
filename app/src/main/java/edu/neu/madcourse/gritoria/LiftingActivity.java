@@ -7,9 +7,20 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.protobuf.LazyStringArrayList;
+
+import java.util.ArrayList;
+
 public class LiftingActivity extends AppCompatActivity {
+    static ArrayList<String>StringArrayList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        StringArrayList.add("hello");
+        StringArrayList.add("world");
+        StringArrayList.add("it's");
+        StringArrayList.add("Alex");
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lifting);
 
@@ -38,6 +49,13 @@ public class LiftingActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+//    public void sendArray(){
+//        Intent intent = new Intent(LiftingActivity.this, Progress.class);
+//        intent.putExtra("stringArray", StringArrayList);
+//        startActivity(intent);
+//
+//
+//    }
 
 
 
