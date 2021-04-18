@@ -2,6 +2,8 @@ package edu.neu.madcourse.gritoria;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +35,9 @@ public class Progress extends AppCompatActivity {
         //initialize graph view by id
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
+        //initialize buttons that are relevant
+        Button squatButton = findViewById(R.id.squatProg);
+
 
 
         rootRef = FirebaseDatabase.getInstance().getReference();
@@ -50,28 +55,22 @@ public class Progress extends AppCompatActivity {
                              String weight = ds.child("weight").getValue().toString();
                              Log.e("weight", weight);
                              squatWeight.add(weight);
-
-
                          }
 
                     }
                 }
 
-                Log.e("lets look at squatWeight array...", squatWeight.toString());
+//                Log.e("lets look at squatWeight array...", squatWeight.toString());
                 ArrayList<Integer> squatMapArray = getIntArray(squatWeight);
 
-                Log.e("trying same thing but with myValue", squatMapArray.toString());
-//                ArrayList<Integer> squatIntWeight =  getIntegerArray(squatWeight);
-                if (squatMapArray.size() > 0) {
-                    LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
-                    for (int i = 0; i < squatMapArray.size(); i++) {
-                        DataPoint point = new DataPoint(i, squatMapArray.get(i));
-                        series.appendData(point, true, squatMapArray.size());
+//                Log.e("trying same thing but with myValue", squatMapArray.toString());
+
+                squatButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        graphProgress(graph, squatMapArray);
                     }
-                    graph.addSeries(series);
-                }
-
-
+                });
 
             }
 
@@ -96,6 +95,18 @@ public class Progress extends AppCompatActivity {
             }
     });
         return resultArray;
+
+    }
+
+    private void graphProgress(GraphView graphId, ArrayList<Integer> progressArray){
+        if (progressArray.size() > 0) {
+            LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
+            for (int i = 0; i < progressArray.size(); i++) {
+                DataPoint point = new DataPoint(i, progressArray.get(i));
+                series.appendData(point, true, progressArray.size());
+            }
+            graphId.addSeries(series);
+        }
 
     }
 
