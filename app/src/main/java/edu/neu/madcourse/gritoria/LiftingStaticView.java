@@ -273,8 +273,6 @@ public class LiftingStaticView extends AppCompatActivity {
                                         setFinalMap(squatMap, deadMap, benchMap,overHeadPressMap);
 
                                          AtomicInteger counter = new AtomicInteger(0);
-                                         Log.e(tag, liftNames.toString());
-                                         Log.e(tag, mapOfWorkoutActivity.toString());
                                           liftNames.forEach(name -> {
                                               rootRef.child("users").
                                                       child("4RX89PfEBUVDkH6FSHogqRse5Q72").
