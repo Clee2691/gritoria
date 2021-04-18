@@ -49,13 +49,6 @@ public class LiftingActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    public void sendArray(){
-//        Intent intent = new Intent(LiftingActivity.this, Progress.class);
-//        intent.putExtra("stringArray", StringArrayList);
-//        startActivity(intent);
-//
-//
-//    }
 
 
 
