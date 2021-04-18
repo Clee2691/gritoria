@@ -18,12 +18,15 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.TextView;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class RunningActivity extends AppCompatActivity implements SensorEventListener {
 
     private SensorManager sensorManager;
     private Sensor stepCounterSensor;
     private TextView stepCounterValue;
     private TextView distanceValue;
+    private GifImageView gifAnimation;
     private boolean active = false;
     private int stepCount = 0;
     private float distance = 0;
@@ -35,7 +38,7 @@ public class RunningActivity extends AppCompatActivity implements SensorEventLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_running);
 
-
+        gifAnimation = findViewById(R.id.ninjaRunnerGif);
         stepCounterValue = findViewById(R.id.stepsValue);
         distanceValue = findViewById(R.id.distanceValue);
 
@@ -65,11 +68,13 @@ public class RunningActivity extends AppCompatActivity implements SensorEventLis
                     active = false;
                     questButton.setText("Begin Crawl");
                     questButton.setBackgroundColor(Color.GREEN);
+                    gifAnimation.setImageResource(R.drawable.idle);
                 }
                 else {
                     active = true;
                     stepCount = 0;
                     distance = 0;
+                    gifAnimation.setImageResource(R.drawable.running);
                     String totalSteps = "Steps: " + String.valueOf(stepCount);
                     String distanceTraveled = "Distance: " + String.valueOf(distance) + " miles";
                     stepCounterValue.setText(totalSteps);
