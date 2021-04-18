@@ -12,13 +12,13 @@ import com.google.protobuf.LazyStringArrayList;
 import java.util.ArrayList;
 
 public class LiftingActivity extends AppCompatActivity {
-    static ArrayList<String>StringArrayList = new ArrayList<>();
+//    static ArrayList<String>StringArrayList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        StringArrayList.add("hello");
-        StringArrayList.add("world");
-        StringArrayList.add("it's");
-        StringArrayList.add("Alex");
+//        StringArrayList.add("hello");
+//        StringArrayList.add("world");
+//        StringArrayList.add("it's");
+//        StringArrayList.add("Alex");
 
 
         super.onCreate(savedInstanceState);
