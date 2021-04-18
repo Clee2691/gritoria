@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -84,13 +85,18 @@ public class Map extends AppCompatActivity {
 
                 playerTeam = snapshot.child("users").child(playerUID)
                         .child("team").getValue(String.class);
-                isTeamFighting = snapshot.child("teams").child(playerTeam).child("currFight")
-                        .child("isFighting").getValue(boolean.class);
+
+                if (playerTeam.equals("")) {
+                    Toast.makeText(Map.this, "Join a team to start your adventure!",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    isTeamFighting = snapshot.child("teams").child(playerTeam).child("currFight")
+                            .child("isFighting").getValue(boolean.class);
+                }
 
                 for(DataSnapshot eachTeam : snapshot.child("teams").getChildren()) {
                     createTeam(eachTeam);
                 }
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -102,7 +108,7 @@ public class Map extends AppCompatActivity {
                 for (DataSnapshot teammembers : dSnap.child("members").getChildren()) {
                     numPlayers++;
                 }
-                teamList.add(new RViewTeamRank(playerTeam, numPlayers));
+                teamList.add(new RViewTeamRank(dSnap.getKey(), numPlayers));
                 rcAdapter.notifyItemInserted(teamList.size() - 1);
             }
         });

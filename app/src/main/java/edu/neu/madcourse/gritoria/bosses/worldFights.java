@@ -135,6 +135,12 @@ public class worldFights extends AppCompatActivity {
                 playerIsFighting = userRef.child("isFighting").getValue(boolean.class);
                 isLeader = userRef.child("isLeader").getValue(boolean.class);
 
+                if (playerTeam.equals("")) {
+                    readyButton.setVisibility(View.GONE);
+                    attackBut.setVisibility(View.GONE);
+                    return;
+                }
+
                 // Sets the ready button for player depending on world/ready status
                 if (playerWorld.equals(currWorld) && playerIsFighting == false) {
                     if(currPlayerReadyStatus) {
@@ -162,7 +168,7 @@ public class worldFights extends AppCompatActivity {
                 }
 
                 if (teamIsFighting &&
-                        teamRef.child("world").getValue(String.class).equals(currWorld)) {
+                    teamRef.child("world").getValue(String.class).equals(currWorld)) {
                     bossStartTime = teamRef.child("startTime").getValue(long.class);
                     determineTime();
                 }
@@ -319,7 +325,7 @@ public class worldFights extends AppCompatActivity {
                     if (teammateUIDList.contains(aUser.getKey())) {
                         if (aUser.child("currWorld").getValue(String.class).equals(currWorld)) {
                             playerList.add(new RCViewPlayer(
-                                    aUser.child("name").getValue(String.class),
+                                    aUser.child("username").getValue(String.class),
                                     aUser.child("power").getValue(Integer.class),
                                     aUser.child("isReady").getValue(boolean.class),
                                     aUser.child("currWorld").getValue(String.class)));

@@ -101,13 +101,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTeamReady"
-        android:layout_width="373dp"
-        android:layout_height="237dp"
+        android:layout_width="376dp"
+        android:layout_height="248dp"
         app:layout_constraintBottom_toTopOf="@+id/btnReadyUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewBossAvatar" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewYourTeam" />
 
     <TextView
         android:id="@+id/textViewTimeLeftLabel"
@@ -157,5 +157,23 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnReadyUp"
         app:layout_constraintTop_toTopOf="@+id/btnReadyUp" />
+
+    <TextView
+        android:id="@+id/textViewYourTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:shadowColor="#000"
+        android:shadowDx="-2"
+        android:shadowDy="2"
+        android:shadowRadius="20"
+        android:text="Your Team"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBossAvatar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
