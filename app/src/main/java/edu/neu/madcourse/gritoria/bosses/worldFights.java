@@ -2,16 +2,19 @@ package edu.neu.madcourse.gritoria.bosses;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,8 +71,7 @@ public class worldFights extends AppCompatActivity {
         gritFB = FirebaseDatabase.getInstance();
         uiHandler = new Handler();
         setupRecyclerView();
-        Button btnRefresh = findViewById(R.id.buttonRefreshTeam);
-        refreshTeam(btnRefresh);
+        refreshTeam();
         // Sets up "ready" button based on if the logged in player is ready or not
         setupUI();
     }
@@ -90,7 +92,25 @@ public class worldFights extends AppCompatActivity {
         bossProgBar.setProgress(bossHealth);
         timeLeftDisplay.setText(String.format("%d seconds left", bossHealth));
 
+        View v = findViewById(R.id.world_fight_activity);
+        ImageView bossAvatar = findViewById(R.id.imageViewBossAvatar);
 
+        if (currWorld.equals("1-1")) {
+            v.setBackground(ContextCompat.getDrawable(this, R.drawable.boss_background1));
+            bossAvatar.setImageResource(R.drawable.boss1);
+        } else if (currWorld.equals("1-2")) {
+            v.setBackground(ContextCompat.getDrawable(this, R.drawable.boss_bg2));
+            bossAvatar.setImageResource(R.drawable.boss2);
+        } else if (currWorld.equals("1-3")) {
+            v.setBackground(ContextCompat.getDrawable(this, R.drawable.boss_bg3));
+            bossAvatar.setImageResource(R.drawable.boss3);
+        } else if (currWorld.equals("1-4")) {
+            v.setBackground(ContextCompat.getDrawable(this, R.drawable.boss_bg4));
+            bossAvatar.setImageResource(R.drawable.boss4);
+        } else if (currWorld.equals("1-5")) {
+            v.setBackground(ContextCompat.getDrawable(this, R.drawable.boss_bg5));
+            bossAvatar.setImageResource(R.drawable.boss5);
+        }
     }
 
     private void setupRecyclerView() {
@@ -248,6 +268,12 @@ public class worldFights extends AppCompatActivity {
     }
 
     private boolean determineIfReady() {
+        if (playerList.size() <  teammateUIDList.size()) {
+            Toast.makeText(this,
+                    "All players must be at the current world to fight this boss!",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
         for (RCViewPlayer player : playerList) {
             if (!player.isReady() && player.getPlayerWorld().equals(currWorld)) {
                 Toast.makeText(this, "All players must be ready before attacking",
@@ -263,7 +289,7 @@ public class worldFights extends AppCompatActivity {
         return true;
     }
 
-    public void refreshTeam(View v) {
+    public void refreshTeam() {
         DatabaseReference gritdbRef = gritFB.getReference();
 
         gritdbRef.addValueEventListener( new ValueEventListener() {

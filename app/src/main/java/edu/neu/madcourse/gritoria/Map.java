@@ -46,9 +46,7 @@ public class Map extends AppCompatActivity {
         playerUID = currPlayer.getUid();
         //Firebase Realtime DB
         gritFB = FirebaseDatabase.getInstance();
-        getPlayerInfo();
-        //TODO: CONNECT TO DB AND DISPLAY TEAMS
-        dummyTeamData();
+        getDBData();
     }
 
     public void enterWorld(View v) {
@@ -76,7 +74,7 @@ public class Map extends AppCompatActivity {
         startActivity(worldFight);
     }
 
-    private void getPlayerInfo() {
+    private void getDBData() {
         DatabaseReference playerRef = gritFB.getReference();
         playerRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,14 +83,26 @@ public class Map extends AppCompatActivity {
                         .child("team").getValue(String.class);
                 isTeamFighting = snapshot.child("teams").child(playerTeam).child("currFight")
                         .child("isFighting").getValue(boolean.class);
+                for(DataSnapshot eachTeam : snapshot.child("teams").getChildren()) {
+                    createTeam(eachTeam);
+                }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
+            public void createTeam(DataSnapshot dSnap) {
+                int numPlayers = 0;
+                for (DataSnapshot teammembers : dSnap.child("members").getChildren()) {
+                    numPlayers++;
+                }
+                teamList.add(new RViewTeamRank(playerTeam, numPlayers));
+                rcAdapter.notifyItemInserted(teamList.size() - 1);
+            }
         });
     }
-
 
     private void createRCView() {
         rcTeamRank = findViewById(R.id.recyclerViewTeamRanks);
@@ -100,15 +110,6 @@ public class Map extends AppCompatActivity {
         rcAdapter = new RCAdapter(teamList);
         rcTeamRank.setAdapter(rcAdapter);
         rcTeamRank.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    public void dummyTeamData() {
-        teamList.add(new RViewTeamRank("Test Team 1", 4));
-        teamList.add(new RViewTeamRank("Test Team 2", 3));
-        teamList.add(new RViewTeamRank("Test Team 3", 6));
-        teamList.add(new RViewTeamRank("Test Team 4", 1));
-        teamList.add(new RViewTeamRank("Test Team 5", 20));
-        rcAdapter.notifyDataSetChanged();
     }
 
     public void backButtonPress(View v) {
