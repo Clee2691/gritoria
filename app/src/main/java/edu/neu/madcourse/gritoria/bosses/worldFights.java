@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -46,8 +47,10 @@ public class worldFights extends AppCompatActivity {
     private boolean playerIsFighting;
     private String playerWorld;
     private String playerTeam;
+    private long bossStartTime;
+    private int bossHealth;
+    private boolean teamIsFighting;
     Handler uiHandler;
-    Boss currBoss;
     FirebaseUser currPlayer;
     FirebaseDatabase gritFB;
 
@@ -66,18 +69,26 @@ public class worldFights extends AppCompatActivity {
         setupRecyclerView();
         Button btnRefresh = findViewById(R.id.buttonRefreshTeam);
         refreshTeam(btnRefresh);
-        // Get the time in seconds
-        determineTime();
         // Sets up "ready" button based on if the logged in player is ready or not
         setupUI();
-        currBoss = new Boss();
-        getBossInfo();
     }
 
     private void setupWorld(Intent currIntent) {
         TextView worldLogo = findViewById(R.id.textViewWorld);
+        ProgressBar bossProgBar = findViewById(R.id.progressBarBossHealth);
+        TextView bossHealthDisplay = findViewById(R.id.textViewBossHealth);
+        TextView timeLeftDisplay = findViewById(R.id.textViewTimeLeftVal);
+
         currWorld = currIntent.getStringExtra("level");
+        playerTeam = currIntent.getStringExtra("playerTeam");
+        bossHealth = currIntent.getIntExtra("bossHealth", 0);
+        teamIsFighting = currIntent.getBooleanExtra("isTeamFighting", false);
         worldLogo.setText(String.format("World %s", currWorld));
+        bossHealthDisplay.setText(String.format("Health: %d/%d", bossHealth, bossHealth));
+        bossProgBar.setMax(bossHealth);
+        bossProgBar.setProgress(bossHealth);
+        timeLeftDisplay.setText(String.format("%d seconds left", bossHealth));
+
 
     }
 
@@ -92,14 +103,16 @@ public class worldFights extends AppCompatActivity {
     private void setupUI() {
         Button readyButton = findViewById(R.id.btnReadyUp);
         Button attackBut = findViewById(R.id.buttonAttack);
-        DatabaseReference userRef = gritFB.getReference("users/" + playerUID);
+        DatabaseReference dbRef = gritFB.getReference();
 
-        userRef.addValueEventListener(new ValueEventListener() {
+        dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                currPlayerReadyStatus = snapshot.child("isReady").getValue(boolean.class);
-                playerWorld = snapshot.child("currWorld").getValue(String.class);
-                playerIsFighting = snapshot.child("isFighting").getValue(boolean.class);
+                DataSnapshot userRef = snapshot.child("users").child(playerUID);
+                DataSnapshot teamRef = snapshot.child("teams").child(playerTeam).child("currFight");
+                currPlayerReadyStatus = userRef.child("isReady").getValue(boolean.class);
+                playerWorld = userRef.child("currWorld").getValue(String.class);
+                playerIsFighting = userRef.child("isFighting").getValue(boolean.class);
 
                 // Sets the ready button for player depending on world/ready status
                 if (playerWorld.equals(currWorld) && playerIsFighting == false) {
@@ -119,12 +132,18 @@ public class worldFights extends AppCompatActivity {
                 }
 
                 // Sets the button up if you're leader to allow attacking of boss
-                if (snapshot.child("isLeader").getValue(boolean.class)) {
+                if (userRef.child("isLeader").getValue(boolean.class) && !teamIsFighting) {
                     attackBut.setVisibility(View.VISIBLE);
                     attackBut.setEnabled(true);
                 } else {
                     attackBut.setEnabled(false);
                     attackBut.setVisibility(View.GONE);
+                }
+
+                if (teamIsFighting &&
+                        teamRef.child("world").getValue(String.class).equals(currWorld)) {
+                    bossStartTime = teamRef.child("startTime").getValue(long.class);
+                    determineTime();
                 }
             }
 
@@ -134,57 +153,15 @@ public class worldFights extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-        determineBossHealth();
-    }
-    class Boss {
-        String name;
-        int health;
-        boolean isKilled;
-        long startTime;
-
-        public Boss() {
-            this.name = "";
-            this.health = 0;
-            this.isKilled = false;
-            this.startTime = Instant.now().getEpochSecond();
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public void setHealth(int health) {
-            this.health = health;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public boolean isKilled() {
-            return isKilled;
-        }
-
-        public long getStartTime() {
-            return startTime;
-        }
-
-        public int getHealth() {
-            return this.health;
-        }
     }
 
-    private void getBossInfo() {
-
-        if (playerIsFighting && playerWorld.equals(currWorld)){
-            DatabaseReference currFightRef = gritFB.getReference("teams/" + playerTeam + "/currFight/");
+    private void getTeamCurrentFight() {
+        if (playerIsFighting && playerWorld.equals(currWorld)) {
+            DatabaseReference currFightRef = gritFB.getReference("teams/" + playerTeam + "/currFight");
             currFightRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String worldName = snapshot.child("world").getValue(String.class);
-                    int bossHealth = snapshot.child("bossHealth").getValue(Integer.class);
-                    currBoss.setName(worldName);
-                    currBoss.setHealth(bossHealth);
+                    bossStartTime = snapshot.child("startTime").getValue(long.class);
                 }
 
                 @Override
@@ -192,11 +169,7 @@ public class worldFights extends AppCompatActivity {
 
                 }
             });
-
-        } else {
-            DatabaseReference bossInfo = gritFB.getReference("");
         }
-
     }
 
     private void determineTime() {
@@ -205,41 +178,92 @@ public class worldFights extends AppCompatActivity {
     }
 
     class timeThread implements Runnable {
+        long deltaTime;
+        int finalTime;
+        DatabaseReference teamFight;
+        DatabaseReference playerRef;
+        TextView bossTimer;
+        Button readyButton;
+
+        ProgressBar bossProgBar;
+        TextView bossHealthNum;
+
         @Override
         public void run() {
-            while(true) {
+            bossTimer = findViewById(R.id.textViewTimeLeftVal);
+            bossProgBar = findViewById(R.id.progressBarBossHealth);
+            bossHealthNum = findViewById(R.id.textViewBossHealth);
+
+            teamFight = gritFB.getReference("teams/" + playerTeam + "/currFight");
+
+            while(teamIsFighting && bossStartTime > 0) {
                 try {
                     currTimeInEpoch = Instant.now().getEpochSecond();
                     Thread.sleep(1000);
+                    deltaTime= currTimeInEpoch - bossStartTime;
+                    finalTime = (int) (bossHealth - deltaTime);
+                    uiHandler.post(()-> bossTimer.setText(
+                            String.format("%d seconds left", finalTime)));
+                    uiHandler.post(()->bossProgBar.setProgress(finalTime));
+                    uiHandler.post(()->bossHealthNum.setText(String.format("Health: %d/%d",
+                            finalTime, bossHealth)));
+
+                    if (finalTime <= 0) {
+                        finishFight();
+                        break;
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }
-    }
 
-    private void determineBossHealth() {
-        ProgressBar bossHealth = findViewById(R.id.progressBarBossHealth);
-        TextView bossHealthNum = findViewById(R.id.textViewBossHealth);
-        int healthLeft = 54;
-        bossHealth.setProgress(healthLeft);
-        bossHealthNum.setText(String.format("Health: %d/100", healthLeft));
+        private void finishFight() {
+            readyButton = findViewById(R.id.btnReadyUp);
+            uiHandler.post(()-> bossTimer.setText(String.format("Boss Complete!")));
+            uiHandler.post(()-> bossHealthNum.setText(String.format("0/%d", bossHealth)));
+            teamFight.child("isFighting").setValue(false);
+            teamFight.child("startTime").setValue(0);
+            teamFight.child("isKilled").setValue((true));
+
+
+            for (String teamUID : teammateUIDList) {
+                playerRef = gritFB.getReference("users/" + teamUID);
+                playerRef.child("isFighting").setValue(false);
+                playerRef.child("isReady").setValue(false);
+            }
+            uiHandler.post(()->readyButton.setEnabled(true));
+        }
     }
 
     public void startAttack(View v) {
         boolean canAttack = determineIfReady();
-        int bossHealth = 100;
+        DatabaseReference currFightRef = gritFB.getReference("teams/" + playerTeam +
+                                                            "/currFight");
+        DatabaseReference userRef = gritFB.getReference("users/");
+        if (canAttack && !teamIsFighting) {
+            teamIsFighting = true;
+            bossStartTime = Instant.now().getEpochSecond();
+            currFightRef.child("startTime").setValue(bossStartTime);
+            currFightRef.child("isFighting").setValue(true);
+            currFightRef.child("world").setValue("1-1");
+            for (String teamMate : teammateUIDList) {
+                userRef.child(teamMate).child("isFighting").setValue(true);
+            }
 
-        // TODO: Probably need to thread this
-        if (canAttack) {
-
+            determineTime();
         }
     }
 
     private boolean determineIfReady() {
         for (RCViewPlayer player : playerList) {
-            if (!player.isReady()) {
+            if (!player.isReady() && player.getPlayerWorld().equals(currWorld)) {
                 Toast.makeText(this, "All players must be ready before attacking",
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            } else if (!player.getPlayerWorld().equals(currWorld)) {
+                Toast.makeText(this,
+                        "All players must be at the current world to fight this boss!",
                         Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -263,7 +287,8 @@ public class worldFights extends AppCompatActivity {
                             playerList.add(new RCViewPlayer(
                                     aUser.child("name").getValue(String.class),
                                     aUser.child("power").getValue(Integer.class),
-                                    aUser.child("isReady").getValue(boolean.class)));
+                                    aUser.child("isReady").getValue(boolean.class),
+                                    aUser.child("currWorld").getValue(String.class)));
                             rcPlayerAdapter.notifyItemInserted(playerList.size() - 1);
                         }
                     }
@@ -280,8 +305,6 @@ public class worldFights extends AppCompatActivity {
 
     public void populateUserTeamRecyclerView(DataSnapshot dSS) {
         teammateUIDList = new ArrayList<>();
-        playerTeam = dSS.child("users").child(playerUID).child("team")
-                .getValue(String.class);
 
         for (DataSnapshot teamMembers : dSS.child("teams").child(playerTeam)
                 .child("members").getChildren()) {

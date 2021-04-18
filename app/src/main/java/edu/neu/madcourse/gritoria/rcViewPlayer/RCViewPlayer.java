@@ -4,11 +4,13 @@ public class RCViewPlayer {
     private String playerName;
     private int attackPower;
     private boolean isReady;
+    private String playerWorld;
 
-    public RCViewPlayer(String playerName, int attackPower, boolean ready) {
+    public RCViewPlayer(String playerName, int attackPower, boolean ready, String playerWorld) {
         this.playerName = playerName;
         this.attackPower = attackPower;
         this.isReady = ready;
+        this.playerWorld = playerWorld;
     }
 
     public String getPlayerName() {
@@ -22,5 +24,9 @@ public class RCViewPlayer {
     // Checks to see if player is ready to attack
     public boolean isReady() {
         return this.isReady;
+    }
+
+    public String getPlayerWorld() {
+        return this.playerWorld;
     }
 }
