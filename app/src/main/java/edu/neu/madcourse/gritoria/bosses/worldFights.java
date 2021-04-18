@@ -50,6 +50,7 @@ public class worldFights extends AppCompatActivity {
     private long bossStartTime;
     private int bossHealth;
     private boolean teamIsFighting;
+    private boolean isLeader;
     Handler uiHandler;
     FirebaseUser currPlayer;
     FirebaseDatabase gritFB;
@@ -113,6 +114,7 @@ public class worldFights extends AppCompatActivity {
                 currPlayerReadyStatus = userRef.child("isReady").getValue(boolean.class);
                 playerWorld = userRef.child("currWorld").getValue(String.class);
                 playerIsFighting = userRef.child("isFighting").getValue(boolean.class);
+                isLeader = userRef.child("isLeader").getValue(boolean.class);
 
                 // Sets the ready button for player depending on world/ready status
                 if (playerWorld.equals(currWorld) && playerIsFighting == false) {
@@ -132,10 +134,10 @@ public class worldFights extends AppCompatActivity {
                 }
 
                 // Sets the button up if you're leader to allow attacking of boss
-                if (userRef.child("isLeader").getValue(boolean.class) && !teamIsFighting) {
+                if (isLeader && !teamIsFighting) {
                     attackBut.setVisibility(View.VISIBLE);
                     attackBut.setEnabled(true);
-                } else {
+                } else if (!isLeader){
                     attackBut.setEnabled(false);
                     attackBut.setVisibility(View.GONE);
                 }
@@ -153,23 +155,6 @@ public class worldFights extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void getTeamCurrentFight() {
-        if (playerIsFighting && playerWorld.equals(currWorld)) {
-            DatabaseReference currFightRef = gritFB.getReference("teams/" + playerTeam + "/currFight");
-            currFightRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    bossStartTime = snapshot.child("startTime").getValue(long.class);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
     }
 
     private void determineTime() {
@@ -220,6 +205,7 @@ public class worldFights extends AppCompatActivity {
 
         private void finishFight() {
             readyButton = findViewById(R.id.btnReadyUp);
+
             uiHandler.post(()-> bossTimer.setText(String.format("Boss Complete!")));
             uiHandler.post(()-> bossHealthNum.setText(String.format("0/%d", bossHealth)));
             teamFight.child("isFighting").setValue(false);
@@ -233,6 +219,12 @@ public class worldFights extends AppCompatActivity {
                 playerRef.child("isReady").setValue(false);
             }
             uiHandler.post(()->readyButton.setEnabled(true));
+            if(isLeader) {
+                Button attackButton = findViewById(R.id.buttonAttack);
+                uiHandler.post(()->attackButton.setVisibility(View.VISIBLE));
+                uiHandler.post(()->attackButton.setEnabled(true));
+            }
+
         }
     }
 

@@ -59,13 +59,19 @@ public class Map extends AppCompatActivity {
 
         if (currWorld == R.id.imageButtonWorld1_1) {
             worldFight.putExtra("level", "1-1");
-            worldFight.putExtra("bossHealth", 1000);
-
+            worldFight.putExtra("bossHealth", 60);
         } else if (currWorld == R.id.imageButtonWorld1_2) {
             worldFight.putExtra("level", "1-2");
             worldFight.putExtra("bossHealth", 2000);
-        } else {
-            worldFight.putExtra("level", "DEFAULT WORLD");
+        } else if (currWorld == R.id.imageButtonWorld1_3){
+            worldFight.putExtra("level", "1-3");
+            worldFight.putExtra("bossHealth", 3000);
+        } else if (currWorld == R.id.imageButtonWorld1_4) {
+            worldFight.putExtra("level", "1-4");
+            worldFight.putExtra("bossHealth", 4000);
+        } else if (currWorld == R.id.imageButtonWorld1_5) {
+            worldFight.putExtra("level", "1-5");
+            worldFight.putExtra("bossHealth", 5000);
         }
         startActivity(worldFight);
     }
