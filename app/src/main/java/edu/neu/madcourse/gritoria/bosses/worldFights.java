@@ -1,6 +1,7 @@
 package edu.neu.madcourse.gritoria.bosses;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,10 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,6 +24,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -34,8 +35,6 @@ import java.time.Instant;
 import edu.neu.madcourse.gritoria.R;
 import edu.neu.madcourse.gritoria.rcViewPlayer.RCViewPlayer;
 import edu.neu.madcourse.gritoria.rcViewPlayer.RCAdapter;
-
-import static java.lang.Thread.sleep;
 
 public class worldFights extends AppCompatActivity {
     private Intent currIntent;
@@ -182,6 +181,9 @@ public class worldFights extends AppCompatActivity {
         new Thread(getTime).start();
     }
 
+    // Logic for "idle" part of the game
+    // Calculates the current time with when the boss time started and determines
+    // if the elapsed time is == boss health
     class timeThread implements Runnable {
         long deltaTime;
         int finalTime;
@@ -232,11 +234,27 @@ public class worldFights extends AppCompatActivity {
             teamFight.child("startTime").setValue(0);
             teamFight.child("isKilled").setValue((true));
 
-
-            for (String teamUID : teammateUIDList) {
-                playerRef = gritFB.getReference("users/" + teamUID);
+            for (String teamMateUID : teammateUIDList) {
+                playerRef = gritFB.getReference("users/" + teamMateUID);
                 playerRef.child("isFighting").setValue(false);
                 playerRef.child("isReady").setValue(false);
+                // Update exp with a transaction to allow adding to the value
+                // Also avoids problems with concurrent read/writes from other users
+                playerRef.child("stats").child("exp").runTransaction(new Transaction.Handler() {
+                    @NonNull
+                    @Override
+                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                        int currExp = currentData.getValue(Integer.class);
+                        currExp += bossHealth * 0.15;
+                        currentData.setValue(currExp);
+                        return Transaction.success(currentData);
+                    }
+
+                    @Override
+                    public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
+                    }
+                });
             }
             uiHandler.post(()->readyButton.setEnabled(true));
             if(isLeader) {
@@ -244,7 +262,6 @@ public class worldFights extends AppCompatActivity {
                 uiHandler.post(()->attackButton.setVisibility(View.VISIBLE));
                 uiHandler.post(()->attackButton.setEnabled(true));
             }
-
         }
     }
 
@@ -262,7 +279,6 @@ public class worldFights extends AppCompatActivity {
             for (String teamMate : teammateUIDList) {
                 userRef.child(teamMate).child("isFighting").setValue(true);
             }
-
             determineTime();
         }
     }
@@ -346,12 +362,4 @@ public class worldFights extends AppCompatActivity {
             userRef.child("isReady").setValue(false);
         }
     }
-
-    /**TODO: Fight mechanic:
-     * Boss HP + Defense
-     * Attack will be time dependent based on team total power
-     * Need some kind of server sided timer
-     * Progress can be seen by progress bar based on timer
-     *
-     * **/
 }

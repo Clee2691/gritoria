@@ -79,10 +79,14 @@ public class Map extends AppCompatActivity {
         playerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                teamList.clear();
+                rcAdapter.notifyDataSetChanged();
+
                 playerTeam = snapshot.child("users").child(playerUID)
                         .child("team").getValue(String.class);
                 isTeamFighting = snapshot.child("teams").child(playerTeam).child("currFight")
                         .child("isFighting").getValue(boolean.class);
+
                 for(DataSnapshot eachTeam : snapshot.child("teams").getChildren()) {
                     createTeam(eachTeam);
                 }
