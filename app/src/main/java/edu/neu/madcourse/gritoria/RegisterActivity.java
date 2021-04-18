@@ -34,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = findViewById(R.id.email);
         mPassword = findViewById(R.id.password);
         mVerifyPassword = findViewById(R.id.password2);
-        progressBar = findViewById(R.id.progressBarBossHealth);
+        progressBar = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));

@@ -69,7 +69,7 @@
         app:layout_constraintTop_toTopOf="@id/textView" />
 
     <TextView
-        android:id="@+id/textViewBossHealth"
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -82,5 +82,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="Member 3"
-        app:layout_constraintTop_toTopOf="@id/textViewBossHealth" />
+        app:layout_constraintTop_toTopOf="@id/textView3" />
 </androidx.constraintlayout.widget.ConstraintLayout>
