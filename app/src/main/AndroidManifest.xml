@@ -24,6 +24,7 @@
         <activity android:name=".RunningInfoActivity" />
         <activity android:name=".RunningLogActivity" />
         <activity android:name=".RunningActivity" />
+        <activity android:name=".bosses.worldFights"></activity>
         <activity android:name=".Map" />
         <activity android:name=".Profile" />
         <activity android:name=".Planner" />
