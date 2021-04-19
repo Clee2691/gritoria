@@ -61,17 +61,17 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/HP"
-            android:layout_width="wrap_content"
+            android:id="@+id/Level"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="HP: 100"
-            android:textColor="#C11111" />
+            android:text="Level: 1"
+            android:textColor="#FFC107" />
 
         <TextView
-            android:id="@+id/MP"
+            android:id="@+id/EXP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MP: 100"
+            android:text="EXP: 100"
             android:textColor="#1F52EC" />
 
         <TextView
