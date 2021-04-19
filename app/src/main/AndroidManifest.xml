@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.neu.madcourse.gritoria">
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-feature android:name="android.hardware.type.watch" />
 
     <application
         android:allowBackup="true"
@@ -14,26 +13,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gritoria">
+        <activity android:name=".TeamSelectionActivity"></activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".RunningInfoActivity" />
         <activity android:name=".RunningLogActivity" />
         <activity android:name=".RunningActivity" />
         <activity android:name=".bosses.worldFights"></activity>
-        <activity android:name=".Inventory" />
         <activity android:name=".Map" />
         <activity android:name=".Profile" />
         <activity android:name=".Planner" />
         <activity android:name=".Team" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
 
-
-        <service android:name=".MessagingService">
+        <service
+            android:name=".MessagingService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

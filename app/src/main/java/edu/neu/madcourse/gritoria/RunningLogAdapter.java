@@ -1,5 +1,7 @@
 package edu.neu.madcourse.gritoria;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +30,11 @@ public class RunningLogAdapter extends RecyclerView.Adapter<RunningLogAdapter.Ru
         public TextView runningDateValue;
         public TextView runningDistanceValue;
         public Button buttonInfo;
+        private final Context context;
 
         public RunningLogViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
+            context = itemView.getContext();
             runningDateValue = itemView.findViewById(R.id.Run_Date);
             runningDistanceValue = itemView.findViewById(R.id.Run_Distance);
             buttonInfo = itemView.findViewById(R.id.Button_Info);
@@ -42,6 +46,10 @@ public class RunningLogAdapter extends RecyclerView.Adapter<RunningLogAdapter.Ru
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             listener.onGoClick(position);
+                            Intent intent = new Intent(context, RunningInfoActivity.class);
+                            intent.putExtra("date", runningDateValue.getText());
+                            intent.putExtra("distance", runningDistanceValue.getText());
+                            context.startActivity(intent);
                         }
                     }
                 }
@@ -72,4 +80,5 @@ public class RunningLogAdapter extends RecyclerView.Adapter<RunningLogAdapter.Ru
     public int getItemCount() {
         return mRunLogList.size();
     }
+
 }
