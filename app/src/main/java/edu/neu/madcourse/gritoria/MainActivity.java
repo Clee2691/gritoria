@@ -1,5 +1,6 @@
 package edu.neu.madcourse.gritoria;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,20 +13,36 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.File;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
+    FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_main);
-        // Initialize the buttons
+        bundle = getIntent().getExtras();
+        String currentUser = bundle.getString("currUser");
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
         Button team = findViewById(R.id.TeamButton);
         team.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openTeam();
+                openTeam(currentUser);
             }
         });
 
@@ -33,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         planner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openPlanner();
+                openPlanner(currentUser);
             }
         });
 
@@ -41,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openProfile();
+                openProfile(currentUser);
             }
         });
 
@@ -49,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openMap();
+                openMap(currentUser);
             }
         });
 
@@ -57,36 +74,55 @@ public class MainActivity extends AppCompatActivity {
         runButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openRun();
+                openRun(currentUser);
             }
         });
+
+        Button logoutButton = findViewById(R.id.Logout);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
+            }
+        });
+
 
     }
 
     // Open new activities on button press
 
-    public void openTeam(){
+    public void openTeam(String currentUser){
         Intent intent = new Intent(this, Team.class);
+        intent.putExtra("currUser", currentUser);
+        intent.putExtra("teamName", bundle.getString("teamName"));
+        bundle.getSerializable("teamMembers");
+        intent.putExtra("teamMembers", bundle.getSerializable("teamMembers"));
         startActivity(intent);
     }
 
-    public void openPlanner(){
+    public void openPlanner(String currentUser){
         Intent intent = new Intent(this, Planner.class);
+        intent.putExtra("currUser", currentUser);
         startActivity(intent);
     }
 
-    public void openProfile(){
+    public void openProfile(String currentUser){
         Intent intent = new Intent(this, Profile.class);
+        intent.putExtra("currUser", currentUser);
         startActivity(intent);
     }
 
-    public void openMap(){
+    public void openMap(String currentUser){
         Intent intent = new Intent(this, Map.class);
+        intent.putExtra("currUser", currentUser);
         startActivity(intent);
     }
 
-    public void openRun() {
+    public void openRun(String currentUser) {
         Intent intent = new Intent(this, RunningActivity.class);
+        intent.putExtra("currUser", currentUser);
         startActivity(intent);
     }
 }
