@@ -12,13 +12,16 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
-
+    FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_main);
         // Initialize the buttons
         Button team = findViewById(R.id.TeamButton);
@@ -61,6 +64,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button logoutButton = findViewById(R.id.Logout);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
+            }
+        });
     }
 
     // Open new activities on button press

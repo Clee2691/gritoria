@@ -19,16 +19,11 @@ public class Profile extends AppCompatActivity {
         inventory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openInventory();
+                return;
             }
         });
 
 
-    }
-
-    public void openInventory(){
-        Intent intent = new Intent(this, Inventory.class);
-        startActivity(intent);
     }
 
 }
