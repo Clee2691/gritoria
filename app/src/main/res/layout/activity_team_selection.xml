@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TeamSelectionActivity">
+
+    <Button
+        android:id="@+id/JoinTeamButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="#7EDD4B"
+        android:text="Join"
+        app:layout_constraintStart_toStartOf="@+id/TeamLink"
+        app:layout_constraintTop_toBottomOf="@+id/TeamLink" />
+
+    <TextView
+        android:id="@+id/TeamSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Team Selection"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".05" />
+
+    <TextView
+        android:id="@+id/CreateTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Create team:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/TeamName"
+        app:layout_constraintTop_toBottomOf="@+id/TeamSelection" />
+
+    <EditText
+        android:id="@+id/TeamName"
+        android:layout_width="384dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="Team Name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CreateTeam" />
+
+    <EditText
+        android:id="@+id/TeamLink"
+        android:layout_width="384dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="Team Link"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.592"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/JoinTeam" />
+
+    <Button
+        android:id="@+id/CreateTeamButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="#7EDD4B"
+        android:text="Create"
+        app:layout_constraintStart_toStartOf="@+id/TeamName"
+        app:layout_constraintTop_toBottomOf="@+id/TeamName" />
+
+    <TextView
+        android:id="@+id/JoinTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Join Team"
+        app:layout_constraintStart_toStartOf="@+id/CreateTeamButton"
+        app:layout_constraintTop_toBottomOf="@+id/CreateTeamButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

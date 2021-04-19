@@ -33,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     ProgressBar progressBar;
     DatabaseReference mDatabase;
-    boolean isTaken = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +49,33 @@ public class RegisterActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            mAuth = FirebaseAuth.getInstance();
+            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                // Initialize data for user.
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String currentUser = (String) snapshot.child("users").child(mAuth.getUid()).child("username").getValue();
+                    HashMap<String, String> statMap = (HashMap<String, String>) snapshot.child("users").child(mAuth.getUid()).child("stats").getValue();
+                    String teamName = (String) snapshot.child("users").child(mAuth.getUid()).child("team").getValue();
+                    HashMap<String, String> teamMembers = (HashMap<String, String>) snapshot.child("teams").child(teamName).child("members").getValue();
+
+
+                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+
+                    intent.putExtra("currUser", currentUser);
+                    intent.putExtra("statMap", statMap);
+                    intent.putExtra("teamName", teamName);
+                    intent.putExtra("teamMembers", teamMembers);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
         loginLink = findViewById(R.id.loginPage);
         loginLink.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +103,6 @@ public class RegisterActivity extends AppCompatActivity {
                     mUser.setError("Username must be at least 4 characters long");
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
-                    final boolean[] isTaken = {false};
                     mDatabase.child("taken names").child(username).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -113,9 +137,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void setIsTaken(){
-        isTaken = true;
-    }
 
     private void generateUser(DatabaseReference postRef, String username){
         // Initalize user with their stats
