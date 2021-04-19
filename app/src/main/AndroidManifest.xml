@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.neu.madcourse.gritoria">
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".RunningInfoActivity" />
         <activity android:name=".RunningLogActivity" />
         <activity android:name=".RunningActivity" />
         <activity android:name=".Map" />
