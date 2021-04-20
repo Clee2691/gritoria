@@ -29,6 +29,7 @@ public class Profile extends AppCompatActivity {
     TextView DEX;
     TextView Level;
     EditText name;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,26 +41,17 @@ public class Profile extends AppCompatActivity {
         DEX = findViewById(R.id.Dexterity);
         Level = findViewById(R.id.Level);
         name = findViewById(R.id.editTextTextPersonName);
+        bundle = getIntent().getExtras();
+
+        name.setText(bundle.getString("currUser"));
+        HashMap<String, String> statMap = (HashMap<String, String>) bundle.getSerializable("statMap");
+        EXP.setText("EXP: " + String.valueOf(statMap.get("exp")));
+        INT.setText("Intelligence: " + String.valueOf(statMap.get("int")));
+        STR.setText("Strength: " + String.valueOf(statMap.get("str")));
+        DEX.setText("Dexterity: " + String.valueOf(statMap.get("dex")));
+        Level.setText("Level: " + String.valueOf(statMap.get("level")));
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-        mDatabase.child("users").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                name.setText((String) snapshot.child("username").getValue());
-                HashMap<String, String> statMap = (HashMap<String, String>) snapshot.child("stats").getValue();
-                EXP.setText("EXP: " + String.valueOf(statMap.get("exp")));
-                INT.setText("Intelligence: " + String.valueOf(statMap.get("int")));
-                STR.setText("Strength: " + String.valueOf(statMap.get("str")));
-                DEX.setText("Dexterity: " + String.valueOf(statMap.get("dex")));
-                Level.setText("Level: " + String.valueOf(statMap.get("level")));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
-
 }

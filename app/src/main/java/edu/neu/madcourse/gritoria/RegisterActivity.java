@@ -117,7 +117,10 @@ public class RegisterActivity extends AppCompatActivity {
                                             mAuth.signInWithEmailAndPassword(email, password);
                                             RegisterActivity.this.generateUser(mDatabase, username);
                                             Toast.makeText(RegisterActivity.this, "User created", Toast.LENGTH_SHORT);
-                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                            Intent intent= new Intent(getApplicationContext(), MainActivity.class);
+                                            intent.putExtra("currUser", username);
+                                            intent.putExtra("teamName", "");
+                                            startActivity(intent);
                                         }
                                         else {
                                             Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT);

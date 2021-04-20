@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 public class TeamSelectionActivity extends AppCompatActivity {
     private Button createTeamBtn;
     private DatabaseReference mDatabase;
@@ -66,20 +68,31 @@ public class TeamSelectionActivity extends AppCompatActivity {
             }
         });
         JoinTeamButton = findViewById(R.id.JoinTeamButton);
+        TextView teamLink = findViewById(R.id.TeamLink);
         JoinTeamButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (teamName.getText().length() < 3) {
-                    teamName.setError("Team name must be longer than 3 letters.");
+                if (teamLink.getText().length() < 3) {
+                    teamLink.setError("Team name must be longer than 3 letters.");
                 }
-                mDatabase.child("teams").child((String) teamName.getText())
+                mDatabase.child("teams").child(teamLink.getText().toString())
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.exists()) {
-                                    bundle.putString("teamName", teamName.getText().toString());
-                                    TeamSelectionActivity.this.joinTeam(teamName.getText().toString());
-                                    TeamSelectionActivity.this.openTeam();
+                                    HashMap<String, String> memberList = (HashMap<String, String>) snapshot.child("members").getValue();
+                                    HashMap<String, Object> messageHistory = (HashMap<String, Object>) snapshot.child("messages").getValue();
+                                    if (memberList.size() > 4) {
+                                        teamLink.setError("Team is at max capacity.");
+                                    } else {
+                                        bundle.putString("teamName", teamLink.getText().toString());
+                                        TeamSelectionActivity.this.joinTeam(teamLink.getText().toString());
+                                        bundle.putSerializable("teamMembers", memberList);
+                                        bundle.putSerializable("messages", messageHistory);
+                                        TeamSelectionActivity.this.openTeam();
+                                    }
+                                } else {
+                                    JoinTeamButton.setError("Team name does not exist");
                                 }
                             }
 
@@ -99,6 +112,7 @@ public class TeamSelectionActivity extends AppCompatActivity {
         mDatabase.child("teams").child(teamNameToAdd).child("currFight").child("startTime").setValue(0);
         mDatabase.child("teams").child(teamNameToAdd).child("currFight").child("world").setValue("1-1");
         mDatabase.child("teams").child(teamNameToAdd).child("members").child(mAuth.getUid()).setValue(currUser);
+        mDatabase.child("teams").child(teamNameToAdd).child("messages").setValue("");
         mDatabase.child("teams").child(teamNameToAdd).child("name").setValue(teamNameToAdd);
         mDatabase.child("teams").child(teamNameToAdd).child("rank").setValue(10);
         mDatabase.child("teams").child(teamNameToAdd).child("teamIcon").setValue("");
