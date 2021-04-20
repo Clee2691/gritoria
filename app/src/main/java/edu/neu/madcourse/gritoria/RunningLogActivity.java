@@ -46,7 +46,7 @@ public class RunningLogActivity extends AppCompatActivity {
         Date now = new Date(Calendar.getInstance().getTime().getTime());
         List<RunningLogItem> runningLogList = new ArrayList<>();
         for (int i = 1; i < 20; i++) {
-            runningLogList.add((new RunningLogItem(i + " miles", now)));
+            runningLogList.add((new RunningLogItem(i + " miles", now, i + " steps")));
         }
 
         return runningLogList;

@@ -49,6 +49,7 @@ public class RunningLogAdapter extends RecyclerView.Adapter<RunningLogAdapter.Ru
                             Intent intent = new Intent(context, RunningInfoActivity.class);
                             intent.putExtra("date", runningDateValue.getText());
                             intent.putExtra("distance", runningDistanceValue.getText());
+                            intent.putExtra("steps", runningDistanceValue.getText());
                             context.startActivity(intent);
                         }
                     }
