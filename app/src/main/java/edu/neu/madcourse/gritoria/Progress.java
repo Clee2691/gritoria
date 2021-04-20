@@ -106,28 +106,28 @@ public class Progress extends AppCompatActivity {
                 squatButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        graphProgress(graph, squatInt, "green") ;
+                        graphProgress(graph, squatInt, "green", "Squats") ;
                     }
                 });
 
                 benchButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        graphProgress(graph, benchInt, "red");
+                        graphProgress(graph, benchInt, "red", "Bench");
                     }
                 });
 
                 deadButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        graphProgress(graph, deadInt, "blue");
+                        graphProgress(graph, deadInt, "blue", "Deadlift");
                     }
                 });
 
                 overHeadButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        graphProgress(graph, overInt, "cyan");
+                        graphProgress(graph, overInt, "cyan", "Press");
                     }
                 });
 
@@ -159,7 +159,8 @@ public class Progress extends AppCompatActivity {
 
     }
 
-    private void graphProgress(GraphView graphId, ArrayList<Integer> progressArray, String color ){
+    private void graphProgress(GraphView graphId, ArrayList<Integer> progressArray, String color,
+                               String title){
 
         if (progressArray.size() > 0) {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
@@ -174,6 +175,9 @@ public class Progress extends AppCompatActivity {
                 }
             });
             series.setColor(Color.parseColor(color));
+            series.setTitle(title);
+            graphId.getLegendRenderer().setVisible(true);
+
 
             graphId.addSeries(series);
         }
