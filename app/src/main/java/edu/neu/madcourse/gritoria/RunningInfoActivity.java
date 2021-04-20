@@ -9,6 +9,7 @@ public class RunningInfoActivity extends AppCompatActivity {
 
     public TextView runningDateValue;
     public TextView runningDistanceValue;
+    public TextView runningSteps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,8 @@ public class RunningInfoActivity extends AppCompatActivity {
         runningDistanceValue = findViewById(R.id.runningInfoDistance);
         runningDistanceValue.setText(getIntent().getStringExtra("distance"));
 
-
+        runningSteps = findViewById(R.id.runningInfoSteps);
+        runningSteps.setText(getIntent().getStringExtra("steps"));
+        
     }
 }

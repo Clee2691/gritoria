@@ -4,10 +4,10 @@ import java.sql.Date;
 
 public class RunningLogItem {
     private final String runDistance;
-    private final Date runDate;
+    private final String runDate;
     private final String stepsTaken;
 
-    public RunningLogItem(String distance, Date date, String steps) {
+    public RunningLogItem(String distance, String date, String steps) {
         runDistance = distance;
         runDate = date;
         stepsTaken = steps;
@@ -17,7 +17,7 @@ public class RunningLogItem {
         return runDistance;
     }
 
-    public Date getRunDate() {
+    public String getRunDate() {
         return runDate;
     }
 
