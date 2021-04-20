@@ -99,30 +99,49 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("teamName", bundle.getString("teamName"));
         bundle.getSerializable("teamMembers");
         intent.putExtra("teamMembers", bundle.getSerializable("teamMembers"));
-        startActivity(intent);
+
+        mDatabase.child("teams").child(bundle.getString("teamName")).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                bundle.putSerializable("messages" ,(HashMap<String, HashMap<String, String>>) snapshot.child("messages").getValue());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
     public void openPlanner(String currentUser){
         Intent intent = new Intent(this, Planner.class);
         intent.putExtra("currUser", currentUser);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
     public void openProfile(String currentUser){
         Intent intent = new Intent(this, Profile.class);
         intent.putExtra("currUser", currentUser);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
     public void openMap(String currentUser){
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("currUser", currentUser);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
     public void openRun(String currentUser) {
         Intent intent = new Intent(this, RunningActivity.class);
         intent.putExtra("currUser", currentUser);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 }
