@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/boss_background1"
+    android:id="@+id/world_fight_activity"
+    tools:context=".bosses.worldFights">
+
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="44dp"
+        android:onClick="backButtonPress"
+        android:text="Back"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewWorld"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:shadowColor="#000"
+        android:shadowDx="-2"
+        android:shadowDy="2"
+        android:shadowRadius="20"
+        android:text="World"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/imageViewBossAvatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/imageViewBossAvatar"
+        android:layout_width="170dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.107"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWorld"
+        app:srcCompat="@drawable/boss1" />
+
+    <ProgressBar
+        android:id="@+id/progressBarBossHealth"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="171dp"
+        android:layout_height="17dp"
+        android:indeterminate="false"
+        android:max="1000"
+        android:progress="1000"
+        android:progressTint="#FF0000"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTimeLeftLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.34"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBossAvatar"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBossHealth" />
+
+    <TextView
+        android:id="@+id/textViewBossHealth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:shadowColor="#000"
+        android:shadowDx="-2"
+        android:shadowDy="2"
+        android:shadowRadius="20"
+        android:text="Health: 100/100"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarBossHealth"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBossAvatar"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWorld" />
+
+    <Button
+        android:id="@+id/btnReadyUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#61F80F"
+        android:onClick="setPlayerReady"
+        android:text="Ready Up"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAttack"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTeamReady" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTeamReady"
+        android:layout_width="376dp"
+        android:layout_height="248dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnReadyUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewYourTeam" />
+
+    <TextView
+        android:id="@+id/textViewTimeLeftLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#000"
+        android:shadowDx="-2"
+        android:shadowDy="2"
+        android:shadowRadius="20"
+        android:text="Time Left:"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTimeLeftVal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBossAvatar"
+        app:layout_constraintTop_toBottomOf="@+id/progressBarBossHealth" />
+
+    <TextView
+        android:id="@+id/textViewTimeLeftVal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#000"
+        android:shadowDx="-2"
+        android:shadowDy="2"
+        android:shadowRadius="20"
+        android:text="1:20"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBossAvatar"
+        app:layout_constraintEnd_toEndOf="@+id/textViewTimeLeftLabel"
+        app:layout_constraintHorizontal_bias="0.535"
+        app:layout_constraintStart_toStartOf="@+id/textViewTimeLeftLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTimeLeftLabel" />
+
+    <Button
+        android:id="@+id/buttonAttack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#4C6FEA"
+        android:onClick="startAttack"
+        android:text="ATTACK!"
+        android:textSize="18sp"
+        app:iconTint="#233CBD"
+        app:layout_constraintBottom_toBottomOf="@+id/btnReadyUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnReadyUp"
+        app:layout_constraintTop_toTopOf="@+id/btnReadyUp" />
+
+    <TextView
+        android:id="@+id/textViewYourTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:shadowColor="#000"
+        android:shadowDx="-2"
+        android:shadowDy="2"
+        android:shadowRadius="20"
+        android:text="Your Team"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBossAvatar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

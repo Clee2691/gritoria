@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">Gritoria</string>
+<<<<<<< HEAD
     <string name="test_your_grit">Test Your Grit</string>
     <string name="enter_lift">Enter lift</string>
     <string name="sets">sets</string>
+=======
+    <string name="gritoria_string">Gritoria</string>
+    <string name="back_string">Back</string>
+    <string name="team_rankings_string">Team Rankings</string>
+    <string name="gritoria_map_string">gritoria_map</string>
+
+>>>>>>> 1933f3f76308c3a83ff7646a2ed9c9f4e6eee853
     <string name="title_activity_login">LoginActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -18,4 +26,5 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+
 </resources>
