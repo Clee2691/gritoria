@@ -67,6 +67,16 @@
             android:text="Dungeon Crawl"
             android:textAllCaps="false"
             android:textSize="32sp" />
+        <Button
+            android:id="@+id/liftButton"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="#9eacc9"
+            android:fontFamily="@font/arizonia_regular"
+            android:text="Lift"
+            android:textAllCaps="false"
+            android:textSize="32sp" />
 
         <Button
             android:id="@+id/Logout"
