@@ -34,17 +34,19 @@ public class SplashScreenActivity extends AppCompatActivity {
                 // Initialize data for user.
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                     String currentUser = (String) snapshot.child("users").child(mAuth.getUid()).child("username").getValue();
                     HashMap<String, String> statMap = (HashMap<String, String>) snapshot.child("users").child(mAuth.getUid()).child("stats").getValue();
                     String teamName = (String) snapshot.child("users").child(mAuth.getUid()).child("team").getValue();
-                    HashMap<String, String> teamMembers = (HashMap<String, String>) snapshot.child("teams").child(teamName).child("members").getValue();
-                    String profileImage = (String) snapshot.child("users").child(mAuth.getUid()).child("profileImage").getValue();
+                    if (teamName.length() >= 3) {
+                        HashMap<String, String> teamMembers = (HashMap<String, String>) snapshot.child("teams").child(teamName).child("members").getValue();
+                        intent.putExtra("teamMembers", teamMembers);
+                    }
 
-                    Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                    String profileImage = (String) snapshot.child("users").child(mAuth.getUid()).child("profileImage").getValue();
                     intent.putExtra("currUser", currentUser);
                     intent.putExtra("statMap", statMap);
                     intent.putExtra("teamName", teamName);
-                    intent.putExtra("teamMembers", teamMembers);
                     intent.putExtra("profileImage", profileImage);
                     startActivity(intent);
                     finish();
