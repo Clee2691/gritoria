@@ -73,7 +73,7 @@ public class TeamSelectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (teamLink.getText().length() < 3) {
-                    teamLink.setError("Team name must be longer than 3 letters.");
+                    teamLink.setError("Team name must be at least 3 letters.");
                 }
                 mDatabase.child("teams").child(teamLink.getText().toString())
                         .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -82,7 +82,7 @@ public class TeamSelectionActivity extends AppCompatActivity {
                                 if (snapshot.exists()) {
                                     HashMap<String, String> memberList = (HashMap<String, String>) snapshot.child("members").getValue();
                                     HashMap<String, Object> messageHistory = (HashMap<String, Object>) snapshot.child("messages").getValue();
-                                    if (memberList.size() > 4) {
+                                    if (memberList.size() >= 4) {
                                         teamLink.setError("Team is at max capacity.");
                                     } else {
                                         bundle.putString("teamName", teamLink.getText().toString());
@@ -92,7 +92,7 @@ public class TeamSelectionActivity extends AppCompatActivity {
                                         TeamSelectionActivity.this.openTeam();
                                     }
                                 } else {
-                                    JoinTeamButton.setError("Team name does not exist");
+                                    teamLink.setError("Team name does not exist");
                                 }
                             }
 
@@ -120,6 +120,7 @@ public class TeamSelectionActivity extends AppCompatActivity {
 
         // Add team to user profile
         mDatabase.child("users").child(mAuth.getUid()).child("team").setValue(teamNameToAdd);
+        mDatabase.child("users").child(mAuth.getUid()).child("isLeader").setValue(true);
     }
 
     protected void joinTeam(String teamNameToJoin){
@@ -129,6 +130,13 @@ public class TeamSelectionActivity extends AppCompatActivity {
 
     protected void openTeam(){
         Intent intent = new Intent(this, Team.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }

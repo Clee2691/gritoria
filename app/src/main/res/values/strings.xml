@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Gritoria</string>
+    <string name="test_your_grit">Test Your Grit</string>
+    <string name="enter_lift">Enter lift</string>
+    <string name="sets">sets</string>
     <string name="gritoria_string">Gritoria</string>
     <string name="back_string">Back</string>
     <string name="team_rankings_string">Team Rankings</string>
