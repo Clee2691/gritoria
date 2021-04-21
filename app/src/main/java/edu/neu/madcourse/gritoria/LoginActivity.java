@@ -24,12 +24,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 public class LoginActivity extends AppCompatActivity {
     EditText mEmail, mPassword;
     Button loginButton;
     TextView registerLink;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
+    DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
             }
         });
-
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -82,9 +86,34 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT);
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            } else  {
+                                mAuth = FirebaseAuth.getInstance();
+                                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    // Initialize data for user.
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        String currentUser = (String) snapshot.child("users").child(mAuth.getUid()).child("username").getValue();
+                                        HashMap<String, String> statMap = (HashMap<String, String>) snapshot.child("users").child(mAuth.getUid()).child("stats").getValue();
+                                        String teamName = (String) snapshot.child("users").child(mAuth.getUid()).child("team").getValue();
+                                        HashMap<String, String> teamMembers = (HashMap<String, String>) snapshot.child("teams").child(teamName).child("members").getValue();
+
+
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+                                        intent.putExtra("currUser", currentUser);
+                                        intent.putExtra("statMap", statMap);
+                                        intent.putExtra("teamName", teamName);
+                                        intent.putExtra("teamMembers", teamMembers);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                            else {
                                 Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT);
                             }
                         }
