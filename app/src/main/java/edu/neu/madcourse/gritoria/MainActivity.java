@@ -23,6 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.File;
 import java.util.HashMap;
 
+import com.google.firebase.auth.FirebaseAuth;
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
@@ -75,6 +78,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openRun(currentUser);
+            }
+        });
+
+        Button liftingButton = findViewById(R.id.liftButton);
+        liftingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLift();
             }
         });
 
@@ -144,4 +155,9 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         startActivity(intent);
     }
+    public void openLift() {
+        Intent intent = new Intent(this, LiftingActivity.class);
+        startActivity(intent);
+    }
+
 }

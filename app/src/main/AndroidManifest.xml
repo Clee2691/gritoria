@@ -57,7 +57,12 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".LiftingActivity" />
+        <activity android:name=".LiftingInfo" />
+        <activity android:name=".LiftingStaticView"/>
+        <activity android:name=".LiftingGlobal"/>
+        <activity android:name=".Progress" />
+        <activity android:name=".LiftLog" />
         <service
             android:name=".MessagingService"
             android:exported="false">
