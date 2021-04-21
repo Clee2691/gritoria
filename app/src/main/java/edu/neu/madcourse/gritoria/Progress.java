@@ -39,6 +39,13 @@ public class Progress extends AppCompatActivity {
     ArrayList<String> deadWeight = new ArrayList<String>();
     ArrayList<String> benchWeight = new ArrayList<String>();
     ArrayList<String> overheadWeight = new ArrayList<String>();
+    private boolean clicked = false;
+    private boolean deadClick = false;
+    private boolean benchClick = false;
+    private boolean overClick = false;
+
+
+
 
 
     @Override
@@ -113,7 +120,12 @@ public class Progress extends AppCompatActivity {
                     squatButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            graphProgress(graph, squatInt, "green", "Squats");
+
+                            if(!clicked) {
+                                graphProgress(graph, squatInt, "green", "Squats");
+                            }
+
+                            clicked = true;
 
                         }
                     });
@@ -121,23 +133,37 @@ public class Progress extends AppCompatActivity {
                     benchButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            graphProgress(graph, benchInt, "red", "Bench");
+                            if(!benchClick) {
+                                graphProgress(graph, benchInt, "blue", "Bench");
+                            }
+                            benchClick = true;
+
                         }
+
                     });
 
                     deadButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            graphProgress(graph, deadInt, "blue", "Deadlift");
-                        }
+                            if(!deadClick) {
+                                graphProgress(graph, deadInt, "red", "Deadlift");
+                            }
+                            deadClick = true;                        }
                     });
 
                     overHeadButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            graphProgress(graph, overInt, "cyan", "Press");
+                            if(!overClick) {
+                                graphProgress(graph, overInt, "#CCCCFF", "Press");
+                            }
+                            overClick = true;
                         }
                     });
+
+                    Log.e("all of the arrays", deadInt.toString() + "\n"+ overInt.toString()
+                            + "\n"+
+                            squatInt.toString() + "\n"+ benchInt.toString());
                 }else{
                     Log.e("it", "doesn't exist in database");
                 }
@@ -174,15 +200,18 @@ public class Progress extends AppCompatActivity {
     private void graphProgress(GraphView graphId, ArrayList<Integer> progressArray, String color,
                                String title){
 
+
         if (progressArray.size() > 0) {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
             for (int i = 0; i < progressArray.size(); i++) {
                 DataPoint point = new DataPoint(i, progressArray.get(i));
+                Log.e("what is this point", String.valueOf(i));
                 series.appendData(point, true, progressArray.size());
             }
 
             series.setColor(Color.parseColor(color));
             series.setTitle(title);
+            graphId.getLegendRenderer().resetStyles();
             graphId.getLegendRenderer().setVisible(true);
 
             graphId.addSeries(series);
@@ -192,7 +221,6 @@ public class Progress extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "weight for" + title + dataPoint, Toast.LENGTH_SHORT).show();
                 }
             });
-            Log.e("series was added...", series.toString());
 
         }
 
