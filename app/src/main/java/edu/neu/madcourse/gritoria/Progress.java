@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.common.graph.Graph;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,8 +45,11 @@ public class Progress extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
-        String tokenID = getIntent().getStringExtra("tokenID");
-        Log.e("token id", tokenID + "bout to get swole");
+//        String tokenID = getIntent().getStringExtra("tokenID");
+        String mAuth = FirebaseAuth.getInstance().getUid();
+
+
+        Log.e("mAuth directly", mAuth);
 
 
 
@@ -66,7 +70,7 @@ public class Progress extends AppCompatActivity {
 
         rootRef = FirebaseDatabase.getInstance().getReference();
         FirebaseDatabase.getInstance().getReference()
-                .child("users").child(tokenID).
+                .child("users").child(mAuth).
                 child("workouts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -138,16 +142,16 @@ public class Progress extends AppCompatActivity {
                     });
                 }else{
                     Log.e("doesn't exist", "nope nope");
-                    AlertDialog alertDialog = new AlertDialog.Builder(Progress.this).create();
-                    alertDialog.setTitle("Please log a lift");
-                    alertDialog.setMessage("In order to see your progress, you have to lift first.");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
+//                    AlertDialog alertDialog = new AlertDialog.Builder(Progress.this).create();
+//                    alertDialog.setTitle("Please log a lift");
+//                    alertDialog.setMessage("In order to see your progress, you have to lift first.");
+//                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.dismiss();
+//                                }
+//                            });
+//                    alertDialog.show();
                 }
 
 

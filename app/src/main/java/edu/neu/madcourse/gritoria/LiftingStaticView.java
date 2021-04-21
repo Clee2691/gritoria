@@ -13,11 +13,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +57,15 @@ public class LiftingStaticView extends AppCompatActivity {
         rootRef = FirebaseDatabase.getInstance().getReference();
 //        userStore = FirebaseStorage.getInstance();
         userStoreRef = rootRef.child("users");
+
+        String mAuth = FirebaseAuth.getInstance().getUid();
+
+
+        Log.e("mAuth in static view", mAuth);
+
+
+
+
 
 
         //adding all the lift names to map to db
@@ -273,15 +287,32 @@ public class LiftingStaticView extends AppCompatActivity {
                                         setFinalMap(squatMap, deadMap, benchMap,overHeadPressMap);
 
                                          AtomicInteger counter = new AtomicInteger(0);
-                                          liftNames.forEach(name -> {
+                                         rootRef.child("users").child(mAuth).addListenerForSingleValueEvent(new ValueEventListener() {
+                                             @Override
+                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                 if(snapshot.exists()){
+                                                     Log.e("yup", "im lego");
+                                                     liftNames.forEach(name -> {
                                               rootRef.child("users").
-                                                      child("4RX89PfEBUVDkH6FSHogqRse5Q72").
+                                                      child(mAuth).
                                                         child("workouts").child(myDate).child(name).
                                                       setValue(mapOfWorkoutActivity.get(counter.get()));
 
                                               counter.addAndGet(1);
 
                                           });
+                                                 }
+                                                 else{
+                                                     Log.e("houston", "we've got a problem");
+                                                 }
+
+                                             }
+
+                                             @Override
+                                             public void onCancelled(@NonNull DatabaseError error) {
+
+                                             }
+                                         });
 
                                         dialog.dismiss();
 

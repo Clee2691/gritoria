@@ -47,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("tokenID", mAuth.getUid());
         startActivity(intent);
 
+        Intent secondIntent = new Intent(getApplicationContext(), LiftingStaticView.class);
+        intent.putExtra("tokenId", mAuth.getUid());
+        startActivity(secondIntent);
+
+
         Button team = findViewById(R.id.TeamButton);
         team.setOnClickListener(new View.OnClickListener() {
             @Override
