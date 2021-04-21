@@ -3,14 +3,20 @@ package edu.neu.madcourse.gritoria.bosses;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -51,8 +57,12 @@ public class worldFights extends AppCompatActivity {
     private String playerTeam;
     private long bossStartTime;
     private int bossHealth;
+    private boolean bossKilled;
     private boolean teamIsFighting;
     private boolean isLeader;
+    private final double expMultiplier = 0.25;
+    private int teamPower;
+    private String teamWorld;
     Handler uiHandler;
     FirebaseUser currPlayer;
     FirebaseDatabase gritFB;
@@ -129,11 +139,16 @@ public class worldFights extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 DataSnapshot userRef = snapshot.child("users").child(playerUID);
-                DataSnapshot teamRef = snapshot.child("teams").child(playerTeam).child("currFight");
+                DataSnapshot teamRef = snapshot.child("teams").child(playerTeam);
                 currPlayerReadyStatus = userRef.child("isReady").getValue(boolean.class);
                 playerWorld = userRef.child("currWorld").getValue(String.class);
                 playerIsFighting = userRef.child("isFighting").getValue(boolean.class);
                 isLeader = userRef.child("isLeader").getValue(boolean.class);
+                bossKilled = teamRef.child("currFight").child("isKilled").getValue(boolean.class);
+                teamPower = teamRef.child("totalPower").getValue(Integer.class);
+                teamWorld = teamRef.child("currFight").child("world").getValue(String.class);
+                Button endButton = findViewById(R.id.buttonResults);
+                TextView bossTime = findViewById(R.id.textViewTimeLeftVal);
 
                 if (playerTeam.equals("")) {
                     readyButton.setVisibility(View.GONE);
@@ -168,9 +183,24 @@ public class worldFights extends AppCompatActivity {
                 }
 
                 if (teamIsFighting &&
-                    teamRef.child("world").getValue(String.class).equals(currWorld)) {
-                    bossStartTime = teamRef.child("startTime").getValue(long.class);
+                    teamRef.child("currFight").child("world").getValue(String.class).equals(currWorld)) {
+                    bossStartTime = teamRef.child("currFight").child("startTime").getValue(long.class);
                     determineTime();
+                }
+
+                if (bossKilled && teamWorld.equals(currWorld)) {
+                    bossTime.setVisibility(View.GONE);
+                    endButton.setEnabled(true);
+                    endButton.setVisibility(View.VISIBLE);
+                } else if (!bossKilled && playerWorld.equals(currWorld)) {
+                    endButton.setEnabled(false);
+                    endButton.setVisibility(View.GONE);
+                } else if (!playerWorld.equals(currWorld)) {
+                    endButton.setEnabled(false);
+                    endButton.setVisibility(View.GONE);
+                } else if (bossKilled && !teamWorld.equals(currWorld)) {
+                    endButton.setEnabled(false);
+                    endButton.setVisibility(View.GONE);
                 }
             }
 
@@ -180,6 +210,25 @@ public class worldFights extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // If team finishes boss, show results
+    //TODO: TEST THIS OUT!
+    public void getEndResults(View v) {
+        TextView bossTime = findViewById(R.id.textViewTimeLeftVal);
+        String message = String.format("Congratulations %s!\nYou gained %.0f exp each!",
+                playerTeam, (bossHealth * expMultiplier));
+        DialogFragment finishFightDialog = new FinishFightDialog(message);
+        finishFightDialog.show(getSupportFragmentManager(), "LOOT");
+
+        v.setEnabled(false);
+        v.setVisibility(View.GONE);
+        gritFB.getReference("teams/" + playerTeam + "/currFight").
+                child("isKilled").setValue(false);
+        gritFB.getReference("teams/" + playerTeam + "/currFight").
+                child("world").setValue("");
+
+        bossTime.setVisibility(View.VISIBLE);
     }
 
     private void determineTime() {
@@ -192,7 +241,7 @@ public class worldFights extends AppCompatActivity {
     // if the elapsed time is == boss health
     class timeThread implements Runnable {
         long deltaTime;
-        int finalTime;
+        int finalTime = bossHealth;
         DatabaseReference teamFight;
         DatabaseReference playerRef;
         TextView bossTimer;
@@ -210,29 +259,33 @@ public class worldFights extends AppCompatActivity {
             teamFight = gritFB.getReference("teams/" + playerTeam + "/currFight");
 
             while(teamIsFighting && bossStartTime > 0) {
+                currTimeInEpoch = Instant.now().getEpochSecond();
                 try {
-                    currTimeInEpoch = Instant.now().getEpochSecond();
                     Thread.sleep(1000);
-                    deltaTime= currTimeInEpoch - bossStartTime;
-                    finalTime = (int) (bossHealth - deltaTime);
-                    uiHandler.post(()-> bossTimer.setText(
-                            String.format("%d seconds left", finalTime)));
-                    uiHandler.post(()->bossProgBar.setProgress(finalTime));
-                    uiHandler.post(()->bossHealthNum.setText(String.format("Health: %d/%d",
-                            finalTime, bossHealth)));
-
-                    if (finalTime <= 0) {
-                        finishFight();
-                        break;
-                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                }
+                deltaTime = currTimeInEpoch - bossStartTime;
+                Log.e("Delta Time", String.format("%d",deltaTime));
+                finalTime -= (int) deltaTime + (teamPower * 0.15);
+                Log.e("final time",String.format("%d",finalTime));
+                uiHandler.post(()-> bossTimer.setText(
+                        String.format("%d seconds left", finalTime)));
+                uiHandler.post(()->bossProgBar.setProgress(finalTime));
+                uiHandler.post(()->bossHealthNum.setText(String.format("Health: %d/%d",
+                        finalTime, bossHealth)));
+
+                if (finalTime <= 0) {
+                    finishFight();
+                    break;
                 }
             }
         }
 
         private void finishFight() {
             readyButton = findViewById(R.id.btnReadyUp);
+            TextView bossTime = findViewById(R.id.textViewTimeLeftVal);
+            uiHandler.post(()->bossTime.setVisibility(View.GONE));
 
             uiHandler.post(()-> bossTimer.setText(String.format("Boss Complete!")));
             uiHandler.post(()-> bossHealthNum.setText(String.format("0/%d", bossHealth)));
@@ -251,7 +304,7 @@ public class worldFights extends AppCompatActivity {
                     @Override
                     public Transaction.Result doTransaction(@NonNull MutableData currentData) {
                         int currExp = currentData.getValue(Integer.class);
-                        currExp += bossHealth * 0.15;
+                        currExp += bossHealth * expMultiplier;
                         currentData.setValue(currExp);
                         return Transaction.success(currentData);
                     }
@@ -273,19 +326,25 @@ public class worldFights extends AppCompatActivity {
 
     public void startAttack(View v) {
         boolean canAttack = determineIfReady();
+        Button atkButton = findViewById(R.id.buttonAttack);
         DatabaseReference currFightRef = gritFB.getReference("teams/" + playerTeam +
                                                             "/currFight");
         DatabaseReference userRef = gritFB.getReference("users/");
-        if (canAttack && !teamIsFighting) {
+        if (canAttack && !bossKilled) {
             teamIsFighting = true;
             bossStartTime = Instant.now().getEpochSecond();
             currFightRef.child("startTime").setValue(bossStartTime);
             currFightRef.child("isFighting").setValue(true);
-            currFightRef.child("world").setValue("1-1");
+            currFightRef.child("world").setValue(currWorld);
             for (String teamMate : teammateUIDList) {
                 userRef.child(teamMate).child("isFighting").setValue(true);
             }
+            atkButton.setVisibility(View.GONE);
             determineTime();
+        } else {
+            Toast.makeText(this,
+                    "Either your team isn't ready or the boss is already dead! Claim the loot!",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
