@@ -18,6 +18,13 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import pl.droidsonroids.gif.GifImageView;
 
 public class RunningActivity extends AppCompatActivity implements SensorEventListener {
@@ -27,6 +34,8 @@ public class RunningActivity extends AppCompatActivity implements SensorEventLis
     private TextView stepCounterValue;
     private TextView distanceValue;
     private GifImageView gifAnimation;
+    DatabaseReference mDatabase;
+    FirebaseAuth mAuth;
     private boolean active = false;
     private int stepCount = 0;
     private float distance = 0;
@@ -37,10 +46,12 @@ public class RunningActivity extends AppCompatActivity implements SensorEventLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_running);
-
         gifAnimation = findViewById(R.id.ninjaRunnerGif);
         stepCounterValue = findViewById(R.id.stepsValue);
         distanceValue = findViewById(R.id.distanceValue);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -69,6 +80,7 @@ public class RunningActivity extends AppCompatActivity implements SensorEventLis
                     questButton.setText("Begin Crawl");
                     questButton.setBackgroundColor(Color.GREEN);
                     gifAnimation.setImageResource(R.drawable.idle);
+                    saveRun(mDatabase, String.valueOf(distance), stepCount);
                 }
                 else {
                     active = true;
@@ -122,5 +134,15 @@ public class RunningActivity extends AppCompatActivity implements SensorEventLis
     public void openRunningLog(){
         Intent intent = new Intent(this, RunningLogActivity.class);
         startActivity(intent);
+    }
+
+    private void saveRun(DatabaseReference dbRef, String distance, int steps) {
+        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+
+        String distanceTraveled = String.format("%.2f", (stepCount * .0005));
+
+        dbRef.child("users").child(mAuth.getCurrentUser().getUid()).child("runs").child(date).child("distance").setValue(distanceTraveled);
+        dbRef.child("users").child(mAuth.getCurrentUser().getUid()).child("runs").child(date).child("steps").setValue(steps);
+
     }
 }

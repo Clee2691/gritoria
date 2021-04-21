@@ -29,6 +29,7 @@ public class RunningLogAdapter extends RecyclerView.Adapter<RunningLogAdapter.Ru
 
         public TextView runningDateValue;
         public TextView runningDistanceValue;
+        public TextView runningStepsValue;
         public Button buttonInfo;
         private final Context context;
 
@@ -37,6 +38,7 @@ public class RunningLogAdapter extends RecyclerView.Adapter<RunningLogAdapter.Ru
             context = itemView.getContext();
             runningDateValue = itemView.findViewById(R.id.Run_Date);
             runningDistanceValue = itemView.findViewById(R.id.Run_Distance);
+            runningStepsValue = itemView.findViewById(R.id.Run_Steps);
             buttonInfo = itemView.findViewById(R.id.Button_Info);
 
             buttonInfo.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +51,7 @@ public class RunningLogAdapter extends RecyclerView.Adapter<RunningLogAdapter.Ru
                             Intent intent = new Intent(context, RunningInfoActivity.class);
                             intent.putExtra("date", runningDateValue.getText());
                             intent.putExtra("distance", runningDistanceValue.getText());
+                            intent.putExtra("steps", runningStepsValue.getText());
                             context.startActivity(intent);
                         }
                     }
@@ -74,6 +77,7 @@ public class RunningLogAdapter extends RecyclerView.Adapter<RunningLogAdapter.Ru
         RunningLogItem item = mRunLogList.get(position);
         holder.runningDateValue.setText(item.getRunDate().toString());
         holder.runningDistanceValue.setText(item.getRunDistance());
+        holder.runningStepsValue.setText(item.getSteps());
     }
 
     @Override
