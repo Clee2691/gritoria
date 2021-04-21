@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.neu.madcourse.gritoria">
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
 
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -13,23 +13,50 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gritoria">
-        <activity android:name=".TeamSelectionActivity"></activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".SplashScreenActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
-        <activity android:name=".RunningInfoActivity" />
-        <activity android:name=".RunningLogActivity" />
-        <activity android:name=".RunningActivity" />
-        <activity android:name=".bosses.worldFights"></activity>
-        <activity android:name=".Map" />
-        <activity android:name=".Profile" />
-        <activity android:name=".Planner" />
-        <activity android:name=".Team" />
-        <activity android:name=".MainActivity"/>
+        <activity
+            android:name=".TeamSelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".RunningInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RunningLogActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RunningActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".bosses.worldFights"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Map"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Profile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Planner"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Team"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".LiftingActivity" />
         <activity android:name=".LiftingInfo" />
         <activity android:name=".LiftingStaticView"/>
