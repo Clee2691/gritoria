@@ -52,15 +52,12 @@ public class Progress extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
-//        String tokenID = getIntent().getStringExtra("tokenID");
+        //getting the user
         String mAuth = FirebaseAuth.getInstance().getUid();
-
-
 
         //initialize graph view by id and setting it's title
         GraphView graph = (GraphView) findViewById(R.id.graph);
         graph.setTitle("Weight Over Time in Pounds");
-
 
 
 
@@ -72,112 +69,8 @@ public class Progress extends AppCompatActivity {
 
 
         rootRef = FirebaseDatabase.getInstance().getReference();
-        FirebaseDatabase.getInstance().getReference()
-                .child("users").child(mAuth).
-                child("workouts").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-                    Log.e("i exist", "existing");
+        mainFunction(graph, mAuth, squatButton, benchButton, deadButton, overHeadButton);
 
-                    for (DataSnapshot parentDS : dataSnapshot.getChildren()) {
-
-                        for (DataSnapshot ds : parentDS.getChildren()) {
-                            String key = ds.getKey();
-                            switch (key) {
-                                case "Squats": {
-                                    String weight = ds.child("weight").getValue().toString();
-                                    squatWeight.add(weight);
-                                    break;
-                                }
-                                case "Bench": {
-                                    String weight = ds.child("weight").getValue().toString();
-                                    benchWeight.add(weight);
-                                    break;
-                                }
-                                case "Deadlift": {
-                                    String weight = ds.child("weight").getValue().toString();
-                                    deadWeight.add(weight);
-                                    break;
-                                }
-                                case "Overhead Press": {
-                                    String weight = ds.child("weight").getValue().toString();
-                                    overheadWeight.add(weight);
-                                    break;
-                                }
-                            }
-
-                        }
-                    }
-
-//               getting all the values and converting them to an int
-                    ArrayList<Integer> squatInt = getIntArray(squatWeight);
-                    ArrayList<Integer> benchInt = getIntArray(benchWeight);
-                    ArrayList<Integer> deadInt = getIntArray(deadWeight);
-                    ArrayList<Integer> overInt = getIntArray(overheadWeight);
-
-//                onClick for all of the buttons
-                    squatButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            if(!clicked) {
-                                graphProgress(graph, squatInt, "green", "Squats");
-                            }
-
-                            clicked = true;
-
-                        }
-                    });
-
-                    benchButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if(!benchClick) {
-                                graphProgress(graph, benchInt, "blue", "Bench");
-                            }
-                            benchClick = true;
-
-                        }
-
-                    });
-
-                    deadButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if(!deadClick) {
-                                graphProgress(graph, deadInt, "red", "Deadlift");
-                            }
-                            deadClick = true;                        }
-                    });
-
-                    overHeadButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if(!overClick) {
-                                graphProgress(graph, overInt, "#CCCCFF", "Press");
-                            }
-                            overClick = true;
-                        }
-                    });
-
-                    Log.e("all of the arrays", deadInt.toString() + "\n"+ overInt.toString()
-                            + "\n"+
-                            squatInt.toString() + "\n"+ benchInt.toString());
-                }else{
-                    Log.e("it", "doesn't exist in database");
-                }
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("TAG", databaseError.getMessage());
-
-            }
-        });
 
     }
 
@@ -199,13 +92,17 @@ public class Progress extends AppCompatActivity {
 
     private void graphProgress(GraphView graphId, ArrayList<Integer> progressArray, String color,
                                String title){
+        if(progressArray.size() < 2 ){
+            Toast.makeText(getApplicationContext(), "You need to lift at least twice to " +
+                    "see results", Toast.LENGTH_SHORT).show();
+        }
+
 
 
         if (progressArray.size() > 0) {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
             for (int i = 0; i < progressArray.size(); i++) {
                 DataPoint point = new DataPoint(i, progressArray.get(i));
-                Log.e("what is this point", String.valueOf(i));
                 series.appendData(point, true, progressArray.size());
             }
 
@@ -227,8 +124,121 @@ public class Progress extends AppCompatActivity {
 
     }
 
+    private void mainFunction(GraphView graph, String mAuth, Button squatButton, Button deadButton,
+                              Button benchButton, Button overHeadButton) {
 
 
+            FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(mAuth).
+                    child("workouts").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Log.e("i exist", "existing");
+
+                        for (DataSnapshot parentDS : dataSnapshot.getChildren()) {
+
+                            for (DataSnapshot ds : parentDS.getChildren()) {
+                                String key = ds.getKey();
+                                switch (key) {
+                                    case "Squats": {
+                                        String weight = ds.child("weight").getValue().toString();
+                                        squatWeight.add(weight);
+                                        break;
+                                    }
+                                    case "Bench": {
+                                        String weight = ds.child("weight").getValue().toString();
+                                        benchWeight.add(weight);
+                                        break;
+                                    }
+                                    case "Deadlift": {
+                                        String weight = ds.child("weight").getValue().toString();
+                                        deadWeight.add(weight);
+                                        break;
+                                    }
+                                    case "Overhead Press": {
+                                        String weight = ds.child("weight").getValue().toString();
+                                        overheadWeight.add(weight);
+                                        break;
+                                    }
+                                }
+
+                            }
+                        }
+
+//               getting all the values and converting them to an int
+                        ArrayList<Integer> squatInt = getIntArray(squatWeight);
+                        ArrayList<Integer> benchInt = getIntArray(benchWeight);
+                        ArrayList<Integer> deadInt = getIntArray(deadWeight);
+                        ArrayList<Integer> overInt = getIntArray(overheadWeight);
+
+//                onClick for all of the buttons
+                        squatButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                if (!clicked) {
+                                    graphProgress(graph, squatInt, "green", "Squats");
+                                }
+
+                                clicked = true;
+
+                            }
+                        });
+
+                        benchButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (!benchClick) {
+                                    graphProgress(graph, benchInt, "blue", "Bench");
+                                }
+                                benchClick = true;
+
+                            }
+
+                        });
+
+                        deadButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (!deadClick) {
+                                    graphProgress(graph, deadInt, "red", "Deadlift");
+                                }
+                                deadClick = true;
+                            }
+                        });
+
+                        overHeadButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (!overClick) {
+                                    graphProgress(graph, overInt, "#CCCCFF", "Press");
+                                }
+                                overClick = true;
+                            }
+                        });
+
+                        Log.e("all of the arrays", deadInt.size() + "\n" + overInt.size()
+                                + "\n" +
+                                squatInt.size() + "\n" + benchInt.size());
+                    } else {
+                        Log.e("it", "doesn't exist in database");
+                    }
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d("TAG", databaseError.getMessage());
+
+                }
+            });
+
+
+
+
+        }
 
 
 
