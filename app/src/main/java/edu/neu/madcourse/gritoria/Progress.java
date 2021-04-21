@@ -1,5 +1,6 @@
 package edu.neu.madcourse.gritoria;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.common.graph.Graph;
@@ -42,6 +44,9 @@ public class Progress extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
+        String tokenID = getIntent().getStringExtra("tokenID");
+        Log.e("token id", tokenID + "bout to get swole");
+
 
 
 
@@ -61,75 +66,89 @@ public class Progress extends AppCompatActivity {
 
         rootRef = FirebaseDatabase.getInstance().getReference();
         FirebaseDatabase.getInstance().getReference()
-                .child("users").child("4RX89PfEBUVDkH6FSHogqRse5Q72").
+                .child("users").child(tokenID).
                 child("workouts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
 
-                for (DataSnapshot parentDS : dataSnapshot.getChildren()) {
+                    for (DataSnapshot parentDS : dataSnapshot.getChildren()) {
 
-                    for (DataSnapshot ds : parentDS.getChildren()) {
-                         String key = ds.getKey();
-                        switch (key) {
-                            case "Squats": {
-                                String weight = ds.child("weight").getValue().toString();
-                                squatWeight.add(weight);
-                                break;
+                        for (DataSnapshot ds : parentDS.getChildren()) {
+                            String key = ds.getKey();
+                            switch (key) {
+                                case "Squats": {
+                                    String weight = ds.child("weight").getValue().toString();
+                                    squatWeight.add(weight);
+                                    break;
+                                }
+                                case "Bench": {
+                                    String weight = ds.child("weight").getValue().toString();
+                                    benchWeight.add(weight);
+                                    break;
+                                }
+                                case "Deadlift": {
+                                    String weight = ds.child("weight").getValue().toString();
+                                    deadWeight.add(weight);
+                                    break;
+                                }
+                                case "Overhead Press": {
+                                    String weight = ds.child("weight").getValue().toString();
+                                    overheadWeight.add(weight);
+                                    break;
+                                }
                             }
-                            case "Bench": {
-                                String weight = ds.child("weight").getValue().toString();
-                                benchWeight.add(weight);
-                                break;
-                            }
-                            case "Deadlift": {
-                                String weight = ds.child("weight").getValue().toString();
-                                deadWeight.add(weight);
-                                break;
-                            }
-                            case "Overhead Press": {
-                                String weight = ds.child("weight").getValue().toString();
-                                overheadWeight.add(weight);
-                                break;
-                            }
+
                         }
-
                     }
-                }
 
 //               getting all the values and converting them to an int
-                ArrayList<Integer> squatInt = getIntArray(squatWeight);
-                ArrayList<Integer> benchInt = getIntArray(benchWeight);
-                ArrayList<Integer> deadInt = getIntArray(deadWeight);
-                ArrayList<Integer> overInt = getIntArray(overheadWeight);
+                    ArrayList<Integer> squatInt = getIntArray(squatWeight);
+                    ArrayList<Integer> benchInt = getIntArray(benchWeight);
+                    ArrayList<Integer> deadInt = getIntArray(deadWeight);
+                    ArrayList<Integer> overInt = getIntArray(overheadWeight);
 
 //                onClick for all of the buttons
-                squatButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        graphProgress(graph, squatInt, "green", "Squats") ;
-                    }
-                });
+                    squatButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            graphProgress(graph, squatInt, "green", "Squats");
+                        }
+                    });
 
-                benchButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        graphProgress(graph, benchInt, "red", "Bench");
-                    }
-                });
+                    benchButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            graphProgress(graph, benchInt, "red", "Bench");
+                        }
+                    });
 
-                deadButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        graphProgress(graph, deadInt, "blue", "Deadlift");
-                    }
-                });
+                    deadButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            graphProgress(graph, deadInt, "blue", "Deadlift");
+                        }
+                    });
 
-                overHeadButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        graphProgress(graph, overInt, "cyan", "Press");
-                    }
-                });
+                    overHeadButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            graphProgress(graph, overInt, "cyan", "Press");
+                        }
+                    });
+                }else{
+                    Log.e("doesn't exist", "nope nope");
+                    AlertDialog alertDialog = new AlertDialog.Builder(Progress.this).create();
+                    alertDialog.setTitle("Please log a lift");
+                    alertDialog.setMessage("In order to see your progress, you have to lift first.");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
 
 
 
@@ -138,6 +157,7 @@ public class Progress extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("TAG", databaseError.getMessage());
+
             }
         });
 

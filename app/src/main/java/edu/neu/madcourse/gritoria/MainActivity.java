@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         Log.e("log:", "name: " + currentUser + " token: " +  mAuth.getUid());
+        Intent intent = new Intent(getApplicationContext(), Progress.class);
+        intent.putExtra("tokenID", mAuth.getUid());
+        startActivity(intent);
 
         Button team = findViewById(R.id.TeamButton);
         team.setOnClickListener(new View.OnClickListener() {
