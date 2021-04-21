@@ -49,9 +49,6 @@
             android:name=".Profile"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Planner"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Team"
             android:screenOrientation="portrait" />
         <activity
