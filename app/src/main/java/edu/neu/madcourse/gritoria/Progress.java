@@ -183,7 +183,7 @@ public class Progress extends AppCompatActivity {
 
             series.setColor(Color.parseColor(color));
             series.setTitle(title);
-//            graphId.getLegendRenderer().setVisible(true);
+            graphId.getLegendRenderer().setVisible(true);
 
             graphId.addSeries(series);
             series.setOnDataPointTapListener(new OnDataPointTapListener() {
@@ -192,6 +192,7 @@ public class Progress extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "weight for" + title + dataPoint, Toast.LENGTH_SHORT).show();
                 }
             });
+            Log.e("series was added...", series.toString());
 
         }
 
