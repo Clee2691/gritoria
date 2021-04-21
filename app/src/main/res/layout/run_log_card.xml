@@ -45,6 +45,13 @@
             android:layout_alignParentEnd="true"
             android:text="info" />
 
+        <TextView
+            android:id="@+id/Run_Steps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:visibility="invisible" />
+
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
