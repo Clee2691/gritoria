@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gritoria">
+
         <activity android:name=".SplashScreenActivity">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -56,9 +57,12 @@
             android:screenOrientation="portrait" />
         <activity android:name=".LiftingActivity" />
         <activity android:name=".LiftingInfo" />
-        <activity android:name=".LiftingStaticView"/>
+        <activity android:name=".LiftingStaticView"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"/>
         <activity android:name=".LiftingGlobal"/>
-        <activity android:name=".Progress" />
+        <activity android:name=".Progress"
+
+            />
         <activity android:name=".LiftLog" />
         <service
             android:name=".MessagingService"
