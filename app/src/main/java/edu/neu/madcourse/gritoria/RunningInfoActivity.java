@@ -23,7 +23,7 @@ public class RunningInfoActivity extends AppCompatActivity {
         runningDistanceValue.setText(getIntent().getStringExtra("distance"));
 
         runningSteps = findViewById(R.id.runningInfoSteps);
-        runningSteps.setText(getIntent().getStringExtra("steps"));
+        runningSteps.setText(getIntent().getStringExtra("steps") + " steps");
         
     }
 }
