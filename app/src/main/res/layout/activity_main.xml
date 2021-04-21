@@ -25,17 +25,6 @@
             android:text="Team" />
 
         <Button
-            android:id="@+id/PlannerButton"
-            android:textSize="32sp"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="#9eacc9"
-            android:fontFamily="@font/arizonia_regular"
-            android:textAllCaps="false"
-            android:text="Planner" />
-
-        <Button
             android:id="@+id/ProfileButton"
             android:textSize="32sp"
             android:layout_width="match_parent"
