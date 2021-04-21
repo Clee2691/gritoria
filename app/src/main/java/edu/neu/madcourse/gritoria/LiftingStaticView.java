@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +23,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -42,7 +45,6 @@ public class LiftingStaticView extends AppCompatActivity {
     List<HashMap> mapOfWorkoutActivity = new ArrayList();
 
 
-
     private DatabaseReference rootRef;
     DatabaseReference userStoreRef;
     private String tag = "debugging...";
@@ -53,7 +55,7 @@ public class LiftingStaticView extends AppCompatActivity {
         setContentView(R.layout.lifting_static_view);
 
         //items for database
-        String myDate= getIntent().getStringExtra("date");
+        String myDate = getIntent().getStringExtra("date");
         //root level , root document this is gritoria
         rootRef = FirebaseDatabase.getInstance().getReference();
 //        userStore = FirebaseStorage.getInstance();
@@ -62,8 +64,9 @@ public class LiftingStaticView extends AppCompatActivity {
         String mAuth = FirebaseAuth.getInstance().getUid();
         String myPower = rootRef.child("users").child(mAuth).child("power").toString();
 
+        String powerString =  rootRef.child("users").child(mAuth).child("stats").child("str").toString();
 
-        Log.e("mAuth in static view", mAuth);
+        Log.e("getting power...", powerString);
 
 
         //adding all the lift names to map to db
@@ -208,7 +211,6 @@ public class LiftingStaticView extends AppCompatActivity {
         });
 
 
-
         //all the id for overhead press
         EditText overWeight = findViewById(R.id.pressWeight);
         EditText overSets = findViewById(R.id.pressSets);
@@ -274,43 +276,42 @@ public class LiftingStaticView extends AppCompatActivity {
 
                                         setMap(squatMap, integerify(squatWeight),
                                                 integerify(squatSets), integerify(squatReps));
-                                        setMap(deadMap, integerify(deadWeight),  integerify(deadSets)
+                                        setMap(deadMap, integerify(deadWeight), integerify(deadSets)
                                                 , integerify(deadReps));
                                         setMap(benchMap, integerify(benchWeight),
                                                 integerify(benchSets), integerify(benchReps));
                                         setMap(overHeadPressMap,
-                                                integerify(overWeight),  integerify(overSets),
+                                                integerify(overWeight), integerify(overSets),
                                                 integerify(overReps));
 
-                                        setFinalMap(squatMap, deadMap, benchMap,overHeadPressMap);
+                                        setFinalMap(squatMap, deadMap, benchMap, overHeadPressMap);
 
-                                         AtomicInteger counter = new AtomicInteger(0);
-                                         rootRef.child("users").child(mAuth).addListenerForSingleValueEvent(new ValueEventListener() {
-                                             @Override
-                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                 if(snapshot.exists()){
-                                                     Log.e("yup", "im lego");
-                                                     liftNames.forEach(name -> {
-                                              rootRef.child("users").
-                                                      child(mAuth).
-                                                        child("workouts").child(myDate).child(name).
-                                                      setValue(mapOfWorkoutActivity.get(counter.get()));
+                                        AtomicInteger counter = new AtomicInteger(0);
+                                        rootRef.child("users").child(mAuth).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    Log.e("yup", "im lego");
+                                                    liftNames.forEach(name -> {
+                                                        rootRef.child("users").
+                                                                child(mAuth).
+                                                                child("workouts").child(myDate).child(name).
+                                                                setValue(mapOfWorkoutActivity.get(counter.get()));
 
-                                              counter.addAndGet(1);
+                                                        counter.addAndGet(1);
 
-                                          });
-//                                                     getPower(mAuth);
-                                                 }
-                                                 else{
+                                                    });
+                                                     addPower(mAuth);
+                                                } else {
                                                     Log.e("Does", "exist");
-                                                 }
-                                             }
+                                                }
+                                            }
 
-                                             @Override
-                                             public void onCancelled(@NonNull DatabaseError error) {
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
 
-                                             }
-                                         });
+                                            }
+                                        });
 
                                         dialog.dismiss();
                                         exit();
@@ -337,32 +338,34 @@ public class LiftingStaticView extends AppCompatActivity {
         String returnText = edit.getText().toString();
         return returnText;
     }
+
     public Integer integerify(EditText edit) {
-        if(edit==null){
+        if (edit == null) {
             return 0;
         }
         String text = edit.getText().toString();
 
-        if(isNumeric(text)){
-            int returnValue=Integer.parseInt(text);
+        if (isNumeric(text)) {
+            int returnValue = Integer.parseInt(text);
             return returnValue;
         }
         return 0;
 
     }
 
-    public Integer stringToInt(String string){
-        if(string==null){
+    public Integer stringToInt(String string) {
+        if (string == null) {
             return 0;
         }
 
-        if(isNumeric(string)){
-            int returnValue=Integer.parseInt(string);
+        if (isNumeric(string)) {
+            int returnValue = Integer.parseInt(string);
             return returnValue;
         }
         return 0;
 
     }
+
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");
     }
@@ -374,8 +377,8 @@ public class LiftingStaticView extends AppCompatActivity {
 
     }
 
-    public void setFinalMap(HashMap<String,Integer> _squatMap,HashMap<String,Integer> _deadMap,
-                           HashMap<String,Integer> _benchMap, HashMap<String,Integer> _pressMap){
+    public void setFinalMap(HashMap<String, Integer> _squatMap, HashMap<String, Integer> _deadMap,
+                            HashMap<String, Integer> _benchMap, HashMap<String, Integer> _pressMap) {
 
         mapOfWorkoutActivity.add(_squatMap);
         mapOfWorkoutActivity.add(_deadMap);
@@ -385,32 +388,31 @@ public class LiftingStaticView extends AppCompatActivity {
     }
 
 
-    public void exit(){
+    public void exit() {
         Intent intent = new Intent(this, LiftingActivity.class);
         startActivity(intent);
     }
 
-    public void getPower(String mAuth){
-
-
-        rootRef.child("users").child(mAuth).child("power").addValueEventListener(new ValueEventListener() {
+    public void addPower(String mAuth) {
+        rootRef.child("users").child(mAuth).child("stats").child("str").runTransaction(new Transaction.Handler() {
+            @NonNull
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Object pow = dataSnapshot.getValue();
-                    myPower = myPower + Integer.valueOf((Integer) pow);
-                    rootRef.child("users").child(mAuth).child("power").setValue(myPower);
-
-                }
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                Log.e("what is current data?", currentData.toString());
+                int currStr = currentData.getValue(Integer.class);
+                currStr += 1;
+                currentData.setValue(currStr);
+                return Transaction.success(currentData);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
             }
         });
+
     }
 
-
-
-
 }
+
+
