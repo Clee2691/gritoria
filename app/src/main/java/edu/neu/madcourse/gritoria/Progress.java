@@ -49,10 +49,6 @@ public class Progress extends AppCompatActivity {
         String mAuth = FirebaseAuth.getInstance().getUid();
 
 
-        Log.e("mAuth directly", mAuth);
-
-
-
 
         //initialize graph view by id and setting it's title
         GraphView graph = (GraphView) findViewById(R.id.graph);
@@ -75,6 +71,7 @@ public class Progress extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
+                    Log.e("i exist", "existing");
 
                     for (DataSnapshot parentDS : dataSnapshot.getChildren()) {
 
@@ -117,6 +114,7 @@ public class Progress extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             graphProgress(graph, squatInt, "green", "Squats");
+
                         }
                     });
 
@@ -141,17 +139,7 @@ public class Progress extends AppCompatActivity {
                         }
                     });
                 }else{
-                    Log.e("doesn't exist", "nope nope");
-//                    AlertDialog alertDialog = new AlertDialog.Builder(Progress.this).create();
-//                    alertDialog.setTitle("Please log a lift");
-//                    alertDialog.setMessage("In order to see your progress, you have to lift first.");
-//                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    dialog.dismiss();
-//                                }
-//                            });
-//                    alertDialog.show();
+                    Log.e("it", "doesn't exist in database");
                 }
 
 
@@ -192,21 +180,25 @@ public class Progress extends AppCompatActivity {
                 DataPoint point = new DataPoint(i, progressArray.get(i));
                 series.appendData(point, true, progressArray.size());
             }
+
+            series.setColor(Color.parseColor(color));
+            series.setTitle(title);
+//            graphId.getLegendRenderer().setVisible(true);
+
+            graphId.addSeries(series);
             series.setOnDataPointTapListener(new OnDataPointTapListener() {
                 @Override
                 public void onTap(Series series, DataPointInterface dataPoint) {
-                    Toast.makeText(getApplicationContext(), "Weight at Day"+dataPoint, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "weight for" + title + dataPoint, Toast.LENGTH_SHORT).show();
                 }
             });
-            series.setColor(Color.parseColor(color));
-            series.setTitle(title);
-            graphId.getLegendRenderer().setVisible(true);
 
-
-            graphId.addSeries(series);
         }
 
+
     }
+
+
 
 
 
