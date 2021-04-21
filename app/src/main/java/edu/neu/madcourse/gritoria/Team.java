@@ -1,6 +1,7 @@
 package edu.neu.madcourse.gritoria;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -106,11 +108,54 @@ public class Team extends AppCompatActivity {
             }
         });
 
+
         TextView teamNameTitle = findViewById(R.id.TeamNameTitle);
-        teamNameTitle.setText(bundle.getString("teamName"));
+        teamNameTitle.setText("Team: " +bundle.getString("teamName"));
         HashMap<String, String> teamMembers = (HashMap<String, String>) bundle.getSerializable("teamMembers");
+
+        View groupChat = findViewById(R.id.layout_group_chat);
+        groupChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatabase.child("teams").child(bundle.getString("teamName")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        HashMap<String, String> teamMembersNew = (HashMap<String, String>) snapshot.child("members").getValue();
+                        AlertDialog alertDialog = new AlertDialog.Builder(Team.this).create(); //Read Update
+                        alertDialog.setTitle("Team Members:");
+                        String alert = "";
+                        for (String s:teamMembersNew.values()) {
+                            alert += s +"\n";
+                        }
+                        alertDialog.setMessage(alert);
+                        alertDialog.show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+            }
+        });
+
+        teamNameTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog alertDialog = new AlertDialog.Builder(Team.this).create(); //Read Update
+                alertDialog.setTitle("Team Members:");
+                String alert = "";
+                for (String s:teamMembers.values()) {
+                    alert += s +"\n";
+                }
+                alertDialog.setMessage(alert);
+                alertDialog.show();
+            }
+        });
         yourName = findViewById(R.id.UserName);
-        yourName.setText(bundle.getString("currUser"));
+        yourName.setText(bundle.getString("currUser") + "(You)");
     }
 
     public void openTeamSelection(){

@@ -154,6 +154,7 @@ public class RegisterActivity extends AppCompatActivity {
         postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("stats").setValue(userUpdates);
         postRef.child("taken names").child(username).setValue("true");
         postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("currWorld").setValue("");
+        postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("profileImage").setValue("mage");
         postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("isFighting").setValue(false);
         postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("isLeader").setValue(false);
         postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("isReady").setValue(false);

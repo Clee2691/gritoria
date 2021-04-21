@@ -120,6 +120,7 @@ public class TeamSelectionActivity extends AppCompatActivity {
 
         // Add team to user profile
         mDatabase.child("users").child(mAuth.getUid()).child("team").setValue(teamNameToAdd);
+        mDatabase.child("users").child(mAuth.getUid()).child("isLeader").setValue(true);
     }
 
     protected void joinTeam(String teamNameToJoin){
@@ -129,6 +130,13 @@ public class TeamSelectionActivity extends AppCompatActivity {
 
     protected void openTeam(){
         Intent intent = new Intent(this, Team.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }
