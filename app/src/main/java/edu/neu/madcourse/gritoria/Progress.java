@@ -98,7 +98,6 @@ public class Progress extends AppCompatActivity {
         }
 
 
-
         if (progressArray.size() > 0) {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
             for (int i = 0; i < progressArray.size(); i++) {
