@@ -44,10 +44,6 @@ public class Progress extends AppCompatActivity {
     private boolean benchClick = false;
     private boolean overClick = false;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +54,6 @@ public class Progress extends AppCompatActivity {
         //initialize graph view by id and setting it's title
         GraphView graph = (GraphView) findViewById(R.id.graph);
         graph.setTitle("Weight Over Time in Pounds");
-
-
 
         //initialize buttons that are relevant
         Button squatButton = findViewById(R.id.squatProg);
@@ -233,9 +227,6 @@ public class Progress extends AppCompatActivity {
 
                 }
             });
-
-
-
 
         }
 
