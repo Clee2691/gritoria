@@ -159,5 +159,6 @@ public class RegisterActivity extends AppCompatActivity {
         postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("isLeader").setValue(false);
         postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("isReady").setValue(false);
         postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("team").setValue("");
+        postRef.child("users").child(mAuth.getCurrentUser().getUid()).child("power").setValue(1);
     }
 }
