@@ -37,6 +37,7 @@ public class LiftingStaticView extends AppCompatActivity {
     HashMap<String, Integer> deadMap = new HashMap<>();
     HashMap<String, Integer> benchMap = new HashMap<>();
     HashMap<String, Integer> overHeadPressMap = new HashMap<>();
+    Integer myPower;
 
     List<HashMap> mapOfWorkoutActivity = new ArrayList();
 
@@ -59,13 +60,10 @@ public class LiftingStaticView extends AppCompatActivity {
         userStoreRef = rootRef.child("users");
 
         String mAuth = FirebaseAuth.getInstance().getUid();
+        String myPower = rootRef.child("users").child(mAuth).child("power").toString();
 
 
         Log.e("mAuth in static view", mAuth);
-
-
-
-
 
 
         //adding all the lift names to map to db
@@ -301,11 +299,11 @@ public class LiftingStaticView extends AppCompatActivity {
                                               counter.addAndGet(1);
 
                                           });
+//                                                     getPower(mAuth);
                                                  }
                                                  else{
-                                                     Log.e("houston", "we've got a problem");
+                                                    Log.e("Does", "exist");
                                                  }
-
                                              }
 
                                              @Override
@@ -315,11 +313,7 @@ public class LiftingStaticView extends AppCompatActivity {
                                          });
 
                                         dialog.dismiss();
-
-
                                         exit();
-
-
                                     }
                                 });
                         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "no",
@@ -337,8 +331,6 @@ public class LiftingStaticView extends AppCompatActivity {
 
         });
 
-
-
     }
 
     public String stringify(EditText edit) {
@@ -353,6 +345,19 @@ public class LiftingStaticView extends AppCompatActivity {
 
         if(isNumeric(text)){
             int returnValue=Integer.parseInt(text);
+            return returnValue;
+        }
+        return 0;
+
+    }
+
+    public Integer stringToInt(String string){
+        if(string==null){
+            return 0;
+        }
+
+        if(isNumeric(string)){
+            int returnValue=Integer.parseInt(string);
             return returnValue;
         }
         return 0;
@@ -381,8 +386,28 @@ public class LiftingStaticView extends AppCompatActivity {
 
 
     public void exit(){
-        Intent intent = new Intent(this, LiftLog.class);
+        Intent intent = new Intent(this, LiftingActivity.class);
         startActivity(intent);
+    }
+
+    public void getPower(String mAuth){
+
+
+        rootRef.child("users").child(mAuth).child("power").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Object pow = dataSnapshot.getValue();
+                    myPower = myPower + Integer.valueOf((Integer) pow);
+                    rootRef.child("users").child(mAuth).child("power").setValue(myPower);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
 
