@@ -177,7 +177,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@drawable/radius_grey"
-                android:id="@+id/deadSets" />
+                android:id="@+id/deadSets"
+                android:textColor="@color/black"
+                />
 
             <EditText
                 android:hint="Sets"
