@@ -49,14 +49,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button planner = findViewById(R.id.PlannerButton);
-        planner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openPlanner(currentUser);
-            }
-        });
-
         Button profile = findViewById(R.id.ProfileButton);
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,12 +120,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void openPlanner(String currentUser){
-        Intent intent = new Intent(this, Planner.class);
-        intent.putExtra("currUser", currentUser);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
 
     public void openProfile(String currentUser){
         Intent intent = new Intent(this, Profile.class);
