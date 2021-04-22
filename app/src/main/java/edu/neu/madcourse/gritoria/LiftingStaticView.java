@@ -299,7 +299,6 @@ public class LiftingStaticView extends AppCompatActivity {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                 if (snapshot.exists()) {
-                                                    Log.e("yup", "im lego");
                                                     liftNames.forEach(name -> {
                                                         rootRef.child("users").
                                                                 child(mAuth).

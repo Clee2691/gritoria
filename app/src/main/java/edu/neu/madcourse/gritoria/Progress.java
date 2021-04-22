@@ -127,7 +127,6 @@ public class Progress extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        Log.e("i exist", "existing");
 
                         for (DataSnapshot parentDS : dataSnapshot.getChildren()) {
 
@@ -211,9 +210,6 @@ public class Progress extends AppCompatActivity {
                             }
                         });
 
-                        Log.e("all of the arrays", deadInt.size() + "\n" + overInt.size()
-                                + "\n" +
-                                squatInt.size() + "\n" + benchInt.size());
                     } else {
                         Log.e("it", "doesn't exist in database");
                     }
