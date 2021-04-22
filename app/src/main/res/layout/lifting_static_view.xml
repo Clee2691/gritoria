@@ -1,7 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/wizard"
+    >
 
 
     <LinearLayout
@@ -9,7 +11,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:background="@drawable/dragon"
 
         >
 
@@ -28,10 +29,11 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:background="#e6f5ff">
+            android:background="@color/black">
 
             <EditText
                 android:text="Squat"
+                android:textColor="@color/black"
                 android:id="@+id/squatText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -43,10 +45,13 @@
                 android:id="@+id/squatWeight"
                 android:hint="Weight"
                 android:layout_width="0dp"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@drawable/radius_grey"/>
+                android:background="@drawable/radius_grey"
+                android:textColorHint="@color/black"
+                />
             <EditText
                 android:id="@+id/squatSets"
                 android:layout_width="0dp"
@@ -54,7 +59,11 @@
                 android:layout_weight="1"
                 android:hint="Sets"
                 android:gravity="center"
-                android:background="@drawable/radius_grey"/>
+                android:background="@drawable/radius_grey"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+
+                />
 
             <EditText
                 android:hint="Reps"
@@ -63,7 +72,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@drawable/radius_grey"/>
+                android:background="@drawable/radius_grey"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -71,7 +84,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:background="@color/black">
 
             <EditText
                 android:text="Bench"
@@ -80,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="@color/black"
                 android:background="@drawable/radius_grey"/>
 
             <EditText
@@ -89,7 +104,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@drawable/radius_grey"/>
+                android:background="@drawable/radius_grey"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+
+                />
             <EditText
                 android:hint="Sets"
                 android:id="@+id/benchSets"
@@ -97,7 +116,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@drawable/radius_grey"/>
+                android:background="@drawable/radius_grey"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+
+                />
 
             <EditText
                 android:hint="Reps"
@@ -106,7 +129,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@drawable/radius_grey"/>
+                android:background="@drawable/radius_grey"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -114,7 +141,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:background="@color/black"
+            >
 
             <EditText
                 android:text="Deadlift"
@@ -124,6 +153,8 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@drawable/radius_grey"
+                android:textColor="@color/black"
+
                 />
 
             <EditText
@@ -134,15 +165,22 @@
                 android:gravity="center"
                 android:background="@drawable/radius_grey"
                 android:id="@+id/deadWeight"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+
+
                 />
             <EditText
                 android:hint="Sets"
+                android:textColorHint="@color/black"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@drawable/radius_grey"
-                android:id="@+id/deadSets" />
+                android:id="@+id/deadSets"
+                android:textColor="@color/black"
+                />
 
             <EditText
                 android:hint="Sets"
@@ -152,6 +190,10 @@
                 android:gravity="center"
                 android:background="@drawable/radius_grey"
                 android:id="@+id/deadReps"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+
+
                 />
         </LinearLayout>
 
@@ -160,27 +202,34 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:background="@color/black"
+            >
+
 
             <EditText
                 android:text="Press"
                 android:id="@+id/press"
-
+                android:textColor="@color/black"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@drawable/radius_grey"/>
+                android:background="@drawable/radius_grey"
+                />
 
             <EditText
                 android:hint="Weight"
                 android:id="@+id/pressWeight"
+                android:textColorHint="@color/black"
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@drawable/radius_grey"/>
+                android:background="@drawable/radius_grey"
+                android:textColor="@color/black"
+                />
             <EditText
                 android:hint="Sets"
                 android:id="@+id/pressSets"
@@ -189,6 +238,10 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@drawable/radius_grey"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+
+
                 />
 
             <EditText
@@ -198,7 +251,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@drawable/radius_grey"/>
+                android:background="@drawable/radius_grey"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
+
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -206,7 +263,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:background="@color/black">
+            >
 
             <Button
                 android:text="Save"

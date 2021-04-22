@@ -67,29 +67,21 @@ public class LiftLog extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder url_builder = new AlertDialog.Builder(LiftLog.this);
-                url_builder.setTitle("input item");
-                final EditText my_url = new EditText(LiftLog.this);
-                url_builder.setView(my_url);
-                url_builder.setPositiveButton("Add item", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        url_text = my_url.getText().toString();
+                LiftItemCard itemCard = new LiftItemCard();
+                itemList.add(itemCard);
+                adapter.notifyDataSetChanged();
+                //change to snack bar
+                Snackbar.make(constraintLayout,"Added a lift", Snackbar.LENGTH_LONG)
+                        .setAction(";)", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                            }
+                        })
+                        .show();
 
-                        LiftItemCard itemCard = new LiftItemCard(1, url_text,url_text);
-                        itemList.add(itemCard);
-                        adapter.notifyDataSetChanged();
-                        //change to snack bar
-                        Snackbar.make(constraintLayout,"Added a lift", Snackbar.LENGTH_LONG)
-                                .setAction(";)", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                    }
-                                })
-                                .show();
-                    }
-                });
-                url_builder.show();
+
+
+//
             }
 
         });

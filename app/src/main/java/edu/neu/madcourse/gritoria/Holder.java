@@ -27,7 +27,6 @@ public class Holder extends RecyclerView.ViewHolder implements View.OnClickListe
     public Holder(View itemView, final LiftItemCard listener) {
         super(itemView);
         liftDate = itemView.findViewById(R.id.liftDate);
-        liftItem = itemView.findViewById(R.id.liftItem);
         liftInfo = itemView.findViewById(R.id.liftInfo);
 
 
