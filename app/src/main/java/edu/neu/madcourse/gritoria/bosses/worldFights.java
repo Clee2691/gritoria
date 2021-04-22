@@ -3,15 +3,11 @@ package edu.neu.madcourse.gritoria.bosses;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -42,6 +38,8 @@ import edu.neu.madcourse.gritoria.R;
 import edu.neu.madcourse.gritoria.rcViewPlayer.RCViewPlayer;
 import edu.neu.madcourse.gritoria.rcViewPlayer.RCAdapter;
 
+import static android.os.SystemClock.sleep;
+
 public class worldFights extends AppCompatActivity {
     private Intent currIntent;
     private List<RCViewPlayer> playerList;
@@ -63,6 +61,9 @@ public class worldFights extends AppCompatActivity {
     private final double expMultiplier = 0.25;
     private int teamPower;
     private String teamWorld;
+    private TimeThread bossFight;
+    private Thread attackThread;
+    private long bossCurrHealth;
     Handler uiHandler;
     FirebaseUser currPlayer;
     FirebaseDatabase gritFB;
@@ -79,10 +80,31 @@ public class worldFights extends AppCompatActivity {
         //Firebase Realtime DB
         gritFB = FirebaseDatabase.getInstance();
         uiHandler = new Handler();
+        bossFight = new TimeThread();
         setupRecyclerView();
         refreshTeam();
-        // Sets up "ready" button based on if the logged in player is ready or not
         setupUI();
+        try {
+            continueFighting();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        if (attackThread !=null) {
+            DatabaseReference teamCurrFight = gritFB.getReference("teams/" +
+                    playerTeam + "/currFight");
+            teamCurrFight.child("bossCurrHealth").setValue(bossCurrHealth);
+            try {
+                bossFight.setInterrupted();
+                attackThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        super.onPause();
     }
 
     private void setupWorld(Intent currIntent) {
@@ -95,6 +117,8 @@ public class worldFights extends AppCompatActivity {
         playerTeam = currIntent.getStringExtra("playerTeam");
         bossHealth = currIntent.getIntExtra("bossHealth", 0);
         teamIsFighting = currIntent.getBooleanExtra("isTeamFighting", false);
+        teamWorld = currIntent.getStringExtra("currTeamWorld");
+        bossStartTime = currIntent.getIntExtra("bossStartTime", 0);
         worldLogo.setText(String.format("World %s", currWorld));
         bossHealthDisplay.setText(String.format("Health: %d/%d", bossHealth, bossHealth));
         bossProgBar.setMax(bossHealth);
@@ -146,7 +170,9 @@ public class worldFights extends AppCompatActivity {
                 isLeader = userRef.child("isLeader").getValue(boolean.class);
                 bossKilled = teamRef.child("currFight").child("isKilled").getValue(boolean.class);
                 teamPower = teamRef.child("totalPower").getValue(Integer.class);
-                teamWorld = teamRef.child("currFight").child("world").getValue(String.class);
+
+                bossCurrHealth = teamRef.child("currFight").child("bossCurrHealth").
+                        getValue(Integer.class);
                 Button endButton = findViewById(R.id.buttonResults);
                 TextView bossTime = findViewById(R.id.textViewTimeLeftVal);
 
@@ -182,12 +208,6 @@ public class worldFights extends AppCompatActivity {
                     attackBut.setVisibility(View.GONE);
                 }
 
-                if (teamIsFighting &&
-                    teamRef.child("currFight").child("world").getValue(String.class).equals(currWorld)) {
-                    bossStartTime = teamRef.child("currFight").child("startTime").getValue(long.class);
-                    determineTime();
-                }
-
                 if (bossKilled && teamWorld.equals(currWorld)) {
                     bossTime.setVisibility(View.GONE);
                     endButton.setEnabled(true);
@@ -212,8 +232,12 @@ public class worldFights extends AppCompatActivity {
         });
     }
 
+    private void continueFighting() throws InterruptedException {
+        attackThread = new Thread(bossFight);
+        attackThread.start();
+    }
+
     // If team finishes boss, show results
-    //TODO: TEST THIS OUT!
     public void getEndResults(View v) {
         TextView bossTime = findViewById(R.id.textViewTimeLeftVal);
         String message = String.format("Congratulations %s!\nYou gained %.0f exp each!",
@@ -232,16 +256,15 @@ public class worldFights extends AppCompatActivity {
     }
 
     private void determineTime() {
-        timeThread getTime = new timeThread();
-        new Thread(getTime).start();
+        attackThread = new Thread(bossFight);
+        attackThread.start();
     }
 
     // Logic for "idle" part of the game
     // Calculates the current time with when the boss time started and determines
     // if the elapsed time is == boss health
-    class timeThread implements Runnable {
+    class TimeThread implements Runnable {
         long deltaTime;
-        int finalTime = bossHealth;
         DatabaseReference teamFight;
         DatabaseReference playerRef;
         TextView bossTimer;
@@ -249,6 +272,7 @@ public class worldFights extends AppCompatActivity {
 
         ProgressBar bossProgBar;
         TextView bossHealthNum;
+        boolean isInterrupted = false;
 
         @Override
         public void run() {
@@ -258,28 +282,36 @@ public class worldFights extends AppCompatActivity {
 
             teamFight = gritFB.getReference("teams/" + playerTeam + "/currFight");
 
-            while(teamIsFighting && bossStartTime > 0) {
+            while(teamIsFighting && bossStartTime > 0 && !isInterrupted) {
                 currTimeInEpoch = Instant.now().getEpochSecond();
+                Log.e("CurrEpoch", String.format("%d", currTimeInEpoch));
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 deltaTime = currTimeInEpoch - bossStartTime;
-                Log.e("Delta Time", String.format("%d",deltaTime));
-                finalTime -= (int) deltaTime + (teamPower * 0.15);
-                Log.e("final time",String.format("%d",finalTime));
+                bossCurrHealth = bossHealth - deltaTime;
+                Log.e("final time",String.format("%d",bossCurrHealth));
                 uiHandler.post(()-> bossTimer.setText(
-                        String.format("%d seconds left", finalTime)));
-                uiHandler.post(()->bossProgBar.setProgress(finalTime));
+                        String.format("%d seconds left", bossCurrHealth)));
+                uiHandler.post(()->bossProgBar.setProgress((int)bossCurrHealth));
                 uiHandler.post(()->bossHealthNum.setText(String.format("Health: %d/%d",
-                        finalTime, bossHealth)));
-
-                if (finalTime <= 0) {
+                        bossCurrHealth, bossHealth)));
+                if (bossCurrHealth <= 0) {
                     finishFight();
                     break;
                 }
             }
+            Log.e("Thread exit", "Thread attack has exited");
+        }
+
+        public void setInterrupted() {
+            isInterrupted = !isInterrupted;
+        }
+
+        public boolean getisInterrupted() {
+            return isInterrupted;
         }
 
         private void finishFight() {
@@ -292,6 +324,7 @@ public class worldFights extends AppCompatActivity {
             teamFight.child("isFighting").setValue(false);
             teamFight.child("startTime").setValue(0);
             teamFight.child("isKilled").setValue((true));
+            teamFight.child("bossCurrHealth").setValue(0);
 
             for (String teamMateUID : teammateUIDList) {
                 playerRef = gritFB.getReference("users/" + teamMateUID);
@@ -334,6 +367,7 @@ public class worldFights extends AppCompatActivity {
             teamIsFighting = true;
             bossStartTime = Instant.now().getEpochSecond();
             currFightRef.child("startTime").setValue(bossStartTime);
+            currFightRef.child("bossCurrHealth").setValue(bossHealth);
             currFightRef.child("isFighting").setValue(true);
             currFightRef.child("world").setValue(currWorld);
             for (String teamMate : teammateUIDList) {
@@ -411,8 +445,37 @@ public class worldFights extends AppCompatActivity {
         }
     }
 
-    public void backButtonPress(View v) {
+    public void backButtonPress(View v) throws InterruptedException {
         super.onBackPressed();
+        if (attackThread != null) {
+            DatabaseReference teamCurrFight = gritFB.getReference("teams/" +
+                    playerTeam + "/currFight");
+            teamCurrFight.child("bossCurrHealth").setValue(bossCurrHealth);
+            try {
+                bossFight.setInterrupted();
+                attackThread.join();
+                attackThread = null;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        if (attackThread != null) {
+            DatabaseReference teamCurrFight = gritFB.getReference("teams/" +
+                    playerTeam + "/currFight");
+            teamCurrFight.child("bossCurrHealth").setValue(bossCurrHealth);
+            try {
+                bossFight.setInterrupted();
+                attackThread.join();
+                attackThread = null;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setPlayerReady(View v) {

@@ -34,6 +34,9 @@ public class Map extends AppCompatActivity {
     private String playerTeam;
     private String playerUID;
     private boolean isTeamFighting;
+    private String currTeamWorld;
+    private int bossStartTime;
+    private int bossCurrHealth;
     FirebaseUser currPlayer;
     FirebaseDatabase gritFB;
 
@@ -55,6 +58,9 @@ public class Map extends AppCompatActivity {
         Intent worldFight = new Intent(this, worldFights.class);
         worldFight.putExtra("playerTeam", playerTeam);
         worldFight.putExtra("isTeamFighting", isTeamFighting);
+        worldFight.putExtra("currTeamWorld", currTeamWorld);
+        worldFight.putExtra("bossStartTime", bossStartTime);
+        worldFight.putExtra("bossCurrHealth", bossCurrHealth);
 
         if (currWorld == R.id.imageButtonWorld1_1) {
             worldFight.putExtra("level", "1-1");
@@ -92,6 +98,12 @@ public class Map extends AppCompatActivity {
                 } else {
                     isTeamFighting = snapshot.child("teams").child(playerTeam).child("currFight")
                             .child("isFighting").getValue(boolean.class);
+                    currTeamWorld = snapshot.child("teams").child(playerTeam).
+                            child("currFight").child("world").getValue(String.class);
+                    bossStartTime = snapshot.child("teams").child(playerTeam).
+                            child("currFight").child("startTime").getValue(Integer.class);
+                    bossCurrHealth = snapshot.child("teams").child(playerTeam).
+                            child("currFight").child("bossCurrHealth").getValue(Integer.class);
                 }
 
                 for(DataSnapshot eachTeam : snapshot.child("teams").getChildren()) {
