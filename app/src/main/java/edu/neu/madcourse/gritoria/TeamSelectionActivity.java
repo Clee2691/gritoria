@@ -111,6 +111,7 @@ public class TeamSelectionActivity extends AppCompatActivity {
         mDatabase.child("teams").child(teamNameToAdd).child("currFight").child("isKilled").setValue(false);
         mDatabase.child("teams").child(teamNameToAdd).child("currFight").child("startTime").setValue(0);
         mDatabase.child("teams").child(teamNameToAdd).child("currFight").child("world").setValue("1-1");
+        mDatabase.child("teams").child(teamNameToAdd).child("currFight").child("bossCurrHealth").setValue(0);
         mDatabase.child("teams").child(teamNameToAdd).child("members").child(mAuth.getUid()).setValue(currUser);
         mDatabase.child("teams").child(teamNameToAdd).child("messages").setValue("");
         mDatabase.child("teams").child(teamNameToAdd).child("name").setValue(teamNameToAdd);
