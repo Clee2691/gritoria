@@ -27,7 +27,6 @@ public class RCViewHolder extends RecyclerView.ViewHolder {
     public void setViewData(RCViewPlayer player) {
         playerName.setText(player.getPlayerName());
         playerPower.setText(String.format("%d",player.getAttackPower()));
-        // TODO: Placeholder image! NEED TO REPLACE WITH ACTUAL PLAYER AVATAR
         Context context = playerAvatar.getContext();
         int avatarID = context.getResources().getIdentifier(player.getPlayerAvatar(),
                 "drawable", context.getPackageName());

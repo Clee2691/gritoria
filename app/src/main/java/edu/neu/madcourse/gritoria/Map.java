@@ -123,7 +123,8 @@ public class Map extends AppCompatActivity {
                 for (DataSnapshot teammembers : dSnap.child("members").getChildren()) {
                     numPlayers++;
                 }
-                teamList.add(new RViewTeamRank(dSnap.getKey(), numPlayers));
+                teamList.add(new RViewTeamRank(dSnap.getKey(), numPlayers,
+                        dSnap.child("teamIcon").getValue(String.class)));
                 rcAdapter.notifyItemInserted(teamList.size() - 1);
             }
         });
