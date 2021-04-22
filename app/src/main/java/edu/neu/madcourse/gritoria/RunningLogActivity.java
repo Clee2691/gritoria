@@ -49,11 +49,14 @@ public class RunningLogActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    String runDate = child.getKey();
-
-                    String distance = (String) child.child("distance").getValue();
-                    long steps = (long) child.child("steps").getValue();
-                    runList.add(new RunningLogItem(distance + " miles", runDate, String.valueOf(steps)));
+                    try {
+                        String runDate = child.getKey();
+                        String distance = (String) child.child("distance").getValue();
+                        long steps = (long) child.child("steps").getValue();
+                        runList.add(new RunningLogItem(distance + " miles", runDate, String.valueOf(steps)));
+                    } catch (NullPointerException e) {
+                        break;
+                    }
 
                 }
                 buildRecyclerView(runList);
