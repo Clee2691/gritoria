@@ -116,7 +116,7 @@ public class worldFights extends AppCompatActivity {
         teamIsFighting = currIntent.getBooleanExtra("isTeamFighting", false);
         teamWorld = currIntent.getStringExtra("currTeamWorld");
         bossStartTime = currIntent.getIntExtra("bossStartTime", 0);
-        teamPower = currIntent.getIntExtra("teamPower", 1);
+        //teamPower = currIntent.getIntExtra("teamPower", 1);
 
         worldLogo.setText(String.format("World %s", currWorld));
         bossHealthDisplay.setText(String.format("Health: %d/%d", bossHealth, bossHealth));
@@ -247,7 +247,6 @@ public class worldFights extends AppCompatActivity {
 
         v.setEnabled(false);
         v.setVisibility(View.GONE);
-        attackButton.setVisibility(View.VISIBLE);
         gritFB.getReference("teams/" + playerTeam + "/currFight").
                 child("isKilled").setValue(false);
         gritFB.getReference("teams/" + playerTeam + "/currFight").
@@ -311,10 +310,6 @@ public class worldFights extends AppCompatActivity {
             isInterrupted = !isInterrupted;
         }
 
-        public boolean getisInterrupted() {
-            return isInterrupted;
-        }
-
         private void finishFight() {
             readyButton = findViewById(R.id.btnReadyUp);
             TextView bossTime = findViewById(R.id.textViewTimeLeftVal);
@@ -337,7 +332,10 @@ public class worldFights extends AppCompatActivity {
                     @NonNull
                     @Override
                     public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                        int currExp = currentData.getValue(Integer.class);
+                        int currExp = 0;
+                        if (currentData != null) {
+                            currExp = currentData.getValue(Integer.class);
+                        }
                         currExp += bossHealth * expMultiplier;
                         currentData.setValue(currExp);
                         return Transaction.success(currentData);
@@ -422,10 +420,15 @@ public class worldFights extends AppCompatActivity {
                                     aUser.child("username").getValue(String.class),
                                     aUser.child("power").getValue(Integer.class),
                                     aUser.child("isReady").getValue(boolean.class),
-                                    aUser.child("currWorld").getValue(String.class)));
+                                    aUser.child("currWorld").getValue(String.class),
+                                    aUser.child("profileImage").getValue(String.class)));
                             rcPlayerAdapter.notifyItemInserted(playerList.size() - 1);
                         }
                     }
+                }
+                teamPower = 0;
+                for (RCViewPlayer player : playerList) {
+                    teamPower += player.getAttackPower();
                 }
             }
 
