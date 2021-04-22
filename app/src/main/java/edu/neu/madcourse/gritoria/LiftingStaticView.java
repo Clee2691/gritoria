@@ -62,11 +62,12 @@ public class LiftingStaticView extends AppCompatActivity {
         userStoreRef = rootRef.child("users");
 
         String mAuth = FirebaseAuth.getInstance().getUid();
-        String myPower = rootRef.child("users").child(mAuth).child("power").toString();
-
+        Log.e(tag, mAuth);
         String powerString =  rootRef.child("users").child(mAuth).child("stats").child("str").toString();
 
-        Log.e("getting power...", powerString);
+//        addPower(mAuth);
+
+
 
 
         //adding all the lift names to map to db
@@ -279,6 +280,8 @@ public class LiftingStaticView extends AppCompatActivity {
                         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "yes",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
+                                        addPower(mAuth);
+
                                         LiftingGlobal.globalSets.add(integerify(squatSets));
 
 
@@ -308,11 +311,12 @@ public class LiftingStaticView extends AppCompatActivity {
                                                         counter.addAndGet(1);
 
                                                     });
-                                                     addPower(mAuth);
+
                                                 } else {
                                                     Log.e("Does", "exist");
                                                 }
                                             }
+
 
                                             @Override
                                             public void onCancelled(@NonNull DatabaseError error) {
@@ -405,8 +409,10 @@ public class LiftingStaticView extends AppCompatActivity {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                Log.e("what is current data?", currentData.toString());
-                int currStr = currentData.getValue(Integer.class);
+                int currStr = 1;
+                if(currentData != null){
+                    currStr = currentData.getValue(Integer.class);
+                }
                 currStr += 1;
                 currentData.setValue(currStr);
                 return Transaction.success(currentData);
