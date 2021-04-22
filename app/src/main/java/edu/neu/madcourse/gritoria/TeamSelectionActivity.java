@@ -17,7 +17,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
 import java.util.HashMap;
+
+import edu.neu.madcourse.gritoria.messages.BaseMessage;
+import edu.neu.madcourse.gritoria.messages.UserMessage;
 
 public class TeamSelectionActivity extends AppCompatActivity {
     private Button createTeamBtn;
@@ -81,13 +85,14 @@ public class TeamSelectionActivity extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.exists()) {
                                     HashMap<String, String> memberList = (HashMap<String, String>) snapshot.child("members").getValue();
-                                    HashMap<String, Object> messageHistory = (HashMap<String, Object>) snapshot.child("messages").getValue();
                                     if (memberList.size() >= 4) {
                                         teamLink.setError("Team is at max capacity.");
                                     } else {
                                         bundle.putString("teamName", teamLink.getText().toString());
-                                        TeamSelectionActivity.this.joinTeam(teamLink.getText().toString());
+                                        HashMap<String, HashMap<String, String>> messageHistory = (HashMap<String, HashMap<String, String>>) snapshot.child("messages").getValue();
+                                        TeamSelectionActivity.this.joinTeam(teamLink.getText().toString(), messageHistory.size());
                                         bundle.putSerializable("teamMembers", memberList);
+
                                         bundle.putSerializable("messages", messageHistory);
                                         TeamSelectionActivity.this.openTeam();
                                     }
@@ -113,7 +118,12 @@ public class TeamSelectionActivity extends AppCompatActivity {
         mDatabase.child("teams").child(teamNameToAdd).child("currFight").child("world").setValue("1-1");
         mDatabase.child("teams").child(teamNameToAdd).child("currFight").child("bossCurrHealth").setValue(0);
         mDatabase.child("teams").child(teamNameToAdd).child("members").child(mAuth.getUid()).setValue(currUser);
-        mDatabase.child("teams").child(teamNameToAdd).child("messages").setValue("");
+        String currMessage = "Team, " + teamNameToAdd + ", has been created.";
+        BaseMessage message = new UserMessage("System", currMessage, new Date(), 0);
+        HashMap<String, HashMap<String, String>> messageMap = new HashMap<>();
+        messageMap.put("firstMessage", (HashMap<String, String>) message.getMessageMap());
+        bundle.putSerializable("messages", messageMap);
+        mDatabase.child("teams").child(teamNameToAdd).child("messages").push().setValue(message.getMessageMap());
         mDatabase.child("teams").child(teamNameToAdd).child("name").setValue(teamNameToAdd);
         mDatabase.child("teams").child(teamNameToAdd).child("rank").setValue(10);
         mDatabase.child("teams").child(teamNameToAdd).child("teamIcon").setValue("");
@@ -124,13 +134,16 @@ public class TeamSelectionActivity extends AppCompatActivity {
         mDatabase.child("users").child(mAuth.getUid()).child("isLeader").setValue(true);
     }
 
-    protected void joinTeam(String teamNameToJoin){
+    protected void joinTeam(String teamNameToJoin, int size){
         mDatabase.child("teams").child(teamNameToJoin).child("members").child(mAuth.getUid()).setValue(currUser);
         mDatabase.child("users").child(mAuth.getUid()).child("team").setValue(teamNameToJoin);
+        String currMessage = currUser+ " has joined " + teamNameToJoin + ".";
+        BaseMessage message = new UserMessage("System", currMessage, new Date(), size);
+        mDatabase.child("teams").child(bundle.getString("teamName")).child("messages").push().setValue(message.getMessageMap());
     }
 
     protected void openTeam(){
-        Intent intent = new Intent(this, Team.class);
+        Intent intent = new Intent(this, Team.class);;
         intent.putExtras(bundle);
         startActivity(intent);
     }
