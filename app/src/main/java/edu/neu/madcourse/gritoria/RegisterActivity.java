@@ -120,6 +120,13 @@ public class RegisterActivity extends AppCompatActivity {
                                             Intent intent= new Intent(getApplicationContext(), MainActivity.class);
                                             intent.putExtra("currUser", username);
                                             intent.putExtra("teamName", "");
+                                            HashMap<String, String> statHashmap = new HashMap<>();
+                                            statHashmap.put("dex", "1");
+                                            statHashmap.put("exp", "1");
+                                            statHashmap.put("level", "1");
+                                            statHashmap.put("int", "1");
+                                            statHashmap.put("str", "1");
+                                            intent.putExtra("statMap", statHashmap);
                                             startActivity(intent);
                                         }
                                         else {
