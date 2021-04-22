@@ -254,6 +254,14 @@ public class LiftingStaticView extends AppCompatActivity {
             }
         });
 
+        Button backButton = findViewById(R.id.liftBackButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exit();
+            }
+        });
+
 
         Button save = findViewById(R.id.saveProgress);
         save.setOnClickListener(new View.OnClickListener() {
