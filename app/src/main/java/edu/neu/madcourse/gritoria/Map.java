@@ -34,6 +34,10 @@ public class Map extends AppCompatActivity {
     private String playerTeam;
     private String playerUID;
     private boolean isTeamFighting;
+    private String currTeamWorld;
+    private int bossStartTime;
+    private int bossCurrHealth;
+    private int teamPower;
     FirebaseUser currPlayer;
     FirebaseDatabase gritFB;
 
@@ -55,10 +59,14 @@ public class Map extends AppCompatActivity {
         Intent worldFight = new Intent(this, worldFights.class);
         worldFight.putExtra("playerTeam", playerTeam);
         worldFight.putExtra("isTeamFighting", isTeamFighting);
+        worldFight.putExtra("currTeamWorld", currTeamWorld);
+        worldFight.putExtra("bossStartTime", bossStartTime);
+        worldFight.putExtra("bossCurrHealth", bossCurrHealth);
+        worldFight.putExtra("teamPower", teamPower);
 
         if (currWorld == R.id.imageButtonWorld1_1) {
             worldFight.putExtra("level", "1-1");
-            worldFight.putExtra("bossHealth", 60);
+            worldFight.putExtra("bossHealth", 1000);
         } else if (currWorld == R.id.imageButtonWorld1_2) {
             worldFight.putExtra("level", "1-2");
             worldFight.putExtra("bossHealth", 2000);
@@ -92,6 +100,13 @@ public class Map extends AppCompatActivity {
                 } else {
                     isTeamFighting = snapshot.child("teams").child(playerTeam).child("currFight")
                             .child("isFighting").getValue(boolean.class);
+                    currTeamWorld = snapshot.child("teams").child(playerTeam).
+                            child("currFight").child("world").getValue(String.class);
+                    bossStartTime = snapshot.child("teams").child(playerTeam).
+                            child("currFight").child("startTime").getValue(Integer.class);
+                    bossCurrHealth = snapshot.child("teams").child(playerTeam).
+                            child("currFight").child("bossCurrHealth").getValue(Integer.class);
+                    teamPower = snapshot.child("teams").child(playerTeam).child("totalPower").getValue(Integer.class);
                 }
 
                 for(DataSnapshot eachTeam : snapshot.child("teams").getChildren()) {
@@ -108,7 +123,8 @@ public class Map extends AppCompatActivity {
                 for (DataSnapshot teammembers : dSnap.child("members").getChildren()) {
                     numPlayers++;
                 }
-                teamList.add(new RViewTeamRank(dSnap.getKey(), numPlayers));
+                teamList.add(new RViewTeamRank(dSnap.getKey(), numPlayers,
+                        dSnap.child("teamIcon").getValue(String.class)));
                 rcAdapter.notifyItemInserted(teamList.size() - 1);
             }
         });

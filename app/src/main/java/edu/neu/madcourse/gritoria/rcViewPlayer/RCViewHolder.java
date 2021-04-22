@@ -1,5 +1,6 @@
 package edu.neu.madcourse.gritoria.rcViewPlayer;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -26,8 +27,10 @@ public class RCViewHolder extends RecyclerView.ViewHolder {
     public void setViewData(RCViewPlayer player) {
         playerName.setText(player.getPlayerName());
         playerPower.setText(String.format("%d",player.getAttackPower()));
-        // TODO: Placeholder image! NEED TO REPLACE WITH ACTUAL PLAYER AVATAR
-        playerAvatar.setImageResource(R.drawable.clairvoyant);
+        Context context = playerAvatar.getContext();
+        int avatarID = context.getResources().getIdentifier(player.getPlayerAvatar(),
+                "drawable", context.getPackageName());
+        playerAvatar.setImageResource(avatarID);
         isReadyCheck.setChecked(player.isReady());
     }
 }

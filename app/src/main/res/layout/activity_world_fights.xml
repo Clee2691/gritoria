@@ -176,4 +176,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewBossAvatar" />
 
+    <Button
+        android:id="@+id/buttonResults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="getEndResults"
+        android:text="Get Loot"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBossAvatar"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTimeLeftLabel" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
