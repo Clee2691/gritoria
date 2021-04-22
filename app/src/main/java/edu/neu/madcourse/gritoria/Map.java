@@ -37,6 +37,7 @@ public class Map extends AppCompatActivity {
     private String currTeamWorld;
     private int bossStartTime;
     private int bossCurrHealth;
+    private int teamPower;
     FirebaseUser currPlayer;
     FirebaseDatabase gritFB;
 
@@ -61,6 +62,7 @@ public class Map extends AppCompatActivity {
         worldFight.putExtra("currTeamWorld", currTeamWorld);
         worldFight.putExtra("bossStartTime", bossStartTime);
         worldFight.putExtra("bossCurrHealth", bossCurrHealth);
+        worldFight.putExtra("teamPower", teamPower);
 
         if (currWorld == R.id.imageButtonWorld1_1) {
             worldFight.putExtra("level", "1-1");
@@ -104,6 +106,7 @@ public class Map extends AppCompatActivity {
                             child("currFight").child("startTime").getValue(Integer.class);
                     bossCurrHealth = snapshot.child("teams").child(playerTeam).
                             child("currFight").child("bossCurrHealth").getValue(Integer.class);
+                    teamPower = snapshot.child("teams").child(playerTeam).child("totalPower").getValue(Integer.class);
                 }
 
                 for(DataSnapshot eachTeam : snapshot.child("teams").getChildren()) {

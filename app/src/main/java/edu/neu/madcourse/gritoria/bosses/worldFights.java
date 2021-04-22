@@ -84,11 +84,8 @@ public class worldFights extends AppCompatActivity {
         setupRecyclerView();
         refreshTeam();
         setupUI();
-        try {
-            continueFighting();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // Create a new thread when coming back from any other page
+        continueFighting();
     }
 
     @Override
@@ -119,6 +116,8 @@ public class worldFights extends AppCompatActivity {
         teamIsFighting = currIntent.getBooleanExtra("isTeamFighting", false);
         teamWorld = currIntent.getStringExtra("currTeamWorld");
         bossStartTime = currIntent.getIntExtra("bossStartTime", 0);
+        teamPower = currIntent.getIntExtra("teamPower", 1);
+
         worldLogo.setText(String.format("World %s", currWorld));
         bossHealthDisplay.setText(String.format("Health: %d/%d", bossHealth, bossHealth));
         bossProgBar.setMax(bossHealth);
@@ -169,8 +168,6 @@ public class worldFights extends AppCompatActivity {
                 playerIsFighting = userRef.child("isFighting").getValue(boolean.class);
                 isLeader = userRef.child("isLeader").getValue(boolean.class);
                 bossKilled = teamRef.child("currFight").child("isKilled").getValue(boolean.class);
-                teamPower = teamRef.child("totalPower").getValue(Integer.class);
-
                 bossCurrHealth = teamRef.child("currFight").child("bossCurrHealth").
                         getValue(Integer.class);
                 Button endButton = findViewById(R.id.buttonResults);
@@ -203,7 +200,7 @@ public class worldFights extends AppCompatActivity {
                 if (isLeader && !teamIsFighting) {
                     attackBut.setVisibility(View.VISIBLE);
                     attackBut.setEnabled(true);
-                } else if (!isLeader){
+                } else if (!isLeader || teamIsFighting){
                     attackBut.setEnabled(false);
                     attackBut.setVisibility(View.GONE);
                 }
@@ -232,14 +229,17 @@ public class worldFights extends AppCompatActivity {
         });
     }
 
-    private void continueFighting() throws InterruptedException {
-        attackThread = new Thread(bossFight);
-        attackThread.start();
+    private void continueFighting() {
+        if (teamWorld.equals(currWorld) && bossStartTime > 0) {
+            attackThread = new Thread(bossFight);
+            attackThread.start();
+        }
     }
 
     // If team finishes boss, show results
     public void getEndResults(View v) {
         TextView bossTime = findViewById(R.id.textViewTimeLeftVal);
+        Button attackButton = findViewById(R.id.buttonAttack);
         String message = String.format("Congratulations %s!\nYou gained %.0f exp each!",
                 playerTeam, (bossHealth * expMultiplier));
         DialogFragment finishFightDialog = new FinishFightDialog(message);
@@ -247,6 +247,7 @@ public class worldFights extends AppCompatActivity {
 
         v.setEnabled(false);
         v.setVisibility(View.GONE);
+        attackButton.setVisibility(View.VISIBLE);
         gritFB.getReference("teams/" + playerTeam + "/currFight").
                 child("isKilled").setValue(false);
         gritFB.getReference("teams/" + playerTeam + "/currFight").
@@ -291,7 +292,7 @@ public class worldFights extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 deltaTime = currTimeInEpoch - bossStartTime;
-                bossCurrHealth = bossHealth - deltaTime;
+                bossCurrHealth = bossHealth - (deltaTime * (teamPower * 2));
                 Log.e("final time",String.format("%d",bossCurrHealth));
                 uiHandler.post(()-> bossTimer.setText(
                         String.format("%d seconds left", bossCurrHealth)));
