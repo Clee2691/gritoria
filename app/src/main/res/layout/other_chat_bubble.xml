@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="8:00"
-        android:textColor="#C0C0C0"
+        android:textColor="#302F2F"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/OtherMessageCard"
         app:layout_constraintStart_toEndOf="@+id/OtherMessageCard" />
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:text=" MM/DD/YYYY"
-        android:textColor="#C0C0C0"
+        android:textColor="#302F2F"
         android:textSize="10sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/OtherMessageCard"
