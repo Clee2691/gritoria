@@ -170,6 +170,8 @@ public class worldFights extends AppCompatActivity {
                 bossKilled = teamRef.child("currFight").child("isKilled").getValue(boolean.class);
                 bossCurrHealth = teamRef.child("currFight").child("bossCurrHealth").
                         getValue(Integer.class);
+                int currStartTime = teamRef.child("currFight").child("startTime").
+                        getValue(Integer.class);
                 Button endButton = findViewById(R.id.buttonResults);
                 TextView bossTime = findViewById(R.id.textViewTimeLeftVal);
 
@@ -218,6 +220,17 @@ public class worldFights extends AppCompatActivity {
                 } else if (bossKilled && !teamWorld.equals(currWorld)) {
                     endButton.setEnabled(false);
                     endButton.setVisibility(View.GONE);
+                }
+
+                if (!isLeader) {
+                    if (!bossKilled && currStartTime > 0 && !teamIsFighting) {
+                        bossStartTime = currStartTime;
+                        teamIsFighting = true;
+                        determineTime();
+                    } else if (bossKilled) {
+                        endButton.setEnabled(true);
+                        endButton.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -292,6 +305,9 @@ public class worldFights extends AppCompatActivity {
                 }
                 deltaTime = currTimeInEpoch - bossStartTime;
                 bossCurrHealth = bossHealth - (deltaTime * (teamPower * 2));
+                if (bossCurrHealth > bossHealth) {
+                    bossCurrHealth = bossHealth;
+                }
                 Log.e("final time",String.format("%d",bossCurrHealth));
                 uiHandler.post(()-> bossTimer.setText(
                         String.format("%d seconds left", bossCurrHealth)));
@@ -362,6 +378,7 @@ public class worldFights extends AppCompatActivity {
         DatabaseReference currFightRef = gritFB.getReference("teams/" + playerTeam +
                                                             "/currFight");
         DatabaseReference userRef = gritFB.getReference("users/");
+
         if (canAttack && !bossKilled) {
             teamIsFighting = true;
             bossStartTime = Instant.now().getEpochSecond();
@@ -379,6 +396,7 @@ public class worldFights extends AppCompatActivity {
                     "Either your team isn't ready or the boss is already dead! Claim the loot!",
                     Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private boolean determineIfReady() {

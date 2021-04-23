@@ -64,9 +64,15 @@ public class Map extends AppCompatActivity {
         worldFight.putExtra("bossCurrHealth", bossCurrHealth);
         worldFight.putExtra("teamPower", teamPower);
 
+        if (playerTeam.equals("")) {
+            Toast.makeText(this, "You must join a team to fight in the world!",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (currWorld == R.id.imageButtonWorld1_1) {
             worldFight.putExtra("level", "1-1");
-            worldFight.putExtra("bossHealth", 1000);
+            worldFight.putExtra("bossHealth", 100);
         } else if (currWorld == R.id.imageButtonWorld1_2) {
             worldFight.putExtra("level", "1-2");
             worldFight.putExtra("bossHealth", 2000);
